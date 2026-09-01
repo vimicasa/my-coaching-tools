@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#12151c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Apps">
+  <link rel="apple-touch-icon"
+    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAD9klEQVR4nO3dwW0USxSFYfPkLZsnvR0iAHbkQxQvEKIgH3YEQAokwKIlhMYcZE933VOWvi8A15X6V3X3jDX15t//3j3An/zTHoB9iYNIHETiIBIHkTiIxEEkDiJxEImDSBxE4iASB5E4iMRBJA4icRCJg0gcROIgEgeROIjEQSQOInEQiYNIHETiIBIHkTiIxEEkDiJxED22B7j17f/3J//Ch8/fL5nkDp8+vj35F758/XHJJJd4s8nPPp1v4qmxSs438dQOlfTjWJHF75YmsiKL33UTKT9zrC5j6RKry5hZ4i+acQyUsW6hsctW7KMWx1gZK5YbvmCtPjpxDJdx7aKVS1VZtBBHpYyrli5u8vNLT8dRLOP8AN3Hw/kBRuOol3G4b4x6GYfJMXx8TjQXxybbxuGlw2yybRzGhrFzEImDaCiOre4ph+ePtNU95TAzkp2DSBxE4iASB5E4iMRBJA4icRCJg0gcROIgEgeROIjEQSQOInEQiYNIHETiIBIHkTiIhuIo/k5X8vyRdvgFphszI9k5iMRBNBfHVneWlw6z1Z1lbBg7B9FoHJtsHveNscnmMTnG9M5R7+PMAPU+hgco3FaKfZxfutjH/NKdZ45KH1ctWumjsmjtgXS4j2uXG75Ure2q+bYy1seKhcYuWPFGVn6VHehj3RIDl637CNw/NeHgSI0b9Tejh33i+MVhPJdMcont4mAfPj4nEgeROIjEQSQOInEQiYNIHETiIBIHkTiIxEH02B7g1qv+YvNVf6X81C7fyr7qf4l41f+M8hf9OFafSLU0kdXHk3UTKT9zDJxVtm6JgYPrumfjNeMYO1hvxUJjl63YRy2O4SMXr11u+IK1+ujEUTmM86pFK5eqsmghjuIxreeXLm7y80tPx1E/wPfMAPWjk4cHGI2jXsbhvjHqZRwmx/DxOdFcHJtsG4eXDrPJtnEYG8bOQSQOoqE4trqnHJ4/0lb3lMPMSHYOInEQiYNIHETiIBIHkTiIxEEkDiJxEImDSBxE4iASB5E4iMRBJA4icRCJg0gcROIgGopjqwOIDs8faYdfYLoxM5Kdg0gcRHNxbHVneekwW91ZxoaxcxCNxrHJ5nHfGJtsHpNjTO8c9T7ODFDvY3iAwm2l2Mf5pYt9zC/deeao9HHVopU+KovWHkiH+7h2ueFL1dqumm8rY32sWGjsghVvZOVX2YE+1i0xcNm6j8D9UxMOjtS4UX8zetgnjl8cxnPJJJfYLg724eNzInEQiYNIHETiIBIHkTiIxEEkDiJxEImDSBxE4iASB5E4iMRBJA4icRCJg0gcROIgEgeROIjEQSQOInEQiYNIHETiIBIHkTiIxEH0E5+sGFJjnf/GAAAAAElFTkSuQmCC">
+  <link rel="icon"
+    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAD9klEQVR4nO3dwW0USxSFYfPkLZsnvR0iAHbkQxQvEKIgH3YEQAokwKIlhMYcZE933VOWvi8A15X6V3X3jDX15t//3j3An/zTHoB9iYNIHETiIBIHkTiIxEEkDiJxEImDSBxE4iASB5E4iMRBJA4icRCJg0gcROIgEgeROIjEQSQOInEQiYNIHETiIBIHkTiIxEEkDiJxED22B7j17f/3J//Ch8/fL5nkDp8+vj35F758/XHJJJd4s8nPPp1v4qmxSs438dQOlfTjWJHF75YmsiKL33UTKT9zrC5j6RKry5hZ4i+acQyUsW6hsctW7KMWx1gZK5YbvmCtPjpxDJdx7aKVS1VZtBBHpYyrli5u8vNLT8dRLOP8AN3Hw/kBRuOol3G4b4x6GYfJMXx8TjQXxybbxuGlw2yybRzGhrFzEImDaCiOre4ph+ePtNU95TAzkp2DSBxE4iASB5E4iMRBJA4icRCJg0gcROIgEgeROIjEQSQOInEQiYNIHETiIBIHkTiIhuIo/k5X8vyRdvgFphszI9k5iMRBNBfHVneWlw6z1Z1lbBg7B9FoHJtsHveNscnmMTnG9M5R7+PMAPU+hgco3FaKfZxfutjH/NKdZ45KH1ctWumjsmjtgXS4j2uXG75Ure2q+bYy1seKhcYuWPFGVn6VHehj3RIDl637CNw/NeHgSI0b9Tejh33i+MVhPJdMcont4mAfPj4nEgeROIjEQSQOInEQiYNIHETiIBIHkTiIxEH02B7g1qv+YvNVf6X81C7fyr7qf4l41f+M8hf9OFafSLU0kdXHk3UTKT9zDJxVtm6JgYPrumfjNeMYO1hvxUJjl63YRy2O4SMXr11u+IK1+ujEUTmM86pFK5eqsmghjuIxreeXLm7y80tPx1E/wPfMAPWjk4cHGI2jXsbhvjHqZRwmx/DxOdFcHJtsG4eXDrPJtnEYG8bOQSQOoqE4trqnHJ4/0lb3lMPMSHYOInEQiYNIHETiIBIHkTiIxEEkDiJxEImDSBxE4iASB5E4iMRBJA4icRCJg0gcROIgGopjqwOIDs8faYdfYLoxM5Kdg0gcRHNxbHVneekwW91ZxoaxcxCNxrHJ5nHfGJtsHpNjTO8c9T7ODFDvY3iAwm2l2Mf5pYt9zC/deeao9HHVopU+KovWHkiH+7h2ueFL1dqumm8rY32sWGjsghVvZOVX2YE+1i0xcNm6j8D9UxMOjtS4UX8zetgnjl8cxnPJJJfYLg724eNzInEQiYNIHETiIBIHkTiIxEEkDiJxEImDSBxE4iASB5E4iMRBJA4icRCJg0gcROIgEgeROIjEQSQOInEQiYNIHETiIBIHkTiIxEH0E5+sGFJjnf/GAAAAAElFTkSuQmCC">
+  <link rel="manifest"
+    href="data:application/manifest+json,%7B%22name%22%3A%20%22Apps%20del%20equipo%22%2C%20%22short_name%22%3A%20%22Apps%22%2C%20%22display%22%3A%20%22standalone%22%2C%20%22start_url%22%3A%20%22.%22%2C%20%22background_color%22%3A%20%22%2312151c%22%2C%20%22theme_color%22%3A%20%22%2312151c%22%2C%20%22icons%22%3A%20%5B%7B%22src%22%3A%20%22data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAD9klEQVR4nO3dwW0USxSFYfPkLZsnvR0iAHbkQxQvEKIgH3YEQAokwKIlhMYcZE933VOWvi8A15X6V3X3jDX15t%2F%2F3j3An%2FzTHoB9iYNIHETiIBIHkTiIxEEkDiJxEImDSBxE4iASB5E4iMRBJA4icRCJg0gcROIgEgeROIjEQSQOInEQiYNIHETiIBIHkTiIxEEkDiJxED22B7j17f%2F3J%2F%2FCh8%2FfL5nkDp8%2Bvj35F758%2FXHJJJd4s8nPPp1v4qmxSs438dQOlfTjWJHF75YmsiKL33UTKT9zrC5j6RKry5hZ4i%2BacQyUsW6hsctW7KMWx1gZK5YbvmCtPjpxDJdx7aKVS1VZtBBHpYyrli5u8vNLT8dRLOP8AN3Hw%2FkBRuOol3G4b4x6GYfJMXx8TjQXxybbxuGlw2yybRzGhrFzEImDaCiOre4ph%2BePtNU95TAzkp2DSBxE4iASB5E4iMRBJA4icRCJg0gcROIgEgeROIjEQSQOInEQiYNIHETiIBIHkTiIhuIo%2Fk5X8vyRdvgFphszI9k5iMRBNBfHVneWlw6z1Z1lbBg7B9FoHJtsHveNscnmMTnG9M5R7%2BPMAPU%2Bhgco3FaKfZxfutjH%2FNKdZ45KH1ctWumjsmjtgXS4j2uXG75Ure2q%2BbYy1seKhcYuWPFGVn6VHehj3RIDl637CNw%2FNeHgSI0b9Tejh33i%2BMVhPJdMcont4mAfPj4nEgeROIjEQSQOInEQiYNIHETiIBIHkTiIxEH02B7g1qv%2BYvNVf6X81C7fyr7qf4l41f%2BM8hf9OFafSLU0kdXHk3UTKT9zDJxVtm6JgYPrumfjNeMYO1hvxUJjl63YRy2O4SMXr11u%2BIK1%2BujEUTmM86pFK5eqsmghjuIxreeXLm7y80tPx1E%2FwPfMAPWjk4cHGI2jXsbhvjHqZRwmx%2FDxOdFcHJtsG4eXDrPJtnEYG8bOQSQOoqE4trqnHJ4%2F0lb3lMPMSHYOInEQiYNIHETiIBIHkTiIxEEkDiJxEImDSBxE4iASB5E4iMRBJA4icRCJg0gcROIgGopjqwOIDs8faYdfYLoxM5Kdg0gcRHNxbHVneekwW91ZxoaxcxCNxrHJ5nHfGJtsHpNjTO8c9T7ODFDvY3iAwm2l2Mf5pYt9zC%2Fdeeao9HHVopU%2BKovWHkiH%2B7h2ueFL1dqumm8rY32sWGjsghVvZOVX2YE%2B1i0xcNm6j8D9UxMOjtS4UX8zetgnjl8cxnPJJJfYLg724eNzInEQiYNIHETiIBIHkTiIxEEkDiJxEImDSBxE4iASB5E4iMRBJA4icRCJg0gcROIgEgeROIjEQSQOInEQiYNIHETiIBIHkTiIxEH0E5%2BsGFJjnf%2FGAAAAAElFTkSuQmCC%22%2C%20%22sizes%22%3A%20%22180x180%22%2C%20%22type%22%3A%20%22image%2Fpng%22%7D%5D%7D">
+  <title>Apps del equipo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #12151c;
+      --surface-1: #1b2029;
+      --surface-2: #242b38;
+      --border: #323b4c;
+      --border-soft: #262d3a;
+      --amber: #e8873a;
+      --amber-bg: rgba(232, 135, 58, .14);
+      --text-1: #f2f0ea;
+      --text-2: #a9b1c3;
+      --text-3: #6b7386;
+      --radius-lg: 18px;
+      --font-display: 'Oswald', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text-1);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      margin: 0;
+      letter-spacing: .02em;
+    }
+
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 48px 20px 60px;
+    }
+
+    header {
+      margin-bottom: 36px;
+    }
+
+    .brand-sub {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: var(--text-3);
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 28px;
+    }
+
+    .app-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .app-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--surface-1);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-lg);
+      padding: 18px 20px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color .15s, background .15s;
+    }
+
+    .app-card:hover,
+    .app-card:active {
+      border-color: var(--amber);
+      background: var(--surface-2);
+    }
+
+    .app-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 13px;
+      flex-shrink: 0;
+      background: var(--amber-bg);
+      color: var(--amber);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .app-info {
+      min-width: 0;
+    }
+
+    .app-name {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: .02em;
+    }
+
+    .app-desc {
+      font-size: 12.5px;
+      color: var(--text-2);
+      margin-top: 2px;
+    }
+
+    .app-card .arrow {
+      margin-left: auto;
+      color: var(--text-3);
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .app-card.placeholder {
+      border-style: dashed;
+      color: var(--text-3);
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .app-card.placeholder .app-icon {
+      background: var(--surface-2);
+      color: var(--text-3);
+    }
+
+    .app-card.placeholder .app-desc {
+      color: var(--text-3);
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 11.5px;
+      color: var(--text-3);
+      font-family: var(--font-mono);
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="brand-sub">Herramientas del equipo</div>
+      <h1>Apps</h1>
+    </header>
+
+    <div class="app-grid">
+      <a class="app-card" href="attendance/">
+        <div class="app-icon">🏀</div>
+        <div class="app-info">
+          <div class="app-name">Control de Asistencia</div>
+          <div class="app-desc">Registro de asistencia a entrenamientos y partidos</div>
+        </div>
+        <div class="arrow">›</div>
+      </a>
+
+      <a class="app-card" href="shot-tracking/">
+        <div class="app-icon">🏀</div>
+        <div class="app-info">
+          <div class="app-name">Control de Tiro</div>
+          <div class="app-desc">Registro de series y estadísticas de entrenamiento</div>
+        </div>
+        <div class="arrow">›</div>
+      </a>
+
+      <!-- <div class="app-card placeholder">
+      <div class="app-icon">＋</div>
+      <div class="app-info">
+        <div class="app-name">Próxima app</div>
+        <div class="app-desc">Aparecerá aquí cuando se añada</div>
+      </div>
+    </div> -->
+    </div>
+
+    <footer>github.io</footer>
+  </main>
+</body>
+
+</html>
