@@ -502,6 +502,11 @@ function getActivePlayersOn(iso){
 function currentRosterEntry(playerId){
   return state.roster.find(r=>r.player_id===playerId && r.to===null);
 }
+function earliestActiveRosterFrom(){
+  const froms=state.roster.filter(r=>r.to===null).map(r=>r.from);
+  if(!froms.length) return todayISO();
+  return froms.reduce((a,b)=> a<b?a:b);
+}
 function isPlayerCurrentlyActive(playerId){
   return !!currentRosterEntry(playerId);
 }
@@ -1249,6 +1254,7 @@ function overlayContent(){
     case "new-session": case "edit-session": return renderSessionSheet(o);
     case "duplicate-date": return renderDuplicateDateSheet(o);
     case "roster": return renderRosterSheet(o);
+    case "reactivate-date": return renderReactivateDateSheet(o);
     case "add-player": case "edit-player": return renderPlayerFormSheet(o);
     case "sessions-mgmt": return renderSessionsMgmtSheet(o);
     case "player-filter": return renderPlayerFilterSheet(o);
@@ -1345,15 +1351,35 @@ function renderDuplicateDateSheet(o){
   `;
 }
 
+function renderReactivateDateSheet(o){
+  const p=state.players.find(x=>x.id===o.id);
+  return `
+    <button class="close-x" data-act="close-overlay">✕</button>
+    <div class="sheet-title disp">Reactivar a ${escapeHtml(p.name)}</div>
+    <div class="sheet-sub">Elige desde qué fecha vuelve a estar activo en la plantilla.</div>
+    <div class="field">
+      <label>Fecha de alta</label>
+      <input type="date" data-field="from" value="${o.draft.from}">
+    </div>
+    ${o.error?`<div class="error-text">${escapeHtml(o.error)}</div>`:""}
+    <div class="sheet-actions">
+      <button class="btn btn-ghost" data-act="close-overlay">Cancelar</button>
+      <button class="btn btn-accent" data-act="confirm-reactivate-player">Reactivar</button>
+    </div>
+  `;
+}
+
 function renderRosterSheet(o){
   const active=state.players.filter(p=>isPlayerCurrentlyActive(p.id)).sort((a,b)=>a.number-b.number);
   const inactive=state.players.filter(p=>!isPlayerCurrentlyActive(p.id)).sort((a,b)=>a.number-b.number);
-  const row=(p,isActive)=>`
+  const row=(p,isActive)=>{
+    const entry = isActive ? currentRosterEntry(p.id) : null;
+    return `
     <div class="roster-row ${isActive?'':'inactive'}">
       <div class="jersey">${p.number}</div>
       <div class="rinfo">
         <div class="n">${escapeHtml(p.name)}</div>
-        <div class="m">${isActive? "En plantilla" : "Baja"}</div>
+        <div class="m">${isActive? ("En plantilla desde "+fmtDateShort(entry.from)) : "Baja"}</div>
       </div>
       <div class="session-mgmt-actions">
         <button class="icon-btn" data-act="edit-player" data-id="${p.id}" title="Editar">✎</button>
@@ -1362,6 +1388,7 @@ function renderRosterSheet(o){
           : `<button class="icon-btn" data-act="reactivate-player" data-id="${p.id}" title="Reactivar">↩️</button>`}
       </div>
     </div>`;
+  };
   return `
     <button class="close-x" data-act="close-overlay">✕</button>
     <div class="sheet-title disp">Plantilla</div>
@@ -1374,13 +1401,21 @@ function renderRosterSheet(o){
 
 function renderPlayerFormSheet(o){
   const editing=o.type==="edit-player";
-  const p=o.draft || (editing? {...state.players.find(x=>x.id===o.id)} : {name:"",number:""});
+  const p=o.draft || (editing? {...state.players.find(x=>x.id===o.id)} : {name:"",number:"",from:earliestActiveRosterFrom()});
   o.draft=p;
+  const showFromField = !editing || !!p.from;
   return `
     <button class="close-x" data-act="close-overlay">✕</button>
     <div class="sheet-title disp">${editing?"Editar jugador":"Añadir jugador"}</div>
     <div class="field"><label>Nombre</label><input type="text" data-field="name" value="${escapeHtml(p.name)}" placeholder="Nombre completo"></div>
     <div class="field"><label>Dorsal</label><input type="number" min="0" step="1" data-field="number" value="${p.number}"></div>
+    ${showFromField?`
+    <div class="field">
+      <label>${editing?"En la plantilla desde":"Fecha de alta en la plantilla"}</label>
+      <input type="date" data-field="from" value="${p.from||''}">
+    </div>
+    <div class="sheet-sub" style="margin:-8px 0 14px;">Así podrás crear sesiones retroactivas: el jugador solo aparecerá como activo a partir de esta fecha.</div>
+    `:`<div class="sheet-sub" style="margin:-8px 0 14px;">Este jugador está de baja. Reactívalo desde la plantilla para fijar una nueva fecha de alta.</div>`}
     ${o.error?`<div class="error-text">${escapeHtml(o.error)}</div>`:""}
     <div class="sheet-actions">
       <button class="btn btn-ghost" data-act="close-overlay">Cancelar</button>
@@ -1537,10 +1572,11 @@ function onGlobalClick(e){
       break;
     }
     case "open-roster": ui.overlay={type:"roster"}; render(); break;
-    case "add-player": ui.overlay={type:"add-player",draft:{name:"",number:""}}; render(); break;
+    case "add-player": ui.overlay={type:"add-player",draft:{name:"",number:"",from:earliestActiveRosterFrom()}}; render(); break;
     case "edit-player": {
       const p=state.players.find(x=>x.id===t.dataset.id);
-      ui.overlay={type:"edit-player",id:t.dataset.id,draft:{...p,number:String(p.number)}}; render(); break;
+      const entry=currentRosterEntry(t.dataset.id);
+      ui.overlay={type:"edit-player",id:t.dataset.id,draft:{...p,number:String(p.number),from:entry?entry.from:""}}; render(); break;
     }
     case "save-player": {
       const o=ui.overlay, d=o.draft;
@@ -1548,14 +1584,21 @@ function onGlobalClick(e){
       const number=parseInt(d.number,10);
       if(!name){ o.error="El jugador necesita un nombre."; renderOverlay(); return; }
       if(isNaN(number)||number<0){ o.error="El dorsal debe ser un número válido."; renderOverlay(); return; }
-      if(t.dataset.id){
+      const editingExisting=!!t.dataset.id;
+      const needsFromCheck = !editingExisting || !!d.from;
+      if(needsFromCheck && !isValidISODate(d.from)){ o.error="La fecha de alta no es válida."; renderOverlay(); return; }
+      if(editingExisting){
         const p=state.players.find(x=>x.id===t.dataset.id);
         p.name=name; p.number=number;
+        if(d.from){
+          const entry=currentRosterEntry(t.dataset.id);
+          if(entry) entry.from=d.from;
+        }
         showToast("Jugador actualizado.");
       } else {
         const id=uid("player",new Set(state.players.map(p=>p.id)));
         state.players.push({id,name,number});
-        state.roster.push({player_id:id,from:todayISO(),to:null});
+        state.roster.push({player_id:id,from:d.from,to:null});
         showToast("Jugador añadido.");
       }
       ui.overlay={type:"roster"}; saveLocal(); render();
@@ -1572,9 +1615,15 @@ function onGlobalClick(e){
       render(); break;
     }
     case "reactivate-player": {
-      const p=state.players.find(x=>x.id===t.dataset.id);
-      state.roster.push({player_id:t.dataset.id,from:todayISO(),to:null});
-      saveLocal(); render(); showToast(`${p.name} reactivado.`);
+      ui.overlay={type:"reactivate-date",id:t.dataset.id,draft:{from:todayISO()}};
+      render(); break;
+    }
+    case "confirm-reactivate-player": {
+      const o=ui.overlay;
+      if(!isValidISODate(o.draft.from)){ o.error="La fecha no es válida."; renderOverlay(); return; }
+      const p=state.players.find(x=>x.id===o.id);
+      state.roster.push({player_id:o.id,from:o.draft.from,to:null});
+      saveLocal(); ui.overlay={type:"roster"}; render(); showToast(`${p.name} reactivado.`);
       break;
     }
     case "open-sessions": ui.overlay={type:"sessions-mgmt"}; render(); break;
