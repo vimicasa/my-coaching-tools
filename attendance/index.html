@@ -431,6 +431,8 @@ const STATUS = {
   unjustified:  {label:"Ausencia no justificada",short:"No justif.",icon:"⚫", counts:"absence"}
 };
 const STATUS_ORDER=["present","late","injured","partial","individual","justified","unjustified"];
+// Accesos rápidos de comentario para "Ausencia justificada" (fácil de ampliar en el futuro)
+const JUSTIFIED_COMMENT_SHORTCUTS=["Enfermo","No se espera"];
 
 /* ============================================================
    3. UMBRALES DE ATENCIÓN (centralizados)
@@ -533,7 +535,24 @@ function createSession({date,type,name,time,notes}){
 function duplicateSession(sessionId,newDate){
   const src=state.sessions.find(s=>s.id===sessionId);
   if(!src)return null;
-  return createSession({date:newDate||src.date,type:src.type,name:src.name,time:src.time,notes:""});
+  const date=newDate||src.date;
+  const id=uid("session",new Set(state.sessions.map(s=>s.id)));
+  const session={id,date,type:src.type,name:src.name,time:src.time,notes:""};
+  state.sessions.push(session);
+  // copiar el estado/justificación de cada jugador activo desde la sesión original;
+  // si un jugador no tenía registro en la sesión original (p.ej. se incorporó después), empieza como asistente.
+  getActivePlayersOn(date).forEach(p=>{
+    const srcRec=getAttendance(src.id,p.id);
+    if(srcRec){
+      const copy={session_id:id,player_id:p.id,status:srcRec.status};
+      if(srcRec.status==="late" && srcRec.late_minutes!==undefined) copy.late_minutes=srcRec.late_minutes;
+      if(srcRec.comment) copy.comment=srcRec.comment;
+      state.attendance.push(copy);
+    } else {
+      state.attendance.push({session_id:id,player_id:p.id,status:"present"});
+    }
+  });
+  return session;
 }
 function deleteSession(sessionId){
   state.sessions=state.sessions.filter(s=>s.id!==sessionId);
@@ -1286,6 +1305,13 @@ function renderStatusSheet(o){
       <label>Minutos de retraso</label>
       <input type="number" min="0" step="1" data-field="late_minutes" value="${draft.late_minutes}">
     </div>`:""}
+    ${draft.status==='justified'?`
+    <div class="field">
+      <label>Accesos rápidos</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        ${JUSTIFIED_COMMENT_SHORTCUTS.map(text=>`<button class="chip-btn" data-act="quick-comment" data-text="${escapeHtml(text)}">${escapeHtml(text)}</button>`).join("")}
+      </div>
+    </div>`:""}
     <div class="field">
       <label>Comentario (opcional)</label>
       <textarea data-field="comment" placeholder="Ej: molestias en el tobillo...">${escapeHtml(draft.comment)}</textarea>
@@ -1338,7 +1364,7 @@ function renderDuplicateDateSheet(o){
   return `
     <button class="close-x" data-act="close-overlay">✕</button>
     <div class="sheet-title disp">Duplicar sesión</div>
-    <div class="sheet-sub">Se copiará "${escapeHtml(src.name)}" (${src.type==='game'?'Partido':'Entrenamiento'}) en una nueva fecha. Todos los jugadores activos empezarán como asistentes.</div>
+    <div class="sheet-sub">Se copiará "${escapeHtml(src.name)}" (${src.type==='game'?'Partido':'Entrenamiento'}) en una nueva fecha, con el mismo estado y justificación de cada jugador (tarde, lesionado, individual, justificada...). Los jugadores que no estuvieran en la sesión original empezarán como asistentes.</div>
     <div class="field">
       <label>Nueva fecha</label>
       <input type="date" data-field="date" value="${o.draft.date}">
@@ -1545,7 +1571,7 @@ function onGlobalClick(e){
       const o=ui.overlay;
       if(!isValidISODate(o.draft.date)){ o.error="La fecha no es válida."; renderOverlay(); return; }
       const dup=duplicateSession(o.id,o.draft.date);
-      if(dup){ ui.currentSessionId=dup.id; ui.overlay=null; ui.tab="asistencia"; saveLocal(); showToast("Sesión duplicada. Todos marcados como asistentes."); render(); }
+      if(dup){ ui.currentSessionId=dup.id; ui.overlay=null; ui.tab="asistencia"; saveLocal(); showToast("Sesión duplicada con las mismas incidencias."); render(); }
       break;
     }
     case "mark-all-present": {
@@ -1557,6 +1583,9 @@ function onGlobalClick(e){
     }
     case "pick-status": {
       ui.overlay.draft.status=t.dataset.status; renderOverlay(); break;
+    }
+    case "quick-comment": {
+      ui.overlay.draft.comment=t.dataset.text; renderOverlay(); break;
     }
     case "save-status": {
       const o=ui.overlay, d=o.draft;
