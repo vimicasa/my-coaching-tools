@@ -35,6 +35,8 @@
     --success-bg:rgba(53,184,122,.14);
     --danger:#e85d5d;
     --danger-bg:rgba(232,93,93,.14);
+    --violet:#9b7bd6;
+    --violet-bg:rgba(155,123,214,.14);
     --text-1:#f2f0ea;
     --text-2:#a9b1c3;
     --text-3:#6b7386;
@@ -219,6 +221,7 @@
   .chip-dos{background:var(--cyan-bg);color:var(--cyan);}
   .chip-tres{background:var(--amber-bg);color:var(--amber);}
   .chip-libre{background:var(--success-bg);color:var(--success);}
+  .chip-55{background:var(--violet-bg);color:var(--violet);}
   .group-meta{font-size:12.5px;color:var(--text-2);font-family:var(--font-mono);}
   .group-actions{display:flex;gap:8px;}
 
@@ -273,6 +276,10 @@
     display:flex;align-items:center;justify-content:center;gap:8px;transition:border-color .15s,color .15s;
   }
   .new-group-btn:hover{border-color:var(--amber);color:var(--amber);}
+
+  .new-group-row{display:flex;gap:10px;flex-wrap:wrap;}
+  .new-group-row .new-group-btn{width:auto;flex:1;min-width:180px;}
+  .new-group-btn-55:hover{border-color:var(--violet);color:var(--violet);}
 
   /* ---------- Modal ---------- */
   .modal-overlay{
@@ -520,10 +527,15 @@ const POS_SHORT = {
 };
 const RECORRIDO_POSICIONES = ['esq_izq','45_izq','top','45_der','esq_der'];
 const TIPOS = {
-  dos:   { label:"2 Puntos",   chip:"chip-dos"  },
-  tres:  { label:"3 Puntos",   chip:"chip-tres" },
-  libre: { label:"Tiro libre", chip:"chip-libre"}
+  dos:   { label:"2 Puntos",     chip:"chip-dos"  },
+  tres:  { label:"3 Puntos",     chip:"chip-tres" },
+  libre: { label:"Tiro libre",   chip:"chip-libre"},
+  '55':  { label:"Ejercicio 55", chip:"chip-55"   }
 };
+// "55": en cada una de las 5 posiciones del recorrido se lanzan 5 tiros de
+// valor distinto — 2 triples, 2 de dos y 1 bandeja (que aquí vale solo 1
+// punto, no 2, por diseño del ejercicio) — hasta 11 pts/posición, 55 en total.
+const CINCUENTAYCINCO_MAX_TOTAL = 55;
 
 let state = null;
 
@@ -765,7 +777,57 @@ function activePlayers(){
 function groupHasPlayerData(g, playerId){
   const row = g.registros[playerId];
   if(!row) return false;
+  if(g.tipo === '55'){
+    return !!(row.incompleta || row.score > 0);
+  }
   return row.some(e => e.anotados > 0 || e.intentados > 0 || e.incompleta);
+}
+/* --- Ejercicio "55" --- */
+// Solo se guarda la puntuación total que dice el jugador/entrenador
+// (0-55), no el desglose tiro a tiro: en la práctica no se puede llevar
+// ese detalle sobre la marcha. Por eso NO alimenta las estadísticas
+// generales de % de 2/3 ni el mapa de posición — no hay forma de saber
+// qué combinación exacta de aciertos dio ese total.
+function ensure55PlayerEntry(group, playerId){
+  if(!group.registros[playerId]) group.registros[playerId] = { score:0, incompleta:false };
+  return group.registros[playerId];
+}
+function createGroup55(date){
+  const session = ensureSessionForDate(date);
+  const group = { id: uid(), tipo:'55', colapsado:false, registros:{} };
+  activePlayers().forEach(p => ensure55PlayerEntry(group, p.id));
+  session.groups.push(group);
+  return group;
+}
+function setCellEntry55(groupId, playerId, score, incompleta){
+  const g = findGroup(groupId);
+  if(!g) return;
+  const entry = ensure55PlayerEntry(g, playerId);
+  let v = parseInt(score, 10); if(isNaN(v) || v < 0) v = 0;
+  if(v > CINCUENTAYCINCO_MAX_TOTAL) v = CINCUENTAYCINCO_MAX_TOTAL;
+  entry.incompleta = !!incompleta;
+  entry.score = entry.incompleta ? 0 : v;
+}
+function score55Total(g, playerId){
+  const e = g.registros[playerId];
+  if(!e || e.incompleta) return 0;
+  return e.score || 0;
+}
+// Descompone las filas de un grupo (de cualquier tipo) en entradas
+// homogéneas {tipo, anotados, intentados, pos} para que las funciones de
+// estadísticas no tengan que distinguir la forma interna de cada tipo de
+// ejercicio. El "55" no aporta nada aquí (ver nota arriba): solo tiene su
+// propio marcador, aparte.
+function normalizeGroupEntries(g, pid){
+  const row = g.registros[pid];
+  if(!row) return [];
+  if(g.tipo === '55') return [];
+  const out = [];
+  row.forEach((e,i)=>{
+    if(!e || e.incompleta) return;
+    out.push({ tipo: g.tipo, anotados: e.anotados, intentados: e.intentados, pos: g.posicionesPorSerie ? g.posicionesPorSerie[i] : null });
+  });
+  return out;
 }
 function addPlayer(nombre, dorsal){
   state.players.push({ id: uid(), nombre: nombre.trim(), dorsal: dorsal.trim(), activo: true });
@@ -1008,8 +1070,12 @@ function renderEntrenamiento(){
       </div>`;
   }
 
-  const groupCards = groups.map(g => renderGroupCard(g)).join('');
-  const newGroupBtn = `<button class="new-group-btn" data-action="open-new-group">+ Nuevo grupo de series</button>`;
+  const groupCards = groups.map(g => g.tipo === '55' ? renderGroup55Card(g) : renderGroupCard(g)).join('');
+  const newGroupBtn = `
+    <div class="new-group-row">
+      <button class="new-group-btn" data-action="open-new-group">+ Nuevo grupo de series</button>
+      <button class="new-group-btn new-group-btn-55" data-action="create-55">+ Ejercicio 55</button>
+    </div>`;
 
   const collapseAllBar = groups.length > 1 ? `
     <div class="groups-toolbar">
@@ -1114,6 +1180,65 @@ function renderCell(g, playerId, serieIdx, entry){
   </td>`;
 }
 
+/* --- Tarjeta del ejercicio "55" en la pestaña Entrenamiento --- */
+function render55Cell(g, playerId, entry){
+  const incompleta = !!(entry && entry.incompleta);
+  const score = entry ? (entry.score || 0) : 0;
+  const isEmpty = !incompleta && score === 0;
+  return `<td>
+    <button class="cell-btn ${isEmpty?'empty':''} ${incompleta?'incomplete':''}" data-action="open-cell-55" data-group="${g.id}" data-player="${playerId}" title="${incompleta?'No completado — no cuenta en las estadísticas':''}">
+      ${isEmpty ? 'Toca' : `${incompleta?'<span class="cell-nc">NC</span>':''}${score}<span class="cell-sep">/</span>${CINCUENTAYCINCO_MAX_TOTAL}`}
+    </button>
+  </td>`;
+}
+function renderGroup55Card(g){
+  const collapsed = !!g.colapsado;
+  const visiblePlayers = state.players.filter(p => p.activo !== false || groupHasPlayerData(g, p.id));
+
+  let bodyHtml = '';
+  if(!collapsed){
+    let rows;
+    if(visiblePlayers.length === 0){
+      rows = `<tr><td class="group-empty-players" colspan="2">No hay jugadores en la plantilla.</td></tr>`;
+    } else {
+      rows = visiblePlayers.map(p=>{
+        const entry = ensure55PlayerEntry(g, p.id);
+        const bajaTag = p.activo === false ? '<span class="td-baja-tag">Baja</span>' : '';
+        return `<tr>
+          <td class="td-player"><span class="mini-badge">${escapeHtml(p.dorsal)}</span><span class="td-name">${escapeHtml(p.nombre)}</span>${bajaTag}</td>
+          ${render55Cell(g, p.id, entry)}
+        </tr>`;
+      }).join('');
+    }
+    bodyHtml = `
+      <div class="group-body">
+        <table class="shot-table">
+          <thead><tr>
+            <th class="th-player">Jugador</th>
+            <th>Puntuación</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>`;
+  }
+
+  return `
+    <div class="group-card">
+      <div class="group-head">
+        <button class="group-head-left" data-action="toggle-group-collapse" data-id="${g.id}" aria-expanded="${!collapsed}">
+          <span class="collapse-chevron ${collapsed?'collapsed':''}">▾</span>
+          <span class="chip chip-55">Ejercicio 55</span>
+          <span class="group-meta">Puntuación total (máx. ${CINCUENTAYCINCO_MAX_TOTAL})</span>
+          ${collapsed ? `<span class="group-meta">${visiblePlayers.length} jugador${visiblePlayers.length===1?'':'es'}</span>` : ''}
+        </button>
+        <div class="group-actions">
+          <button class="icon-btn danger" data-action="ask-delete-group" data-id="${g.id}" title="Eliminar ejercicio" aria-label="Eliminar ejercicio">🗑</button>
+        </div>
+      </div>
+      ${bodyHtml}
+    </div>`;
+}
+
 /* ============================================================
    VISTA ESTADÍSTICAS
    ============================================================ */
@@ -1155,12 +1280,9 @@ function computePlayerAgg(range, playerIds){
   for(const s of statsSessionsInRange(range)){
     for(const g of s.groups){
       for(const pid of playerIds){
-        const row = g.registros[pid];
-        if(!row) continue;
-        for(const e of row){
-          if(e.incompleta) continue; // las series no completadas se ignoran del cálculo
-          agg[pid][g.tipo].anotados += e.anotados;
-          agg[pid][g.tipo].intentados += e.intentados;
+        for(const entry of normalizeGroupEntries(g, pid)){
+          agg[pid][entry.tipo].anotados += entry.anotados;
+          agg[pid][entry.tipo].intentados += entry.intentados;
         }
       }
     }
@@ -1172,11 +1294,11 @@ function computeTeamEvolution(range, playerIds, view){
   for(const s of statsSessionsInRange(range)){
     let anotados = 0, intentados = 0;
     for(const g of s.groups){
-      if(view !== 'combinado' && g.tipo !== view) continue;
       for(const pid of playerIds){
-        const row = g.registros[pid];
-        if(!row) continue;
-        for(const e of row){ if(e.incompleta) continue; anotados += e.anotados; intentados += e.intentados; }
+        for(const entry of normalizeGroupEntries(g, pid)){
+          if(view !== 'combinado' && entry.tipo !== view) continue;
+          anotados += entry.anotados; intentados += entry.intentados;
+        }
       }
     }
     if(intentados > 0) raw.push({ fecha: s.fecha, anotados, intentados });
@@ -1188,10 +1310,10 @@ function computePlayerEvolution(range, playerId, view){
   for(const s of statsSessionsInRange(range)){
     let anotados = 0, intentados = 0;
     for(const g of s.groups){
-      if(view !== 'combinado' && g.tipo !== view) continue;
-      const row = g.registros[playerId];
-      if(!row) continue;
-      for(const e of row){ if(e.incompleta) continue; anotados += e.anotados; intentados += e.intentados; }
+      for(const entry of normalizeGroupEntries(g, playerId)){
+        if(view !== 'combinado' && entry.tipo !== view) continue;
+        anotados += entry.anotados; intentados += entry.intentados;
+      }
     }
     if(intentados > 0) raw.push({ fecha: s.fecha, anotados, intentados });
   }
@@ -1318,7 +1440,8 @@ function renderRankingSection(range, playerIds, view){
     </div>`;
 }
 
-function buildLineChartSVG(series){
+function buildLineChartSVG(series, maxY){
+  maxY = maxY || 100;
   const opts = { width:640, height:220, padTop:16, padBottom:26, padLeft:36, padRight:14 };
   const allDates = Array.from(new Set(series.flatMap(s=>s.points.map(p=>p.fecha)))).sort();
   if(allDates.length === 0) return '<div class="chart-empty">Sin datos suficientes en este periodo.</div>';
@@ -1329,13 +1452,13 @@ function buildLineChartSVG(series){
     const idx = allDates.indexOf(fecha);
     return opts.padLeft + (allDates.length<=1 ? plotW/2 : (idx/(allDates.length-1))*plotW);
   };
-  const yFor = pctVal => opts.padTop + plotH - (Math.max(0,Math.min(100,pctVal))/100)*plotH;
+  const yFor = val => opts.padTop + plotH - (Math.max(0,Math.min(maxY,val))/maxY)*plotH;
 
   let grid = '';
-  [0,25,50,75,100].forEach(v=>{
+  [0, maxY*0.25, maxY*0.5, maxY*0.75, maxY].forEach(v=>{
     const y = yFor(v);
     grid += `<line x1="${opts.padLeft}" y1="${y.toFixed(1)}" x2="${opts.width-opts.padRight}" y2="${y.toFixed(1)}" stroke="var(--border-soft)" stroke-width="1"/>`;
-    grid += `<text x="${opts.padLeft-8}" y="${(y+3).toFixed(1)}" text-anchor="end" font-size="9.5" fill="var(--text-3)" font-family="var(--font-mono)">${v}</text>`;
+    grid += `<text x="${opts.padLeft-8}" y="${(y+3).toFixed(1)}" text-anchor="end" font-size="9.5" fill="var(--text-3)" font-family="var(--font-mono)">${Math.round(v)}</text>`;
   });
   let xLabels = '';
   const labelEvery = Math.max(1, Math.ceil(allDates.length/6));
@@ -1354,10 +1477,11 @@ function buildLineChartSVG(series){
   });
   return `<div class="chart-svg-wrap"><svg viewBox="0 0 ${opts.width} ${opts.height}" class="chart-svg" preserveAspectRatio="xMidYMid meet">${grid}${xLabels}${lines}</svg></div>`;
 }
-function renderLegend(series){
+function renderLegend(series, unit){
+  unit = unit === undefined ? '%' : unit;
   return `<div class="chart-legend">${series.map(s=>{
     const last = s.points.length ? s.points[s.points.length-1].pct : null;
-    return `<span class="legend-item"><span class="legend-dot" style="background:${s.color}"></span>${escapeHtml(s.label)}${last!=null?` · ${Math.round(last)}%`:''}</span>`;
+    return `<span class="legend-item"><span class="legend-dot" style="background:${s.color}"></span>${escapeHtml(s.label)}${last!=null?` · ${Math.round(last)}${unit}`:''}</span>`;
   }).join('')}</div>`;
 }
 
@@ -1456,18 +1580,13 @@ function computePositionAgg(range, playerIds, view){
   RECORRIDO_POSICIONES.forEach(pk => posAgg[pk] = { anotados:0, intentados:0 });
   for(const s of statsSessionsInRange(range)){
     for(const g of s.groups){
-      if(g.tipo === 'libre' || !g.posicionesPorSerie) continue;
-      if(view !== 'combinado' && g.tipo !== view) continue;
       for(const pid of playerIds){
-        const row = g.registros[pid];
-        if(!row) continue;
-        row.forEach((e,i)=>{
-          if(e.incompleta) return;
-          const pos = g.posicionesPorSerie[i];
-          if(!pos || !posAgg[pos]) return;
-          posAgg[pos].anotados += e.anotados;
-          posAgg[pos].intentados += e.intentados;
-        });
+        for(const entry of normalizeGroupEntries(g, pid)){
+          if(entry.tipo === 'libre' || !entry.pos || !posAgg[entry.pos]) continue;
+          if(view !== 'combinado' && entry.tipo !== view) continue;
+          posAgg[entry.pos].anotados += entry.anotados;
+          posAgg[entry.pos].intentados += entry.intentados;
+        }
       }
     }
   }
@@ -1507,13 +1626,18 @@ function computeConditionAgg(range, playerIds, view){
   };
   for(const s of statsSessionsInRange(range)){
     for(const g of s.groups){
-      if(g.tipo === 'libre') continue;
-      if(view !== 'combinado' && g.tipo !== view) continue;
-      const key = g.movimiento && g.bote ? 'ambos' : g.movimiento ? 'movimiento' : g.bote ? 'bote' : 'estatico';
+      // El ejercicio "55" siempre es estático (de pie en cada posición), no
+      // tiene los campos movimiento/bote propios de un grupo normal.
+      const groupMovimiento = g.tipo === '55' ? false : !!g.movimiento;
+      const groupBote = g.tipo === '55' ? false : !!g.bote;
+      const key = groupMovimiento && groupBote ? 'ambos' : groupMovimiento ? 'movimiento' : groupBote ? 'bote' : 'estatico';
       for(const pid of playerIds){
-        const row = g.registros[pid];
-        if(!row) continue;
-        for(const e of row){ if(e.incompleta) continue; buckets[key].anotados += e.anotados; buckets[key].intentados += e.intentados; }
+        for(const entry of normalizeGroupEntries(g, pid)){
+          if(entry.tipo === 'libre') continue;
+          if(view !== 'combinado' && entry.tipo !== view) continue;
+          buckets[key].anotados += entry.anotados;
+          buckets[key].intentados += entry.intentados;
+        }
       }
     }
   }
@@ -1619,6 +1743,72 @@ function renderConsistencySection(range, playerIds, view){
     </div>`;
 }
 
+/* --- Ejercicio 55: marcador propio (separado de las estadísticas de %) --- */
+function compute55Rows(range, playerIds){
+  const rows = [];
+  const sessions = statsSessionsInRange(range);
+  for(const pid of playerIds){
+    const p = state.players.find(pp=>pp.id===pid);
+    if(!p) continue;
+    const sessionScores = [];
+    for(const s of sessions){
+      let dayScore = null;
+      for(const g of s.groups){
+        if(g.tipo !== '55' || !g.registros[pid]) continue;
+        const e = g.registros[pid];
+        const hasData = e.incompleta || e.score > 0;
+        if(hasData) dayScore = (dayScore || 0) + score55Total(g, pid);
+      }
+      if(dayScore != null) sessionScores.push({ fecha: s.fecha, pct: dayScore });
+    }
+    if(!sessionScores.length) continue;
+    const best = Math.max(...sessionScores.map(x=>x.pct));
+    const avg = sessionScores.reduce((a,b)=>a+b.pct,0) / sessionScores.length;
+    const last = sessionScores[sessionScores.length-1].pct;
+    rows.push({ id:pid, nombre:p.nombre, dorsal:p.dorsal, best, avg, last, n:sessionScores.length, sessionScores });
+  }
+  rows.sort((a,b)=> b.best - a.best);
+  return rows;
+}
+function render55Section(range, playerIds, selectedIds){
+  const rows = compute55Rows(range, playerIds);
+  if(!rows.length){
+    return emptyStatsBlock('Sin rondas del ejercicio 55 registradas con este filtro.');
+  }
+  const body = rows.map((r,i)=> `
+    <div class="rank-row">
+      <span class="rank-num">${i+1}</span>
+      <span class="rank-player"><span class="mini-badge">${escapeHtml(r.dorsal)}</span><span class="rank-name">${escapeHtml(r.nombre)}</span></span>
+      <span class="rank-pct">${r.best}<span class="cell-sep">/</span>${CINCUENTAYCINCO_MAX_TOTAL}</span>
+      <span class="rank-made">media ${Math.round(r.avg)} · ${r.n} ronda${r.n===1?'':'s'}</span>
+    </div>`
+  ).join('');
+
+  const ranking = `
+    <p class="stats-hint">Mejor puntuación de cada jugador en el periodo, con su media y nº de rondas jugadas.</p>
+    <div class="rank-list">
+      <div class="rank-row header"><span></span><span>Jugador</span><span style="text-align:right;">Mejor</span><span style="text-align:right;">Media</span></div>
+      ${body}
+    </div>`;
+
+  const evoIds = selectedIds.length ? selectedIds : rows.slice(0,1).map(r=>r.id);
+  const series = evoIds.map((pid,i)=>{
+    const row = rows.find(r=>r.id===pid);
+    const p = state.players.find(pp=>pp.id===pid);
+    return { label: p ? `${p.dorsal} · ${p.nombre}` : '?', color: colorForIndex(i), points: row ? row.sessionScores : [] };
+  }).filter(s=>s.points.length);
+  const evoHint = selectedIds.length
+    ? 'Puntuación por ronda de los jugadores seleccionados arriba.'
+    : `Sin selección, se muestra al jugador con mejor puntuación (${series[0] ? series[0].label : ''}). Selecciona jugadores arriba para comparar más.`;
+
+  const evolution = series.length ? `
+    <p class="stats-hint">${evoHint}</p>
+    ${buildLineChartSVG(series, CINCUENTAYCINCO_MAX_TOTAL)}
+    ${renderLegend(series, ' pts')}` : emptyStatsBlock('Sin rondas suficientes para dibujar la evolución.');
+
+  return `${ranking}<div style="margin-top:20px;"><h3 style="font-family:var(--font-display);font-size:13px;text-transform:uppercase;letter-spacing:.03em;color:var(--text-2);margin:0 0 10px;">Evolución de la puntuación</h3>${evolution}</div>`;
+}
+
 function renderEstadisticas(){
   if(state.players.length === 0){
     return `<div class="empty">${svgLogo()}<h3>Añade jugadores antes de ver estadísticas</h3><p>Necesitas jugadores y series registradas para poder calcular nada.</p><button class="btn btn-amber" data-action="set-tab" data-tab="jugadores">Ir a Jugadores</button></div>`;
@@ -1640,6 +1830,7 @@ function renderEstadisticas(){
     <div class="stats-section"><h3>Consistencia</h3>${renderConsistencySection(range, playerIds, view)}</div>
     <div class="stats-section"><h3>Mapa por posición</h3>${renderPositionHeatmap(range, playerIds, view)}</div>
     <div class="stats-section"><h3>Según condición del tiro</h3>${renderConditionSection(range, playerIds, view)}</div>
+    <div class="stats-section"><h3><span class="chip chip-55" style="margin-right:8px;">55</span>Ejercicio 55</h3>${render55Section(range, playerIds, filters.playerIds.filter(id=>state.players.some(p=>p.id===id)))}</div>
     <div class="stats-section"><h3>Evolución del equipo</h3>${renderTeamEvolutionSection(range, playerIds, view)}</div>
     <div class="stats-section"><h3>Evolución por jugador</h3>${renderPlayerEvolutionSection(range, filters.playerIds.filter(id=>state.players.some(p=>p.id===id)), view)}</div>
     <div class="stats-section"><h3>Volumen de tiro</h3>${renderVolumeSection(range, playerIds)}</div>
@@ -1752,6 +1943,10 @@ function renderModal(){
     return renderCellEntryModal(m);
   }
 
+  if(m.type === 'cell-entry-55'){
+    return renderCellEntry55Modal(m);
+  }
+
   if(m.type === 'confirm'){
     return modalShell(m.title, `<p class="confirm-msg">${m.message}</p>`, `
       <button class="btn btn-ghost" data-action="close-modal">Cancelar</button>
@@ -1849,6 +2044,35 @@ function renderCellEntryModal(m){
   `);
 }
 
+function renderCellEntry55Modal(m){
+  const g = findGroup(m.groupId);
+  const player = state.players.find(p=>p.id===m.playerId);
+  if(!g || !player) return '';
+
+  const head = `
+    <div class="entry-head">
+      <div class="entry-player"><span class="mini-badge" style="display:inline-flex;vertical-align:middle;margin-right:8px;">${escapeHtml(player.dorsal)}</span>${escapeHtml(player.nombre)}</div>
+      <div class="entry-sub">Ejercicio 55 · máximo ${CINCUENTAYCINCO_MAX_TOTAL} pts</div>
+    </div>`;
+
+  const ncButton = `<button type="button" class="nc-btn" data-action="mark-incompleta-55">No completado — no cuenta</button>`;
+
+  return modalShell('Puntuación total', `
+    ${head}
+    <div class="digit-display">${m.digitBuffer ? m.digitBuffer : '<span class="ph">0</span>'}</div>
+    <div class="digit-grid">
+      ${[1,2,3,4,5,6,7,8,9].map(n=>`<button class="digit-btn" data-action="digit-press-55" data-val="${n}">${n}</button>`).join('')}
+      <button class="digit-btn action" data-action="digit-clear-55">Borrar todo</button>
+      <button class="digit-btn" data-action="digit-press-55" data-val="0">0</button>
+      <button class="digit-btn action" data-action="digit-back-55" aria-label="Borrar último dígito">⌫</button>
+    </div>
+    ${ncButton}
+  `, `
+    <button class="btn btn-ghost" data-action="close-modal">Cancelar</button>
+    <button class="btn btn-amber" data-action="cell-save-55">Guardar</button>
+  `);
+}
+
 function modalShell(title, body, foot){
   return `
     <div class="modal-overlay" data-action="overlay-close">
@@ -1888,6 +2112,18 @@ function stateToExportObj(){
       .map(s => ({
         fecha: s.fecha,
         grupos: s.groups.map(g => {
+          if(g.tipo === '55'){
+            const obj = { tipo: '55' };
+            obj.registros = state.players
+              .filter(p => g.registros[p.id])
+              .map(p => {
+                const e = g.registros[p.id];
+                const item = { jugador_id:p.id, dorsal:p.dorsal, nombre:p.nombre, puntuacion: e.score || 0 };
+                if(e.incompleta) item.incompleta = true;
+                return item;
+              });
+            return obj;
+          }
           const obj = { tipo: g.tipo };
           if(g.seriesFijas != null) obj.series = g.seriesFijas;
           if(g.lanzamientosFijos != null) obj.lanzamientos_por_serie = g.lanzamientosFijos;
@@ -1940,7 +2176,7 @@ function exportYAML(){
   }
 }
 
-const VALID_TIPOS = ['dos','tres','libre'];
+const VALID_TIPOS = ['dos','tres','libre','55'];
 
 function validateImportedData(data){
   if(!data || typeof data !== 'object') return 'El archivo no tiene el formato YAML esperado.';
@@ -1994,6 +2230,12 @@ function validateImportedData(data){
         if(ref == null || !jugadorConocido(ref)){
           return `El entrenamiento del ${s.fecha} tiene un registro de tiro de un jugador que no existe en la plantilla del archivo (${(r && r.nombre) || ref || 'desconocido'}).`;
         }
+        if(g.tipo === '55'){
+          if(r.puntuacion != null && (!Number.isFinite(Number(r.puntuacion)) || Number(r.puntuacion) < 0)){
+            return `Hay una puntuación del ejercicio 55 no válida (${s.fecha}, ${(r && r.nombre) || ref}).`;
+          }
+          continue;
+        }
         for(const se of ((r && r.series) || [])){
           if(se.anotados != null && (!Number.isFinite(Number(se.anotados)) || Number(se.anotados) < 0)){
             return `Hay una serie con un número de anotados no válido (${s.fecha}, ${(r && r.nombre) || ref}).`;
@@ -2026,6 +2268,18 @@ function parseYAMLToState(text){
     id: uid(),
     fecha: s.fecha,
     groups: (s.grupos || []).map(g => {
+      if(g.tipo === '55'){
+        const registros = {};
+        (g.registros || []).forEach(r => {
+          const pid = r.jugador_id && players.some(p=>p.id===r.jugador_id) ? r.jugador_id : dorsalToId[String(r.dorsal)];
+          if(!pid) return;
+          let score = Number(r.puntuacion) || 0;
+          if(score < 0) score = 0;
+          if(score > CINCUENTAYCINCO_MAX_TOTAL) score = CINCUENTAYCINCO_MAX_TOTAL;
+          registros[pid] = { score, incompleta: !!r.incompleta };
+        });
+        return { id: uid(), tipo:'55', colapsado:false, registros };
+      }
       const seriesFijas = (g.series !== undefined && g.series !== null) ? Number(g.series) : null;
       const lanzamientosFijos = (g.lanzamientos_por_serie !== undefined && g.lanzamientos_por_serie !== null) ? Number(g.lanzamientos_por_serie) : null;
       const registros = {};
@@ -2179,6 +2433,51 @@ document.addEventListener('click', async (e) => {
       state.modal = { type:'new-group', editing:false, draft:{ tipo:null, series:'1', lanzamientos:'10', movimiento:false, bote:false, posicionesPorSerie:[] } };
       render();
       break;
+
+    case 'create-55':
+      createGroup55(state.currentDate);
+      persist(); render();
+      showToast('Ejercicio 55 creado', 'ok');
+      break;
+
+    case 'open-cell-55': {
+      const entry = ensure55PlayerEntry(findGroup(btn.dataset.group), btn.dataset.player);
+      state.modal = { type:'cell-entry-55', groupId:btn.dataset.group, playerId:btn.dataset.player,
+        digitBuffer: (!entry.incompleta && entry.score) ? String(entry.score) : '' };
+      render();
+      break;
+    }
+
+    case 'digit-press-55': {
+      const d = state.modal;
+      if(d.digitBuffer.length < 2) d.digitBuffer += btn.dataset.val;
+      render();
+      break;
+    }
+    case 'digit-back-55':
+      state.modal.digitBuffer = state.modal.digitBuffer.slice(0,-1);
+      render();
+      break;
+    case 'digit-clear-55':
+      state.modal.digitBuffer = '';
+      render();
+      break;
+
+    case 'cell-save-55': {
+      const d = state.modal;
+      setCellEntry55(d.groupId, d.playerId, d.digitBuffer || '0', false);
+      state.modal = null;
+      persist(); render();
+      break;
+    }
+
+    case 'mark-incompleta-55': {
+      const d = state.modal;
+      setCellEntry55(d.groupId, d.playerId, 0, true);
+      state.modal = null;
+      persist(); render();
+      break;
+    }
 
     case 'edit-group': {
       const g = findGroup(btn.dataset.id);
