@@ -1,0 +1,2016 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Cuaderno">
+<meta name="theme-color" content="#11161a">
+<meta name="format-detection" content="telephone=no">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<link rel="icon" type="image/png" sizes="192x192" href="data:image/png;base64,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">
+<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFKklEQVR4nMWXy49bSRWHv1O3qq7tdtxxT3deTYjmsYk0EYxQRoKwidiMBlawgD+D9WyQ2CKhWQ1/AGIDiyyQwmwGIRYZoaBheE2IoAcIndAZT7fbcdu+zzosrttup91uN7OYkmrhqltVX/3OqXOOpX3hivI5NnvmFSKL5/Vs91kCYPZAzYrnh45MgriogtTx0lOAFgKoKqrlFKQMrNy4hr92AcpyCqcKNiLf6XLwwdYMoIhBFqh2IoBqILKOuN6oBoKCt6x85RUkttXv55rfXIOnA0JvhEQGgCwZUWQpYszyAKqKi2uc37iMHt7w8LL9BHwDSp01hRG0l1D3K9CuT+aa7RfodXZIh4O5EHMABNWSldU2ZVlS5CkiZqKC/H4badWO29YI2k/RYQZmahpjLc3za6Sj4bIKKIIgYlANGGOYXCcSyAr0aX/uZhhBrKkcEMbOqLDAD/6/Z+hOcCpleviSbSkAEVnoydMPj7CookvEhFMBRIQkScnzfDmI8eHOOWq1+LMBiAhZlnPjxnU2Ny8tBXF4+OPHO3z00UO8958BANCgNJsN1tfbpOnpACEEnLN0u72lTCDzkpGGQPvSJiqCIdDtPmMwGI1fxMmbqoL3ljiOsdZSr9cAMCZib2d77pqFCkQiJKOM27dv8fLL1xYqoKp47/j4439z//6HOOcIIZyq2OJcQOUHg8GIvb3eiT6gqoQQiL0jGY4wIlUsEjn1VS40QZV6A739A0ajygTP21UV6jVPHHsGSU6u0Kh5SoXYWZo1hzWWT548OrsCRoTRMOONN25z/forJEmGMVMFVJXYO/7yYIu7v3qPq7WCV9uGZ2mfFWd4dBB42IlwjSaRVOnjTAAKRNbw6NE2g8GQsiw4Gm1cZPikd0Dxn4e8fVP4xhdbfOFcxC/+nvD1K46GFX63k/HjP/T4za6yGsuxJHq6CTSQpjlFUUzsr6q4yLDT7fN6a8TP3rzAlVbMflriIuHOPxK+etlxsWGIo+rlvPV+n5/8acj5WGaUODUSqipx7MdRrVoZGcP+IOHmOvz8zU0aEXw6KhGBmlTJMBoL1csCkcCPbrXoZ8pP/zaifQRifpUwByKEQAhKCEpRBsKwz/e/VOfek5SsVKyZX6nZcULsZ4EfvN7kpdWIpJx+uxTA0RYZYX+Y8bUNCBiuNg0+gjJURdK8DjAs4GIj4lsvxgzywLhgOns6FhFCkXO1KazXDTcvegaF0oqrwxpOqFuh6YRzXihCta4IUHfCqpeZwvrMAEEhlsA/n5U82CvYTwNZWdk9KMQRfNDJGRaBljcTW6sqPhL+ultyzpkJ2NkLEqBUZVgoty67avMjcHUr/OtZyUurEWuxoRhPWhF2k8ClFcOKEwa5YmQBgIjMzWZGoBBL0wmvvuAmGx0CNJzwx07Oiy3LRr26aanQ8sJvH2dcahj6ueLGfx2OO6EIilJkKdbHx2rPEJTYe56OoJcG0lJJnutZYDI+KhRB+bCT82kSeHwQOMim0McBVDEmot/dJR8N8XGMdQ7rPNZ5jLWstVZ4MPTc2RqyXjfkoXpWJ/WgVTxY9cKdrYSWn0bEhT6w39nBWFsVJkfNAERB+eF9+PJGzGsbjs4oHIsDSiV/3QivbTi+fbfLbhJo+SUDkRiDhkAoSzRMe1GWOFH208D33u3y6+2UtZrgo9n1VqAdC9sHJd+52+Xek3zm8FMBpiSzoopUEjas0EkC3313n7fe77PVKydqiUBnpLzz5yHf/OUe9/6bz4Tgw/Y/BwuInxiNEtsAAAAASUVORK5CYII=">
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Cuaderno%20de%20Entrenamientos%22%2C%22short_name%22%3A%22Cuaderno%22%2C%22display%22%3A%22standalone%22%2C%22start_url%22%3A%22.%22%2C%22scope%22%3A%22.%22%2C%22orientation%22%3A%22any%22%2C%22background_color%22%3A%22%2311161a%22%2C%22theme_color%22%3A%22%2311161a%22%7D">
+<title>Cuaderno de Entrenamientos · Baloncesto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<!-- js-yaml, JSZip, jsPDF y html2canvas ya NO se cargan aquí de forma bloqueante: solo hacen
+     falta para copia de seguridad / exportar a PDF, no para abrir la app. Se cargan bajo
+     demanda (ver cargarScript() / asegurarLibsBackup() / asegurarLibsPdf()) para que la app
+     pinte la primera pantalla más rápido, sobre todo al abrirla desde el icono en el iPad. -->
+<style>
+/* ====================== TOKENS ====================== */
+:root{
+  --bg:#11161a;
+  --surface-1:#171f24;
+  --surface-2:#202b32;
+  --surface-3:#29363f;
+  --border:#33434d;
+  --border-soft:#263139;
+  --court:#2f8f6f;
+  --court-dim:#257259;
+  --court-glow:rgba(47,143,111,.35);
+  --court-bg:rgba(47,143,111,.14);
+  --orange:#e8722f;
+  --orange-dim:#c85c1f;
+  --orange-bg:rgba(232,114,47,.14);
+  --gold:#c9a227;
+  --gold-bg:rgba(201,162,39,.14);
+  --purple:#9464c9;
+  --purple-bg:rgba(148,100,201,.14);
+  --blue:#4f7fd1;
+  --blue-bg:rgba(79,127,209,.14);
+  --success:#35b87a;
+  --success-bg:rgba(53,184,122,.14);
+  --danger:#e0605a;
+  --danger-bg:rgba(224,96,90,.14);
+  --text-1:#f1f4f1;
+  --text-2:#a8b3ad;
+  --text-3:#6c7a74;
+  --radius-sm:8px;
+  --radius-md:12px;
+  --radius-lg:18px;
+  --font-display:'Oswald',sans-serif;
+  --font-body:'Manrope',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--bg);
+  color:var(--text-1);
+  font-family:var(--font-body);
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+  overscroll-behavior-y:none;
+  padding-bottom:calc(84px + var(--safe-bottom));
+}
+::selection{background:var(--court);color:#06120d;}
+button{font-family:inherit;cursor:pointer;-webkit-user-select:none;user-select:none;touch-action:manipulation;transition:transform .08s ease;border:none;background:none;color:inherit;}
+button:active{transform:scale(.96);}
+/* Fallback: cualquier icono SVG sin regla de tamaño más específica cae aquí (los SVG sin
+   width/height propios colapsan a 0 o a 300x150 según el contexto flex si no se fija esto). */
+svg{width:16px;height:16px;flex:none;display:block;}
+input,textarea,select{font-family:inherit;color:var(--text-1);}
+input,textarea,select{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:15px;width:100%;}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--court);}
+textarea{resize:vertical;min-height:64px;line-height:1.4;}
+label{display:block;font-size:12px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+h1,h2,h3{font-family:var(--font-display);margin:0;letter-spacing:.02em;}
+a{color:var(--court);}
+.hidden{display:none !important;}
+.mono{font-family:var(--font-mono);}
+
+/* ====================== HEADER / TABS ====================== */
+header.topbar{position:sticky;top:0;z-index:30;background:rgba(23,31,36,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--border-soft);padding:calc(12px + var(--safe-top)) 16px 12px;}
+.topbar-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:10px;min-width:0;}
+.brand-mark{width:30px;height:30px;border-radius:8px;background:var(--court-bg);display:flex;align-items:center;justify-content:center;flex:none;}
+.brand h1{font-size:18px;font-weight:700;color:var(--text-1);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.brand h1 span{color:var(--court);}
+.header-actions{display:flex;gap:8px;align-items:center;}
+.icon-btn{width:38px;height:38px;border-radius:10px;background:var(--surface-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex:none;}
+.icon-btn:hover{border-color:var(--text-3);}
+.icon-btn svg{width:18px;height:18px;}
+
+nav.tabs{max-width:1180px;margin:10px auto 0;display:flex;gap:6px;background:var(--surface-1);border:1px solid var(--border-soft);border-radius:999px;padding:4px;}
+nav.tabs button{flex:1;padding:9px 8px;border-radius:999px;font-size:13px;font-weight:700;color:var(--text-2);display:flex;align-items:center;justify-content:center;gap:6px;}
+nav.tabs button.active{background:var(--court);color:#06140f;}
+nav.tabs button svg{width:15px;height:15px;flex:none;}
+
+main{max-width:1180px;margin:0 auto;padding:16px;}
+
+/* ====================== BUTTONS ====================== */
+.btn{display:inline-flex;align-items:center;gap:6px;border-radius:999px;border:1px solid var(--border);background:var(--surface-2);color:var(--text-1);padding:10px 18px;font-size:14px;font-weight:700;transition:background .15s,border-color .15s;}
+.btn:hover{border-color:var(--text-3);}
+.btn-ghost{background:transparent;}
+.btn-court{background:var(--court);border-color:var(--court);color:#06140f;}
+.btn-court:hover{background:var(--court-dim);border-color:var(--court-dim);}
+.btn-orange{background:var(--orange);border-color:var(--orange);color:#1a0d02;}
+.btn-orange:hover{background:var(--orange-dim);border-color:var(--orange-dim);}
+.btn-danger-outline{background:transparent;border-color:var(--danger);color:var(--danger);}
+.btn-sm{padding:7px 13px;font-size:12.5px;}
+.btn-block{width:100%;justify-content:center;}
+.btn[disabled]{opacity:.45;pointer-events:none;}
+.fab{position:fixed;right:18px;bottom:calc(88px + var(--safe-bottom));z-index:25;width:56px;height:56px;border-radius:50%;background:var(--court);color:#06140f;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px var(--court-glow);}
+.fab svg{width:24px;height:24px;}
+
+/* ====================== BOTTOM NAV (mobile) ====================== */
+nav.bottombar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(23,31,36,.96);backdrop-filter:blur(10px);border-top:1px solid var(--border-soft);padding:8px 10px calc(8px + var(--safe-bottom));display:none;}
+nav.bottombar .row{max-width:1180px;margin:0 auto;display:flex;gap:4px;}
+nav.bottombar button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border-radius:12px;color:var(--text-3);font-size:10.5px;font-weight:700;}
+nav.bottombar button.active{color:var(--court);}
+nav.bottombar button svg{width:20px;height:20px;}
+@media (max-width:720px){
+  nav.tabs{display:none;}
+  nav.bottombar{display:block;}
+}
+
+/* ====================== CARDS / LISTS ====================== */
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:22px 0 12px;flex-wrap:wrap;}
+.section-head h2{font-size:15px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-2);}
+.card{background:var(--surface-1);border:1px solid var(--border-soft);border-radius:var(--radius-lg);}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}
+
+.drill-card{background:var(--surface-1);border:1px solid var(--border-soft);border-radius:var(--radius-lg);overflow:hidden;display:flex;flex-direction:column;cursor:pointer;transition:border-color .15s;}
+.drill-card:hover{border-color:var(--border);}
+.drill-thumb{width:100%;aspect-ratio:16/9;background:var(--surface-2);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;}
+.drill-thumb img{width:100%;height:100%;object-fit:cover;}
+.drill-thumb svg{width:34px;height:34px;color:var(--text-3);}
+.drill-fav{position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:50%;background:rgba(17,22,26,.65);display:flex;align-items:center;justify-content:center;}
+.drill-fav svg{width:15px;height:15px;}
+.drill-body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;flex:1;}
+.drill-name{font-family:var(--font-display);font-size:16px;font-weight:600;letter-spacing:.01em;}
+.drill-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--text-2);}
+.drill-meta .mono{color:var(--text-2);}
+
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.02em;white-space:nowrap;}
+.badge svg{width:11px;height:11px;}
+.btn-sm svg{width:14px;height:14px;}
+.tag{display:inline-flex;padding:3px 9px;border-radius:999px;font-size:11px;background:var(--surface-3);color:var(--text-2);border:1px solid var(--border-soft);}
+
+.empty{padding:48px 20px;text-align:center;color:var(--text-2);}
+.empty svg{width:52px;height:52px;color:var(--text-3);margin-bottom:14px;}
+.empty h3{color:var(--text-1);font-size:17px;margin-bottom:6px;}
+.empty p{font-size:13.5px;line-height:1.5;max-width:340px;margin:0 auto 16px;}
+
+/* ====================== FILTER BAR ====================== */
+.filterbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px;}
+.search-box{position:relative;flex:1;min-width:180px;}
+.search-box svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--text-3);}
+.search-box input{padding-left:34px;}
+.chip{padding:7px 13px;border-radius:999px;background:var(--surface-2);border:1px solid var(--border);font-size:12.5px;font-weight:600;color:var(--text-2);white-space:nowrap;}
+.chip svg{width:12px;height:12px;flex:none;}
+.chip.active{background:var(--court-bg);border-color:var(--court);color:var(--court);}
+.chip-row{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;-webkit-overflow-scrolling:touch;}
+.chip-row::-webkit-scrollbar{display:none;}
+
+/* ====================== MODAL / SHEET ====================== */
+.overlay{position:fixed;inset:0;z-index:50;background:rgba(6,9,11,.6);display:flex;align-items:flex-end;justify-content:center;}
+@media (min-width:720px){.overlay{align-items:center;}}
+.sheet{background:var(--surface-1);border:1px solid var(--border-soft);width:100%;max-width:640px;max-height:92vh;overflow-y:auto;border-radius:20px 20px 0 0;padding:18px 18px calc(24px + var(--safe-bottom));}
+@media (min-width:720px){.sheet{border-radius:20px;max-height:88vh;}}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;position:sticky;top:0;background:var(--surface-1);padding-top:2px;}
+.sheet-head h2{font-size:19px;}
+.sheet-close{width:32px;height:32px;border-radius:50%;background:var(--surface-2);display:flex;align-items:center;justify-content:center;}
+.sheet-close svg{width:16px;height:16px;}
+.field{margin-bottom:14px;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.hint{font-size:11.5px;color:var(--text-3);margin-top:5px;}
+.pill-select{display:flex;flex-wrap:wrap;gap:6px;}
+.pill-select button{padding:8px 13px;border-radius:999px;background:var(--surface-2);border:1px solid var(--border);font-size:12.5px;font-weight:600;color:var(--text-2);}
+.pill-select button.active{color:#fff;border-color:transparent;}
+.sheet-footer{display:flex;gap:10px;margin-top:18px;}
+.img-upload{border:1.5px dashed var(--border);border-radius:var(--radius-md);padding:16px;text-align:center;background:var(--surface-2);position:relative;overflow:hidden;}
+.img-upload img{max-width:100%;max-height:180px;border-radius:8px;display:block;margin:0 auto 10px;}
+.img-upload svg{width:26px;height:26px;color:var(--text-3);margin-bottom:6px;}
+.img-upload input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;}
+
+/* ====================== TOAST / CONFIRM ====================== */
+.toast{position:fixed;left:50%;bottom:calc(96px + var(--safe-bottom));transform:translateX(-50%);background:var(--surface-3);border:1px solid var(--border);color:var(--text-1);padding:10px 18px;border-radius:999px;font-size:13px;font-weight:600;z-index:80;box-shadow:0 6px 20px rgba(0,0,0,.35);}
+.confirm-box{max-width:400px;text-align:center;padding:22px;}
+.confirm-box h3{font-size:17px;margin-bottom:8px;}
+.confirm-box p{font-size:13.5px;color:var(--text-2);line-height:1.5;margin-bottom:18px;}
+.confirm-actions{display:flex;gap:10px;}
+
+/* ====================== STORAGE INDICATOR ====================== */
+.storage-strip{display:flex;align-items:center;gap:10px;font-size:11.5px;color:var(--text-3);margin-top:8px;flex-wrap:wrap;}
+.storage-strip svg{width:13px;height:13px;}
+.storage-strip .dot{width:6px;height:6px;border-radius:50%;background:var(--court);flex:none;}
+.storage-strip.warn .dot{background:var(--orange);}
+.storage-strip a,.storage-strip button.linklike{color:var(--text-2);text-decoration:underline;font-size:11.5px;}
+
+/* ====================== PLANNER ====================== */
+.session-meta-card{padding:16px;margin-bottom:18px;}
+.session-total{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-radius:var(--radius-md);background:var(--surface-2);margin-bottom:16px;}
+.session-total .num{font-family:var(--font-mono);font-size:20px;font-weight:700;}
+.session-total .num.over{color:var(--orange);}
+.plan-section{margin-bottom:16px;border:1px solid var(--border-soft);border-radius:var(--radius-lg);overflow:hidden;}
+.plan-section-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--surface-1);gap:8px;}
+.plan-section-head input{background:transparent;border:none;font-family:var(--font-display);font-size:15px;font-weight:600;letter-spacing:.02em;padding:4px 0;width:auto;flex:1;}
+.plan-section-body{padding:8px;display:flex;flex-direction:column;gap:6px;}
+.plan-block{display:flex;align-items:center;gap:10px;background:var(--surface-2);border:1px solid var(--border-soft);border-radius:var(--radius-md);padding:9px 10px;}
+.plan-block .grip{color:var(--text-3);flex:none;}
+.plan-block .grip svg{width:16px;height:16px;}
+.plan-block .info{flex:1;min-width:0;}
+.plan-block .info .name{font-size:13.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.plan-block .info .sub{font-size:11px;color:var(--text-3);}
+.plan-block .dur{width:52px;text-align:center;padding:6px 4px;font-family:var(--font-mono);font-size:13px;flex:none;}
+.plan-block .rm{flex:none;color:var(--text-3);}
+.plan-block .rm svg{width:16px;height:16px;}
+.plan-block.note{background:var(--surface-3);}
+.plan-block-order{display:flex;flex-direction:column;flex:none;}
+.plan-block-order button{width:22px;height:16px;display:flex;align-items:center;justify-content:center;color:var(--text-3);}
+.plan-block-order svg{width:12px;height:12px;}
+.add-block-row{display:flex;gap:6px;padding:8px;}
+.section-add-btns{display:flex;gap:6px;flex-wrap:wrap;padding:6px 8px 12px;}
+
+.picker-list{display:flex;flex-direction:column;gap:8px;max-height:52vh;overflow-y:auto;}
+.picker-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--radius-md);background:var(--surface-2);border:1px solid var(--border-soft);}
+.picker-item .thumb{width:44px;height:44px;border-radius:8px;background:var(--surface-3);flex:none;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.picker-item .thumb img{width:100%;height:100%;object-fit:cover;}
+.picker-item .thumb svg{width:18px;height:18px;color:var(--text-3);}
+.picker-item .info{flex:1;min-width:0;}
+.picker-item .info .name{font-size:13.5px;font-weight:700;}
+.picker-item .info .sub{font-size:11px;color:var(--text-3);}
+
+/* ====================== HISTORY / STATS ====================== */
+.stat-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.stat-bar-row .label{width:150px;flex:none;font-size:12.5px;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.stat-bar-track{flex:1;height:10px;border-radius:999px;background:var(--surface-2);overflow:hidden;}
+.stat-bar-fill{height:100%;border-radius:999px;}
+.stat-bar-row .val{width:56px;flex:none;text-align:right;font-family:var(--font-mono);font-size:12px;color:var(--text-2);}
+.period-switch{display:flex;gap:6px;margin-bottom:16px;}
+.session-row{display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:var(--radius-md);background:var(--surface-1);border:1px solid var(--border-soft);margin-bottom:8px;cursor:pointer;}
+.session-row:hover{border-color:var(--border);}
+.session-row .date-chip{width:52px;flex:none;text-align:center;background:var(--surface-2);border-radius:8px;padding:6px 0;font-family:var(--font-mono);}
+.session-row .date-chip .d{font-size:16px;font-weight:700;line-height:1;}
+.session-row .date-chip .m{font-size:9.5px;color:var(--text-3);text-transform:uppercase;}
+.session-row .info{flex:1;min-width:0;}
+.session-row .info .t{font-size:14px;font-weight:700;}
+.session-row .info .s{font-size:11.5px;color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* ====================== ZONA DE RENDERIZADO PARA PDF (fuera de pantalla) ======================
+   #print-root nunca se ve en pantalla: vive fuera del viewport (position:fixed + left negativo)
+   para que html2canvas pueda capturarla con su layout real y así generar un PDF de verdad,
+   descargable como archivo. Antes se usaba window.print(), pero esa API no es fiable en apps
+   instaladas en la pantalla de inicio de iOS (Safari en modo standalone) — por eso se cambió. */
+#print-root{position:fixed;top:0;left:-10000px;width:800px;background:#fff;}
+
+@media (max-width:480px){
+  .field-row{grid-template-columns:1fr;}
+}
+
+/* ====================== HOJA DE IMPRESIÓN / PDF ====================== */
+.print-page{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;color:#15181b;background:#fff;max-width:800px;margin:0 auto;padding:26px 8px;}
+.print-header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2.5px solid #15181b;padding-bottom:12px;margin-bottom:14px;gap:16px;}
+.print-header h1{font-family:'Oswald',Arial,sans-serif;font-size:22px;text-transform:uppercase;letter-spacing:.03em;margin:0 0 3px;}
+.print-header .sub{font-size:12.5px;color:#555;}
+.print-header .badge-min{font-family:'JetBrains Mono',monospace;font-size:13px;border:1.5px solid #15181b;border-radius:8px;padding:6px 12px;text-align:center;white-space:nowrap;}
+.print-objetivo{font-size:12.5px;background:#f1f1ee;border-radius:8px;padding:9px 12px;margin-bottom:16px;line-height:1.45;}
+.print-section{margin-bottom:14px;page-break-inside:avoid;}
+.print-section h2{font-family:'Oswald',Arial,sans-serif;font-size:14px;text-transform:uppercase;letter-spacing:.05em;background:#15181b;color:#fff;padding:5px 10px;border-radius:5px;margin:0 0 6px;}
+.print-block{display:flex;gap:10px;padding:7px 4px;border-bottom:1px solid #e3e3df;}
+.print-block:last-child{border-bottom:none;}
+.print-block .pmin{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;width:40px;flex:none;padding-top:1px;}
+.print-block .pimg{width:56px;height:56px;border-radius:6px;object-fit:cover;flex:none;}
+.print-block .pinfo{flex:1;min-width:0;}
+.print-block .pinfo .pname{font-size:13px;font-weight:700;}
+.print-block .pinfo .pcat{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:#666;margin-bottom:2px;}
+.print-block .pinfo .pdesc{font-size:11px;color:#444;line-height:1.4;margin-top:2px;}
+.print-block.pnote{background:#f7f6f2;border-radius:6px;font-style:italic;}
+.print-footer{margin-top:18px;padding-top:10px;border-top:1px solid #ddd;font-size:9.5px;color:#888;display:flex;justify-content:space-between;}
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+<div id="print-root"></div>
+<input type="file" id="import-input" accept=".zip,.yaml,.yml" class="hidden">
+
+<script>
+'use strict';
+/* ============================================================
+   CUADERNO DE ENTRENAMIENTOS · BALONCESTO
+   App single-file, sin servidor. Datos en localStorage,
+   imágenes en IndexedDB. Ver README interno al final del archivo.
+   ============================================================ */
+
+/* ---------------- Constantes / taxonomía ---------------- */
+const STORAGE_KEY = 'cuadernoEntrenos.v1';
+const IDB_NAME = 'cuadernoEntrenosDB';
+const IDB_VERSION = 1;
+const IDB_STORE = 'imagenes';
+
+/* ---------------- Carga diferida de librerías externas ----------------
+   js-yaml/JSZip (copia de seguridad) y jsPDF/html2canvas (exportar a PDF) no se cargan al
+   abrir la app: solo hacen falta para esas dos funciones concretas, así que cargarlas de
+   entrada solo retrasaría la primera pintura sin necesidad. cargarScript() las descarga una
+   sola vez (cachea la promesa) la primera vez que se necesitan; precargarLibsEnSegundoPlano()
+   además las va trayendo en segundo plano cuando el navegador está libre, para que si el
+   usuario las usa no tenga que esperar a la descarga en ese momento. */
+const LIBS = {
+  yaml: 'https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js',
+  zip: 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js',
+  jspdf: 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/4.2.1/jspdf.umd.min.js',
+  html2canvas: 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js',
+};
+const _scriptCache = {};
+function cargarScript(src){
+  if(_scriptCache[src]) return _scriptCache[src];
+  _scriptCache[src] = new Promise((resolve, reject) => {
+    const el = document.createElement('script');
+    el.src = src;
+    el.onload = () => resolve();
+    el.onerror = () => reject(new Error('No se pudo cargar '+src+' (¿sin conexión?)'));
+    document.head.appendChild(el);
+  });
+  return _scriptCache[src];
+}
+async function asegurarLibsBackup(){
+  await Promise.all([
+    typeof window.jsyaml==='undefined' ? cargarScript(LIBS.yaml) : null,
+    typeof window.JSZip==='undefined' ? cargarScript(LIBS.zip) : null,
+  ]);
+}
+async function asegurarLibsPdf(){
+  await Promise.all([
+    typeof window.jspdf==='undefined' ? cargarScript(LIBS.jspdf) : null,
+    typeof window.html2canvas==='undefined' ? cargarScript(LIBS.html2canvas) : null,
+  ]);
+}
+function precargarLibsEnSegundoPlano(){
+  const ir = window.requestIdleCallback || (fn => setTimeout(fn, 1500));
+  ir(() => { Object.values(LIBS).forEach(src => { cargarScript(src).catch(()=>{}); }); });
+}
+
+const CATEGORIAS = [
+  { id:'calentamiento',           label:'Calentamiento',                  color:'#3fa9be', bg:'rgba(63,169,190,.14)'  },
+  { id:'tecnica_individual',      label:'Técnica individual',             color:'#2f8f6f', bg:'var(--court-bg)'      },
+  { id:'tactica_grupo',           label:'Táctica de grupo',               color:'#7fae3f', bg:'rgba(127,174,63,.14)' },
+  { id:'tactica_equipo',          label:'Táctica de equipo',              color:'#e8722f', bg:'var(--orange-bg)'     },
+  { id:'transicion',              label:'Transición',                     color:'#c9a227', bg:'var(--gold-bg)'       },
+  { id:'situaciones_especiales',  label:'Situaciones especiales (ATO/BLOB)', color:'#9464c9', bg:'var(--purple-bg)'  },
+  { id:'fisico',                  label:'Físico / prevención',            color:'#4f7fd1', bg:'var(--blue-bg)'       },
+  { id:'otro',                    label:'Otro',                           color:'#6c7a74', bg:'var(--surface-3)'     },
+];
+const catById = id => CATEGORIAS.find(c=>c.id===id) || CATEGORIAS[CATEGORIAS.length-1];
+
+const SECCIONES_POR_DEFECTO = [
+  { id:'activacion',   nombre:'Activación / Calentamiento' },
+  { id:'tecnica',      nombre:'Técnica' },
+  { id:'tactica',      nombre:'Táctica' },
+  { id:'situaciones',  nombre:'Situaciones de juego' },
+  { id:'vuelta_calma', nombre:'Vuelta a la calma' },
+];
+
+/* ---------------- Utilidades ---------------- */
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+function nowIso(){ return new Date().toISOString(); }
+function escapeHtml(s){
+  return String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
+function fmtMin(n){
+  n = Math.round(n||0);
+  if(n < 60) return n + ' min';
+  const h = Math.floor(n/60), m = n%60;
+  return m ? `${h}h ${m}min` : `${h}h`;
+}
+function fmtDateLong(iso){
+  if(!iso) return '—';
+  const d = new Date(iso+'T00:00:00');
+  if(isNaN(d)) return iso;
+  const s = d.toLocaleDateString('es-ES', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  return s.charAt(0).toUpperCase()+s.slice(1);
+}
+function fmtDayNum(iso){
+  const d = new Date(iso+'T00:00:00');
+  return { d: isNaN(d)?'--':d.getDate(), m: isNaN(d)?'':d.toLocaleDateString('es-ES',{month:'short'}).replace('.','') };
+}
+function todayIso(){
+  const d = new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+function nowTimestampLocal(){
+  const d = new Date();
+  const p = n => String(n).padStart(2,'0');
+  return `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}`;
+}
+function parseTags(str){
+  return String(str||'').split(',').map(s=>s.trim()).filter(Boolean).slice(0,12);
+}
+/* ---------------- Estado / almacenamiento ---------------- */
+function estadoVacio(){
+  return {
+    version: 1,
+    ejercicios: [],
+    plantillaSecciones: SECCIONES_POR_DEFECTO.map(s=>({...s})),
+    sesiones: [],
+    ajustes: { lastBackupAt: null, seeded:false },
+  };
+}
+
+let localStorageOk = true;
+try{
+  const k='__test__'+uid();
+  localStorage.setItem(k,'1'); localStorage.removeItem(k);
+}catch(e){ localStorageOk = false; }
+
+let state = estadoVacio();
+
+function loadState(){
+  if(!localStorageOk) return estadoVacio();
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return estadoVacio();
+    const parsed = JSON.parse(raw);
+    const base = estadoVacio();
+    return Object.assign(base, parsed, {
+      ejercicios: parsed.ejercicios || [],
+      plantillaSecciones: (parsed.plantillaSecciones && parsed.plantillaSecciones.length) ? parsed.plantillaSecciones : base.plantillaSecciones,
+      sesiones: parsed.sesiones || [],
+      ajustes: Object.assign(base.ajustes, parsed.ajustes||{}),
+    });
+  }catch(e){
+    console.warn('No se pudo leer el estado guardado', e);
+    return estadoVacio();
+  }
+}
+
+let saveTimer = null;
+let saveStatus = 'ok'; // ok | pending | error
+function saveState(){
+  saveStatus = 'pending';
+  updateSaveBadge();
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(()=>{
+    if(!localStorageOk){ saveStatus='error'; updateSaveBadge(); return; }
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      saveStatus = 'ok';
+    }catch(e){
+      saveStatus = 'error';
+      console.warn('Error guardando estado', e);
+    }
+    updateSaveBadge();
+  }, 180);
+}
+function updateSaveBadge(){
+  const el = document.getElementById('save-badge');
+  if(!el) return;
+  if(saveStatus==='ok'){ el.textContent='Guardado'; el.className='save-badge ok'; }
+  else if(saveStatus==='pending'){ el.textContent='Guardando…'; el.className='save-badge pending'; }
+  else { el.textContent='Sin guardar'; el.className='save-badge err'; }
+}
+
+/* ---------------- IndexedDB (imágenes) ---------------- */
+let idbPromise = null;
+function idbOpen(){
+  if(idbPromise) return idbPromise;
+  idbPromise = new Promise((resolve, reject)=>{
+    if(!('indexedDB' in window)){ reject(new Error('IndexedDB no disponible')); return; }
+    const req = indexedDB.open(IDB_NAME, IDB_VERSION);
+    req.onupgradeneeded = () => {
+      const db = req.result;
+      if(!db.objectStoreNames.contains(IDB_STORE)){
+        db.createObjectStore(IDB_STORE, { keyPath:'id' });
+      }
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+  return idbPromise;
+}
+async function idbPut(id, dataUrl, tipo){
+  try{
+    const db = await idbOpen();
+    return new Promise((resolve,reject)=>{
+      const tx = db.transaction(IDB_STORE,'readwrite');
+      tx.objectStore(IDB_STORE).put({ id, dataUrl, tipo, actualizadoEn: nowIso() });
+      tx.oncomplete = () => resolve(true);
+      tx.onerror = () => reject(tx.error);
+    });
+  }catch(e){ console.warn('idbPut falló', e); return false; }
+}
+async function idbGet(id){
+  try{
+    const db = await idbOpen();
+    return new Promise((resolve,reject)=>{
+      const tx = db.transaction(IDB_STORE,'readonly');
+      const req = tx.objectStore(IDB_STORE).get(id);
+      req.onsuccess = () => resolve(req.result || null);
+      req.onerror = () => reject(req.error);
+    });
+  }catch(e){ return null; }
+}
+async function idbDelete(id){
+  try{
+    const db = await idbOpen();
+    return new Promise((resolve,reject)=>{
+      const tx = db.transaction(IDB_STORE,'readwrite');
+      tx.objectStore(IDB_STORE).delete(id);
+      tx.oncomplete = () => resolve(true);
+      tx.onerror = () => reject(tx.error);
+    });
+  }catch(e){ return false; }
+}
+async function idbGetAll(){
+  try{
+    const db = await idbOpen();
+    return new Promise((resolve,reject)=>{
+      const tx = db.transaction(IDB_STORE,'readonly');
+      const req = tx.objectStore(IDB_STORE).getAll();
+      req.onsuccess = () => resolve(req.result || []);
+      req.onerror = () => reject(req.error);
+    });
+  }catch(e){ return []; }
+}
+async function idbClearAll(){
+  try{
+    const db = await idbOpen();
+    return new Promise((resolve,reject)=>{
+      const tx = db.transaction(IDB_STORE,'readwrite');
+      tx.objectStore(IDB_STORE).clear();
+      tx.oncomplete = () => resolve(true);
+      tx.onerror = () => reject(tx.error);
+    });
+  }catch(e){ return false; }
+}
+
+// Cache en memoria de las imágenes (data URL) para no releer IndexedDB constantemente.
+// Nota: las imágenes se guardan como data URL (string base64), no como Blob. Los Blob
+// almacenados en IndexedDB han dado problemas de fiabilidad en Safari/iOS (tanto al
+// generarlos con canvas.toBlob() como al leerlos de vuelta tras cerrar y reabrir la app),
+// así que usamos toDataURL()/strings en todo el flujo para evitar esa clase de fallos.
+const imgUrlCache = new Map(); // ejercicioId -> dataURL
+async function getImagenUrl(ejercicioId){
+  if(imgUrlCache.has(ejercicioId)) return imgUrlCache.get(ejercicioId);
+  const row = await idbGet(ejercicioId);
+  if(!row || !row.dataUrl) return null;
+  imgUrlCache.set(ejercicioId, row.dataUrl);
+  return row.dataUrl;
+}
+// Versión síncrona: solo lee lo que ya está en memoria, sin tocar IndexedDB. La usa la
+// construcción del HTML para el PDF (construirHtmlSesion) para no tener que esperar a una
+// lectura de IndexedDB por cada imagen; se apoya en que precalentarImagenes() (ver más abajo)
+// ya ha traído todas las imágenes a memoria poco después de abrir la app.
+function getImagenUrlCached(ejercicioId){
+  return imgUrlCache.get(ejercicioId) || null;
+}
+async function precalentarImagenes(){
+  try{
+    const rows = await idbGetAll();
+    rows.forEach(row => { if(row && row.dataUrl) imgUrlCache.set(row.id, row.dataUrl); });
+  }catch(e){ console.warn('No se pudieron precargar las imágenes', e); }
+}
+function invalidateImagenUrl(ejercicioId){
+  imgUrlCache.delete(ejercicioId);
+}
+
+// Conversión entre data URL (formato de almacenamiento en IndexedDB) y Blob (formato de
+// archivo real dentro del .zip de copia de seguridad, para que las imágenes sean archivos
+// .jpg normales y legibles fuera de la app, no texto base64).
+function dataUrlToBlob(dataUrl){
+  const [header, base64] = dataUrl.split(',');
+  const mimeMatch = /data:(.*?);base64/.exec(header);
+  const mime = mimeMatch ? mimeMatch[1] : 'image/jpeg';
+  const bin = atob(base64);
+  const arr = new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++) arr[i] = bin.charCodeAt(i);
+  return new Blob([arr], { type: mime });
+}
+function blobToDataUrl(blob){
+  return new Promise((resolve, reject)=>{
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+async function estimarAlmacenamiento(){
+  try{
+    if(navigator.storage && navigator.storage.estimate){
+      const { usage, quota } = await navigator.storage.estimate();
+      return { usage, quota };
+    }
+  }catch(e){}
+  return null;
+}
+
+/* Comprime y redimensiona una imagen (File) a JPEG antes de guardarla.
+   Devuelve un data URL (string), no un Blob: canvas.toBlob() ha demostrado ser poco
+   fiable en Safari/iOS (callback que a veces no llega, sobre todo con imágenes grandes
+   recién sacadas de Fotos/iCloud), mientras que canvas.toDataURL() es síncrono y lleva
+   soportado de forma estable en WebKit mucho más tiempo. */
+function comprimirImagen(file, maxDim=1000, calidad=0.72){
+  return new Promise((resolve, reject)=>{
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = () => { img.src = reader.result; };
+    reader.onerror = reject;
+    img.onload = () => {
+      try{
+        let { width, height } = img;
+        if(!width || !height) throw new Error('Imagen sin dimensiones válidas');
+        if(width > maxDim || height > maxDim){
+          if(width >= height){ height = Math.round(height * (maxDim/width)); width = maxDim; }
+          else { width = Math.round(width * (maxDim/height)); height = maxDim; }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width; canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#fff'; ctx.fillRect(0,0,width,height);
+        ctx.drawImage(img, 0, 0, width, height);
+        const dataUrl = canvas.toDataURL('image/jpeg', calidad);
+        if(!dataUrl || dataUrl.length < 30 || !dataUrl.startsWith('data:image/jpeg')){
+          throw new Error('No se pudo procesar la imagen');
+        }
+        resolve(dataUrl);
+      }catch(err){ reject(err); }
+    };
+    img.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+/* ---------------- Biblioteca semilla (primer uso) ---------------- */
+function ejercicioBase(o){
+  return Object.assign({
+    id: uid(),
+    nombre: '',
+    categoria: 'otro',
+    etiquetas: [],
+    objetivo: '',
+    desarrollo: '',
+    variantes: '',
+    puntosCoaching: '',
+    duracionMin: 10,
+    jugadoresMin: 2,
+    jugadoresMax: 12,
+    material: [],
+    favorito: false,
+    tieneImagen: false,
+    creadoEn: nowIso(),
+    actualizadoEn: nowIso(),
+  }, o);
+}
+
+function ejerciciosSemilla(){
+  return [
+    ejercicioBase({ nombre:'Activación en parejas con balón', categoria:'calentamiento',
+      duracionMin:8, jugadoresMin:2, jugadoresMax:16, material:['1 balón por pareja'],
+      etiquetas:['activación','pase','contacto con balón'],
+      objetivo:'Elevar pulsaciones y activar manos/hombros antes de la parte técnica, con balón desde el primer minuto.',
+      desarrollo:'Por parejas, uno enfrente de otro a 3-4 metros: pase de pecho 10 reps, pase picado 10 reps, pase por encima de cabeza 10 reps. Cambiar de pareja cada minuto.',
+      variantes:'Añadir desplazamiento lateral mientras se pasa; pasar y seguir hasta tocar la línea antes del siguiente pase.',
+      puntosCoaching:'Exigir que reciban con las manos preparadas (target) y que el pase salga con las dos manos, no un lanzamiento.' }),
+
+    ejercicioBase({ nombre:'Movilidad dinámica + pase en círculo', categoria:'calentamiento',
+      duracionMin:7, jugadoresMin:6, jugadoresMax:18, material:['1-2 balones'],
+      etiquetas:['activación','movilidad'],
+      objetivo:'Movilidad articular general y activación de core antes de correr o saltar.',
+      desarrollo:'Círculo grande: skipping, talón-glúteo, zancada con giro de tronco, apertura/cierre de cadera, 20m cada desplazamiento volviendo caminando. Terminar con el grupo sentado pasándose 1-2 balones en círculo sin que caigan al suelo.',
+      variantes:'Aumentar a 2-3 balones simultáneos en el círculo para exigir atención.',
+      puntosCoaching:'Ritmo suave, sin buscar velocidad; es activación, no condición física.' }),
+
+    ejercicioBase({ nombre:'Progresiones de bote y cambios de mano', categoria:'tecnica_individual',
+      duracionMin:10, jugadoresMin:1, jugadoresMax:16, material:['1 balón por jugador','conos (opcional)'],
+      etiquetas:['bote','manejo de balón','coordinación'],
+      objetivo:'Mejorar el control de balón y la confianza con ambas manos en movimiento.',
+      desarrollo:'Recorrido de campo completo: ida en bote de control, vuelta con cambios de mano por delante cada 4 botes; segunda serie con cruzados por detrás de la espalda; tercera serie con bote entre las piernas caminando.',
+      variantes:'Añadir un defensor pasivo que solo mueve las manos para exigir bote protegido; hacerlo mirando al entrenador y no al balón.',
+      puntosCoaching:'La cabeza arriba en todo momento; el balón por debajo de la cintura en los cambios; empujar, no golpear el balón.' }),
+
+    ejercicioBase({ nombre:'Catch & shoot tras salida de bloqueo', categoria:'tecnica_individual',
+      duracionMin:12, jugadoresMin:4, jugadoresMax:10, material:['2-3 balones','conos para marcar el bloqueo'],
+      etiquetas:['tiro','bloqueo indirecto','sin balón'],
+      objetivo:'Automatizar la recepción en equilibrio y el tiro rápido tras un bloqueo indirecto.',
+      desarrollo:'El jugador sale de línea de fondo, usa un bloqueo indirecto marcado con conos en el lateral, recibe pase del entrenador en la línea de tres y tira. Rotar tirador tras cada acción, recoger su propio rebote y pasar al siguiente.',
+      variantes:'Alternar salida por arriba/por abajo del bloqueo; añadir defensor real persiguiendo para exigir tiro más rápido.',
+      puntosCoaching:'Pies listos antes de recibir el balón, no después; catch-and-shoot en menos de un segundo de contacto con el suelo.' }),
+
+    ejercicioBase({ nombre:'Trabajo de pies en defensa (slides + cierre)', categoria:'tecnica_individual',
+      duracionMin:9, jugadoresMin:2, jugadoresMax:16, material:['conos'],
+      etiquetas:['defensa individual','pies','posición base'],
+      objetivo:'Consolidar la posición base defensiva y el desplazamiento lateral sin cruzar pies.',
+      desarrollo:'Escalera de conos en zigzag: desplazamiento lateral en posición baja de cono a cono, sin cruzar los pies y sin perder la posición de manos activas. Terminar cada serie con un cierre explosivo hacia un cono final simulando cerrar a un tirador.',
+      variantes:'Hacerlo por parejas con un atacante real que finta y el defensor reacciona en espejo.',
+      puntosCoaching:'Rodillas flexionadas y espalda recta, no doblado por la cintura; el primer paso siempre es del pie más cercano a la dirección.' }),
+
+    ejercicioBase({ nombre:'Bloqueo directo lateral: lectura del defensor', categoria:'tactica_grupo',
+      duracionMin:14, jugadoresMin:4, jugadoresMax:8, material:['2 balones'],
+      etiquetas:['pick and roll','2x2','lectura'],
+      objetivo:'Que el jugador con balón lea cómo defiende el bloqueo directo (bajo, por arriba, cambio) y elija la opción correcta.',
+      desarrollo:'2x2 en el lateral: base y bloqueador contra dos defensores que alternan el tipo de defensa al bloqueo cada 3 repeticiones (bajo / persiguiendo por arriba / cambio). El atacante debe leer y decidir: tirar, penetrar o dar continuación al bloqueador.',
+      variantes:'Añadir un tercer defensor en ayuda para forzar la decisión de pase al hombre libre.',
+      puntosCoaching:'El bloqueador debe llegar a fijar contacto legal antes de abrirse; el base decide después de leer, no antes.' }),
+
+    ejercicioBase({ nombre:'Dar y seguir con corte a canasta', categoria:'tactica_grupo',
+      duracionMin:10, jugadoresMin:3, jugadoresMax:9, material:['1-2 balones'],
+      etiquetas:['pase y corte','sin balón','3x0'],
+      objetivo:'Automatismo básico de moverse tras pasar en vez de quedarse estático.',
+      desarrollo:'3 jugadores sin defensa: pase al compañero y corte a canasta buscando devolución para tiro cercano; el que recibe se convierte en pasador de la siguiente acción. Rotación continua.',
+      variantes:'Añadir un defensor pasivo en la zona para exigir un corte con cambio de ritmo.',
+      puntosCoaching:'Cortar hacia el aro, no en paralelo a la línea de fondo; pedir el balón con las manos.' }),
+
+    ejercicioBase({ nombre:'Ataque contra zona 2-3: rotación de balón', categoria:'tactica_equipo',
+      duracionMin:15, jugadoresMin:8, jugadoresMax:14, material:['petos','2 balones'],
+      etiquetas:['ataque posicional','zona','5x5'],
+      objetivo:'Practicar la circulación rápida de balón para mover la zona y encontrar huecos entre defensores.',
+      desarrollo:'5x5 contra defensa en zona 2-3. Objetivo: 3 pases mínimo antes de cualquier tiro, buscando siempre el pase al hueco que deja la zona al desplazarse. Un jugador en el poste alto/bajo como referencia.',
+      variantes:'Limitar a 4 segundos de posesión del balón por jugador para forzar circulación; jugar sin bote permitido.',
+      puntosCoaching:'El balón viaja más rápido que el defensor: exigir pase antes de bote siempre que haya opción.' }),
+
+    ejercicioBase({ nombre:'Defensa en ayuda y recuperación (help & recover)', categoria:'tactica_equipo',
+      duracionMin:13, jugadoresMin:6, jugadoresMax:10, material:['petos'],
+      etiquetas:['defensa de equipo','ayudas','rotaciones'],
+      objetivo:'Que los defensores sin balón ayuden ante una penetración y recuperen a su hombre a tiempo.',
+      desarrollo:'4x4 o 5x5 en medio campo: se permite una penetración libre al atacante con balón; el defensor más cercano ayuda, y el resto rota una posición. Parar la acción y corregir posiciones antes de continuar las primeras rondas.',
+      variantes:'Jugar la acción completa a canasta una vez automatizada la lectura, sin parar.',
+      puntosCoaching:'Ayudar "un paso y medio", no abandonar del todo al propio hombre; comunicación verbal obligatoria ("¡Ayuda!", "¡Recupero!").' }),
+
+    ejercicioBase({ nombre:'Contraataque continuo 3x2', categoria:'transicion',
+      duracionMin:12, jugadoresMin:6, jugadoresMax:12, material:['petos','varios balones'],
+      etiquetas:['contraataque','superioridad','continuo'],
+      objetivo:'Decisión rápida en superioridad numérica y finalización en carrera.',
+      desarrollo:'3 atacantes contra 2 defensores a campo completo. Al acabar la acción (canasta o pérdida), los 2 defensores atacan a campo contrario contra 1 de los 3 que se queda a defender, y entran 2 nuevos. Continuo, sin parar.',
+      variantes:'Limitar a 2 pases máximo antes de tirar para forzar decisiones rápidas.',
+      puntosCoaching:'El balón siempre por delante en campo abierto; el último pase antes del aro debe ser fácil de anotar, no forzado.' }),
+
+    ejercicioBase({ nombre:'Balance defensivo tras pérdida de balón', categoria:'transicion',
+      duracionMin:9, jugadoresMin:6, jugadoresMax:12, material:['petos'],
+      etiquetas:['transición defensiva','balance','pérdida'],
+      objetivo:'Reaccionar de inmediato tras perder el balón en ataque en vez de protestar o relajarse.',
+      desarrollo:'5x5 en ataque posicional; a una señal del entrenador (silbato) se simula pérdida de balón y los 5 atacantes deben esprintar a defender mientras el equipo contrario ataca con un balón ya preparado en el poste contrario.',
+      variantes:'Hacerlo también tras un tiro fallado para trabajar el balance en rebote defensivo.',
+      puntosCoaching:'El primer defensor debe frenar el balón, no correr detrás sin más; el resto sprinta a proteger el aro antes que a su par.' }),
+
+    ejercicioBase({ nombre:'BLOB bajo canasta con bloqueo ciego', categoria:'situaciones_especiales',
+      duracionMin:10, jugadoresMin:5, jugadoresMax:10, material:['petos','pizarra'],
+      etiquetas:['saque de fondo','ATO/BLOB','jugada de pizarra'],
+      objetivo:'Ejecutar con precisión una jugada preparada de saque de banda bajo el propio aro.',
+      desarrollo:'Explicar la jugada en pizarra primero. Repetir sin defensa 3 veces para fijar los movimientos y los tiempos de bloqueo, después con defensa pasiva, y por último con defensa real al 100%.',
+      variantes:'Preparar una segunda opción ("contra") para cuando el defensor anticipe la primera lectura.',
+      puntosCoaching:'El bloqueo ciego tiene que salir de fuera del campo visual del defensor; el sacador cuenta en voz alta el tiempo de saque.' }),
+
+    ejercicioBase({ nombre:'ATO: última posesión en 8 segundos', categoria:'situaciones_especiales',
+      duracionMin:10, jugadoresMin:5, jugadoresMax:10, material:['petos','cronómetro','pizarra'],
+      etiquetas:['última posesión','presión de tiempo','jugada de pizarra'],
+      objetivo:'Tomar buenas decisiones bajo presión de marcador y tiempo en el último ataque del partido.',
+      desarrollo:'Se simula partido perdido por 2 puntos con 8 segundos en el reloj y saque en medio campo. El equipo debe sacar, avanzar y generar un tiro con opciones de anotar (2 o 3 según se indique) antes de que suene la bocina.',
+      variantes:'Cambiar el marcador (empate, -1, -3) para forzar decisiones de tiro distintas cada repetición.',
+      puntosCoaching:'Decidir antes de recibir el balón quién tira; nunca perder tiempo en el saque, contar en voz alta.' }),
+
+    ejercicioBase({ nombre:'Circuito de prevención tobillo/rodilla', categoria:'fisico',
+      duracionMin:10, jugadoresMin:1, jugadoresMax:18, material:['esterillas (opcional)','banda elástica (opcional)'],
+      etiquetas:['prevención de lesiones','propiocepción','vuelta a la calma'],
+      objetivo:'Reducir el riesgo de esguinces de tobillo y sobrecargas de rodilla, muy frecuentes en baloncesto.',
+      desarrollo:'3 estaciones de 90 segundos rotando: 1) equilibrio a la pata coja sobre superficie inestable o pie descalzo, 2) sentadilla + salto vertical controlado con aterrizaje silencioso, 3) estiramiento activo de gemelo y cadera.',
+      variantes:'Añadir mini-obstáculos para saltos laterales en la estación 2 si el grupo ya domina el aterrizaje básico.',
+      puntosCoaching:'Prioridad absoluta: aterrizaje suave y silencioso con rodillas alineadas con los pies, nunca hacia dentro.' }),
+  ];
+}
+
+function asegurarSemilla(){
+  if(state.ajustes.seeded) return;
+  if(!state.ejercicios.length){
+    state.ejercicios = ejerciciosSemilla();
+  }
+  state.ajustes.seeded = true;
+  saveState();
+}
+/* ---------------- Iconos (SVG inline, sin librería) ---------------- */
+const ICONS = {
+  biblioteca:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5.5A2 2 0 0 1 6 3.5h5v18H6a2 2 0 0 1-2-2Z"/><path d="M20 19.5V5.5a2 2 0 0 0-2-2h-5v18h5a2 2 0 0 0 2-2Z"/></svg>`,
+  planificador:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 3.5h6a1 1 0 0 1 1 1V6H8V4.5a1 1 0 0 1 1-1Z"/><path d="M8.5 11h7M8.5 14.5h7M8.5 18h4"/></svg>`,
+  historial:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg>`,
+  search:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>`,
+  plus:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>`,
+  star:`<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2.5l2.9 6.3 6.9.7-5.2 4.7 1.5 6.8L12 17.8l-6.1 3.2 1.5-6.8-5.2-4.7 6.9-.7L12 2.5Z"/></svg>`,
+  starOutline:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 2.5l2.9 6.3 6.9.7-5.2 4.7 1.5 6.8L12 17.8l-6.1 3.2 1.5-6.8-5.2-4.7 6.9-.7L12 2.5Z"/></svg>`,
+  image:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m5 17 4.5-4.5a2 2 0 0 1 2.8 0L15 15.3M14 14l1.6-1.6a2 2 0 0 1 2.8 0L20.5 14"/></svg>`,
+  trash:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 7h15M9.5 7V5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v2m3 0-.7 12.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5.5 7"/><path d="M10 11v6M14 11v6"/></svg>`,
+  close:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>`,
+  check:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>`,
+  chevronUp:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg>`,
+  chevronDown:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>`,
+  grip:`<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="9" cy="6" r="1.5"/><circle cx="9" cy="12" r="1.5"/><circle cx="9" cy="18" r="1.5"/><circle cx="15" cy="6" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="15" cy="18" r="1.5"/></svg>`,
+  settings:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 13a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.9 2.9l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V19a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.9-2.9l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H4a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.9-2.9l.1.1a1.7 1.7 0 0 0 1.9.3H10a1.7 1.7 0 0 0 1-1.5V4a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.9 2.9l-.1.1a1.7 1.7 0 0 0-.3 1.9V10a1.7 1.7 0 0 0 1.5 1H20a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>`,
+  upload:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 8.5 12 4l5 4.5"/><path d="M4.5 16.5V18a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-1.5"/></svg>`,
+  download:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12M7 11.5 12 16l5-4.5"/><path d="M4.5 16.5V18a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-1.5"/></svg>`,
+  warn:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 21.5 20h-19L12 3.5Z"/><path d="M12 9.5v4.2M12 17h.01"/></svg>`,
+  printer:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8.5V4h10v4.5"/><rect x="4.5" y="8.5" width="15" height="8" rx="1.5"/><path d="M7 15v5h10v-5"/></svg>`,
+  note:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h9l4 4V20a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"/><path d="M14.5 3.5V8H19"/><path d="M8 12.5h8M8 16h5"/></svg>`,
+  copy:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8.5" y="8.5" width="11" height="12" rx="1.7"/><path d="M15 8.5V5.7a1.7 1.7 0 0 0-1.7-1.7H5.7A1.7 1.7 0 0 0 4 5.7v7.6A1.7 1.7 0 0 0 5.7 15H8.5"/></svg>`,
+  clip:`<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--court)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3.5" width="12" height="15.5" rx="1.6"/><path d="M7.5 3v-.3a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1V3"/><path d="M7 9h6M7 12h6M7 15h4"/></svg>`,
+};
+
+/* ---------------- Estado de interfaz (no persistente) ---------------- */
+const ui = {
+  tab: 'biblioteca',
+  biblioteca: { query:'', categoria:'todas', soloFavoritos:false, verId:null },
+  planificador: { sesionId:null, pickerSeccionId:null, pickerQuery:'' },
+  historial: { periodo:'temporada', verId:null },
+  modal: null,
+  toast: null,
+};
+
+function toast(msg){
+  ui.toast = msg;
+  renderToast();
+  clearTimeout(toast._t);
+  toast._t = setTimeout(()=>{ ui.toast=null; renderToast(); }, 2400);
+}
+function renderToast(){
+  let el = document.getElementById('toast');
+  if(ui.toast){
+    if(!el){ el = document.createElement('div'); el.id='toast'; el.className='toast'; document.body.appendChild(el); }
+    el.textContent = ui.toast;
+  } else if(el){ el.remove(); }
+}
+
+function openModal(type, props={}){ ui.modal = { type, props }; render(); }
+function closeModal(){ ui.modal = null; render(); }
+
+function confirmar({ title, message, confirmLabel='Confirmar', danger=true, onConfirm }){
+  openModal('confirm', { title, message, confirmLabel, danger, onConfirm });
+}
+/* ---------------- Shell: header, tabs, render principal ---------------- */
+function renderHeader(){
+  return `
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark">${ICONS.clip}</div>
+        <div>
+          <h1>Cuaderno de <span>Entrenamientos</span></h1>
+        </div>
+      </div>
+      <div class="header-actions">
+        <span id="save-badge" class="save-badge ok">Guardado</span>
+        <button class="icon-btn" data-action="abrir-ajustes" title="Ajustes y copia de seguridad">${ICONS.settings}</button>
+      </div>
+    </div>
+    <nav class="tabs">
+      <button data-action="tab" data-tab="biblioteca" class="${ui.tab==='biblioteca'?'active':''}">${ICONS.biblioteca}Biblioteca</button>
+      <button data-action="tab" data-tab="planificador" class="${ui.tab==='planificador'?'active':''}">${ICONS.planificador}Planificador</button>
+      <button data-action="tab" data-tab="historial" class="${ui.tab==='historial'?'active':''}">${ICONS.historial}Historial</button>
+    </nav>
+  </header>`;
+}
+
+function renderBottomBar(){
+  const item = (tab, icon, label) => `<button data-action="tab" data-tab="${tab}" class="${ui.tab===tab?'active':''}">${ICONS[icon]}<span>${label}</span></button>`;
+  return `<nav class="bottombar"><div class="row">
+    ${item('biblioteca','biblioteca','Biblioteca')}
+    ${item('planificador','planificador','Planificador')}
+    ${item('historial','historial','Historial')}
+  </div></nav>`;
+}
+
+let styleBadgeStyleInjected = false;
+function ensureBadgeStyles(){
+  if(styleBadgeStyleInjected) return;
+  styleBadgeStyleInjected = true;
+  const s = document.createElement('style');
+  s.textContent = `.save-badge{font-size:10px;letter-spacing:.03em;padding:3px 8px;border-radius:999px;font-weight:700;}
+  .save-badge.ok{color:var(--success);background:var(--success-bg);}
+  .save-badge.pending{color:var(--gold);background:var(--gold-bg);}
+  .save-badge.err{color:var(--danger);background:var(--danger-bg);}`;
+  document.head.appendChild(s);
+}
+
+function render(){
+  ensureBadgeStyles();
+  const app = document.getElementById('app');
+  let body = '';
+  if(ui.tab==='biblioteca') body = renderBiblioteca();
+  else if(ui.tab==='planificador') body = renderPlanificador();
+  else if(ui.tab==='historial') body = renderHistorial();
+
+  app.innerHTML = renderHeader() + `<main>${body}</main>` + renderBottomBar();
+  renderModalRoot();
+  updateSaveBadge();
+  hidratarImagenesVisibles();
+}
+
+function renderModalRoot(){
+  let root = document.getElementById('modal-root');
+  if(!root){ root = document.createElement('div'); root.id='modal-root'; document.body.appendChild(root); }
+  if(!ui.modal){ root.innerHTML=''; return; }
+  root.innerHTML = renderModal(ui.modal);
+  hidratarImagenesVisibles();
+}
+
+/* Tras cada render, busca elementos [data-img-for] y les carga la imagen desde IndexedDB */
+function hidratarImagenesVisibles(){
+  document.querySelectorAll('[data-img-for]').forEach(async el => {
+    const id = el.getAttribute('data-img-for');
+    const url = await getImagenUrl(id);
+    if(url){
+      el.innerHTML = `<img src="${url}" alt="">`;
+    }
+  });
+}
+/* ================= TAB: BIBLIOTECA ================= */
+function filteredEjercicios(){
+  const { query, categoria, soloFavoritos } = ui.biblioteca;
+  const q = query.trim().toLowerCase();
+  return state.ejercicios.filter(e=>{
+    if(categoria!=='todas' && e.categoria!==categoria) return false;
+    if(soloFavoritos && !e.favorito) return false;
+    if(q){
+      const hay = [e.nombre, (e.etiquetas||[]).join(' '), e.objetivo, e.material.join(' ')].join(' ').toLowerCase();
+      if(!hay.includes(q)) return false;
+    }
+    return true;
+  }).sort((a,b)=> (b.favorito - a.favorito) || a.nombre.localeCompare(b.nombre,'es'));
+}
+
+function renderBiblioteca(){
+  const list = filteredEjercicios();
+  return `
+  <div class="filterbar">
+    <div class="search-box">
+      ${ICONS.search}
+      <input type="text" placeholder="Buscar ejercicio, etiqueta…" value="${escapeHtml(ui.biblioteca.query)}" data-action="buscar-biblioteca">
+    </div>
+    <button class="chip ${ui.biblioteca.soloFavoritos?'active':''}" data-action="toggle-favoritos-filtro" style="display:inline-flex;align-items:center;gap:4px;">${ICONS.star} Favoritos</button>
+  </div>
+  <div class="chip-row" style="margin-bottom:10px;">
+    <button class="chip ${ui.biblioteca.categoria==='todas'?'active':''}" data-action="filtro-categoria" data-cat="todas">Todas</button>
+    ${CATEGORIAS.map(c=>`<button class="chip ${ui.biblioteca.categoria===c.id?'active':''}" data-action="filtro-categoria" data-cat="${c.id}" style="${ui.biblioteca.categoria===c.id?`background:${c.bg};border-color:${c.color};color:${c.color}`:''}">${c.label}</button>`).join('')}
+  </div>
+  ${list.length ? `<div class="grid">${list.map(renderDrillCard).join('')}</div>` : renderBibliotecaVacia()}
+
+  <button class="fab" data-action="nuevo-ejercicio" title="Nuevo ejercicio">${ICONS.plus}</button>
+  `;
+}
+
+function renderBibliotecaVacia(){
+  const hayFiltro = ui.biblioteca.query || ui.biblioteca.categoria!=='todas' || ui.biblioteca.soloFavoritos;
+  if(hayFiltro){
+    return `<div class="empty">${ICONS.search}<h3>Sin resultados</h3><p>Ningún ejercicio coincide con estos filtros. Prueba a quitar alguno.</p>
+      <button class="btn" data-action="limpiar-filtros-biblioteca">Quitar filtros</button></div>`;
+  }
+  return `<div class="empty">${ICONS.biblioteca}<h3>Tu biblioteca está vacía</h3><p>Añade tu primer ejercicio para empezar a construir tu cuaderno de entrenamientos.</p>
+    <button class="btn btn-court" data-action="nuevo-ejercicio">${ICONS.plus} Nuevo ejercicio</button></div>`;
+}
+
+function renderDrillCard(e){
+  const c = catById(e.categoria);
+  return `
+  <div class="drill-card" data-action="ver-ejercicio" data-id="${e.id}">
+    <div class="drill-thumb" ${e.tieneImagen?`data-img-for="${e.id}"`:''}>
+      ${e.tieneImagen ? '' : ICONS.image}
+      ${e.favorito?`<div class="drill-fav" style="color:var(--gold)">${ICONS.star}</div>`:''}
+    </div>
+    <div class="drill-body">
+      <div class="drill-name">${escapeHtml(e.nombre)}</div>
+      <span class="badge" style="background:${c.bg};color:${c.color}">${c.label}</span>
+      <div class="drill-meta">
+        <span class="mono">${fmtMin(e.duracionMin)}</span>
+        <span>·</span>
+        <span>${e.jugadoresMin===e.jugadoresMax? e.jugadoresMin : e.jugadoresMin+'–'+e.jugadoresMax} jug.</span>
+      </div>
+    </div>
+  </div>`;
+}
+/* ================= MODALES ================= */
+function renderModal(modal){
+  const { type, props } = modal;
+  let inner = '';
+  if(type==='confirm') inner = renderModalConfirm(props);
+  else if(type==='ver-ejercicio') inner = renderModalVerEjercicio(props);
+  else if(type==='form-ejercicio') inner = renderModalFormEjercicio(props);
+  else if(type==='ajustes') inner = renderModalAjustes(props);
+  else if(type==='elegir-ejercicio') inner = renderModalElegirEjercicio(props);
+  else if(type==='sesion-form') inner = renderModalSesionForm(props);
+  return `<div class="overlay" data-action="cerrar-overlay">${inner}</div>`;
+}
+
+function renderModalConfirm({ title, message, confirmLabel, danger }){
+  return `<div class="sheet confirm-box" data-stop>
+    <h3>${escapeHtml(title)}</h3>
+    <p>${escapeHtml(message)}</p>
+    <div class="confirm-actions">
+      <button class="btn btn-block" data-action="cerrar-modal">Cancelar</button>
+      <button class="btn btn-block ${danger?'btn-danger-outline':'btn-court'}" data-action="confirmar-accion">${escapeHtml(confirmLabel)}</button>
+    </div>
+  </div>`;
+}
+
+function renderModalVerEjercicio({ id }){
+  const e = state.ejercicios.find(x=>x.id===id);
+  if(!e) return '';
+  const c = catById(e.categoria);
+  return `<div class="sheet" data-stop>
+    <div class="sheet-head">
+      <h2>${escapeHtml(e.nombre)}</h2>
+      <button class="sheet-close" data-action="cerrar-modal">${ICONS.close}</button>
+    </div>
+    ${e.tieneImagen ? `<div class="drill-thumb" style="border-radius:12px;margin-bottom:14px;" data-img-for="${e.id}"></div>` : ''}
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
+      <span class="badge" style="background:${c.bg};color:${c.color}">${c.label}</span>
+      <span class="tag mono">${fmtMin(e.duracionMin)}</span>
+      <span class="tag">${e.jugadoresMin===e.jugadoresMax? e.jugadoresMin : e.jugadoresMin+'–'+e.jugadoresMax} jugadores</span>
+    </div>
+    ${e.objetivo?`<div class="field"><label>Objetivo</label><div>${escapeHtml(e.objetivo)}</div></div>`:''}
+    ${e.desarrollo?`<div class="field"><label>Desarrollo</label><div style="white-space:pre-wrap;">${escapeHtml(e.desarrollo)}</div></div>`:''}
+    ${e.variantes?`<div class="field"><label>Variantes</label><div style="white-space:pre-wrap;">${escapeHtml(e.variantes)}</div></div>`:''}
+    ${e.puntosCoaching?`<div class="field"><label>Puntos de coaching</label><div style="white-space:pre-wrap;">${escapeHtml(e.puntosCoaching)}</div></div>`:''}
+    ${e.material.length?`<div class="field"><label>Material</label><div>${e.material.map(m=>`<span class="tag" style="margin:0 6px 6px 0;">${escapeHtml(m)}</span>`).join('')}</div></div>`:''}
+    ${e.etiquetas.length?`<div class="field"><label>Etiquetas</label><div>${e.etiquetas.map(t=>`<span class="tag" style="margin:0 6px 6px 0;">${escapeHtml(t)}</span>`).join('')}</div></div>`:''}
+    <div class="sheet-footer" style="flex-wrap:wrap;">
+      <button class="btn ${e.favorito?'btn-court':''}" data-action="toggle-favorito" data-id="${e.id}">${e.favorito?ICONS.star:ICONS.starOutline} ${e.favorito?'Favorito':'Marcar favorito'}</button>
+      <button class="btn" data-action="editar-ejercicio" data-id="${e.id}">Editar</button>
+      <button class="btn btn-danger-outline" data-action="eliminar-ejercicio" data-id="${e.id}">${ICONS.trash}</button>
+    </div>
+  </div>`;
+}
+
+/* Borrador de formulario de ejercicio (separado del estado hasta guardar) */
+let formDraft = null;
+let formDraftImagenData = undefined; // undefined = sin cambios, null = eliminar, string (data URL) = nueva
+let subiendoImagen = false; // true mientras se comprime una imagen recién seleccionada
+function abrirFormEjercicio(id){
+  const base = id ? state.ejercicios.find(x=>x.id===id) : null;
+  formDraft = base ? { ...base, etiquetas:[...base.etiquetas], material:[...base.material] } : ejercicioBase({});
+  formDraftImagenData = undefined;
+  openModal('form-ejercicio', { id });
+}
+
+function renderModalFormEjercicio({ id }){
+  const e = formDraft;
+  const esNuevo = !id;
+  return `<div class="sheet" data-stop>
+    <div class="sheet-head">
+      <h2>${esNuevo?'Nuevo ejercicio':'Editar ejercicio'}</h2>
+      <button class="sheet-close" data-action="cerrar-modal">${ICONS.close}</button>
+    </div>
+    <div class="field">
+      <label>Nombre</label>
+      <input type="text" value="${escapeHtml(e.nombre)}" data-draft="nombre" placeholder="Ej. Bloqueo directo lateral">
+    </div>
+    <div class="field">
+      <label>Imagen (opcional)</label>
+      <div class="img-upload" id="img-upload-box">
+        ${renderImgUploadContenido(e, id)}
+      </div>
+    </div>
+    <div class="field">
+      <label>Categoría</label>
+      <div class="pill-select">
+        ${CATEGORIAS.map(c=>`<button data-action="draft-categoria" data-cat="${c.id}" class="${e.categoria===c.id?'active':''}" style="${e.categoria===c.id?`background:${c.color};border-color:${c.color}`:''}">${c.label}</button>`).join('')}
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Duración estimada (min)</label>
+        <input type="number" min="1" max="120" value="${e.duracionMin}" data-draft="duracionMin">
+      </div>
+      <div class="field">
+        <label>Jugadores mínimo</label>
+        <input type="number" min="1" max="30" value="${e.jugadoresMin}" data-draft="jugadoresMin">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Jugadores máximo</label>
+        <input type="number" min="1" max="30" value="${e.jugadoresMax}" data-draft="jugadoresMax">
+      </div>
+      <div class="field">
+        <label>Material necesario</label>
+        <input type="text" value="${escapeHtml(e.material.join(', '))}" data-draft="material" placeholder="Balones, conos, petos…">
+      </div>
+    </div>
+    <div class="field">
+      <label>Etiquetas</label>
+      <input type="text" value="${escapeHtml(e.etiquetas.join(', '))}" data-draft="etiquetas" placeholder="pase, bloqueo, transición…">
+      <div class="hint">Sepáralas por comas. Te ayudarán a buscar y filtrar.</div>
+    </div>
+    <div class="field"><label>Objetivo</label><textarea data-draft="objetivo" placeholder="¿Qué se entrena con este ejercicio?">${escapeHtml(e.objetivo)}</textarea></div>
+    <div class="field"><label>Desarrollo</label><textarea data-draft="desarrollo" placeholder="Cómo se organiza y ejecuta">${escapeHtml(e.desarrollo)}</textarea></div>
+    <div class="field"><label>Variantes</label><textarea data-draft="variantes" placeholder="Formas de complicar o simplificar el ejercicio">${escapeHtml(e.variantes)}</textarea></div>
+    <div class="field"><label>Puntos de coaching</label><textarea data-draft="puntosCoaching" placeholder="Qué corregir mientras se ejecuta">${escapeHtml(e.puntosCoaching)}</textarea></div>
+
+    <div class="sheet-footer">
+      <button class="btn btn-block" data-action="cerrar-modal">Cancelar</button>
+      <button class="btn btn-block btn-court" data-action="guardar-ejercicio" data-id="${id||''}" ${subiendoImagen?'disabled style="opacity:.6;"':''}>${subiendoImagen?'Procesando imagen…':`${ICONS.check} Guardar`}</button>
+    </div>
+  </div>`;
+}
+
+function renderImgUploadContenido(e, id){
+  if(formDraftImagenData === null){
+    return `${ICONS.image}<div class="hint">Sin imagen — se eliminará al guardar</div>
+      <input type="file" accept="image/*" data-action="input-imagen">`;
+  }
+  if(typeof formDraftImagenData === 'string'){
+    return `<img src="${formDraftImagenData}" alt=""><div class="hint">Nueva imagen seleccionada</div>
+      <input type="file" accept="image/*" data-action="input-imagen">
+      <button class="btn btn-sm btn-danger-outline" style="position:relative;z-index:2;margin-top:6px;" data-action="quitar-imagen-draft">Quitar</button>`;
+  }
+  if(e.tieneImagen && id){
+    return `<div data-img-for="${id}" style="min-height:80px;"></div><div class="hint">Toca para cambiar la imagen</div>
+      <input type="file" accept="image/*" data-action="input-imagen">
+      <button class="btn btn-sm btn-danger-outline" style="position:relative;z-index:2;margin-top:6px;" data-action="quitar-imagen-draft">Quitar</button>`;
+  }
+  return `${ICONS.image}<div class="hint">Toca para subir una foto (se comprime automáticamente)</div>
+    <input type="file" accept="image/*" data-action="input-imagen">`;
+}
+
+async function guardarEjercicio(id){
+  const e = formDraft;
+  if(!e.nombre || !e.nombre.trim()){ toast('Ponle un nombre al ejercicio'); return; }
+  if(subiendoImagen){ toast('Espera un momento, todavía se está procesando la imagen…'); return; }
+  e.actualizadoEn = nowIso();
+  const isNew = !id;
+  if(isNew) e.creadoEn = nowIso();
+
+  if(typeof formDraftImagenData === 'string'){
+    await idbPut(e.id, formDraftImagenData, 'image/jpeg');
+    e.tieneImagen = true;
+    imgUrlCache.set(e.id, formDraftImagenData); // deja la caché caliente sin releer IndexedDB
+  } else if(formDraftImagenData === null){
+    await idbDelete(e.id);
+    e.tieneImagen = false;
+    invalidateImagenUrl(e.id);
+  }
+
+  const idx = state.ejercicios.findIndex(x=>x.id===e.id);
+  if(idx>=0) state.ejercicios[idx] = e;
+  else state.ejercicios.push(e);
+
+  saveState();
+  formDraft = null; formDraftImagenData = undefined;
+  closeModal();
+  toast(isNew?'Ejercicio creado':'Ejercicio actualizado');
+}
+
+function eliminarEjercicio(id){
+  confirmar({
+    title:'Eliminar ejercicio',
+    message:'Se eliminará de tu biblioteca. Las sesiones ya planificadas que lo usan conservarán su nombre e información, pero no podrás volver a añadirlo desde la biblioteca.',
+    confirmLabel:'Eliminar',
+    onConfirm: async () => {
+      state.ejercicios = state.ejercicios.filter(x=>x.id!==id);
+      await idbDelete(id);
+      invalidateImagenUrl(id);
+      saveState();
+      closeModal();
+      toast('Ejercicio eliminado');
+    }
+  });
+}
+/* ================= TAB: PLANIFICADOR ================= */
+function sesionActual(){
+  return state.sesiones.find(s=>s.id===ui.planificador.sesionId) || null;
+}
+function nuevaSesionObjeto({ fecha, titulo, objetivo, duracionObjetivoMin }){
+  return {
+    id: uid(),
+    fecha: fecha || todayIso(),
+    titulo: titulo || '',
+    objetivo: objetivo || '',
+    duracionObjetivoMin: duracionObjetivoMin || 90,
+    secciones: state.plantillaSecciones.map(s=>({ id: uid(), nombre: s.nombre, bloques: [] })),
+    avisos: '',
+    estado: 'borrador',
+    creadoEn: nowIso(),
+    actualizadoEn: nowIso(),
+  };
+}
+function totalMinutosSesion(sesion){
+  let t = 0;
+  sesion.secciones.forEach(s=> s.bloques.forEach(b=> t += (b.duracionMin||0)));
+  return t;
+}
+
+function renderPlanificador(){
+  const s = sesionActual();
+  if(!s) return renderPlanificadorLanding();
+  return renderSesionEditor(s);
+}
+
+function renderPlanificadorLanding(){
+  const borradores = state.sesiones.filter(s=>s.estado==='borrador').sort((a,b)=> b.actualizadoEn.localeCompare(a.actualizadoEn));
+  return `
+  <div class="section-head"><h2>Sesión de hoy</h2></div>
+  <button class="btn btn-court btn-block" data-action="abrir-nueva-sesion" style="margin-bottom:22px;">${ICONS.plus} Nueva sesión de entrenamiento</button>
+  ${borradores.length ? `
+    <div class="section-head"><h2>Borradores sin cerrar</h2></div>
+    ${borradores.map(s=>`
+      <div class="session-row" data-action="continuar-sesion" data-id="${s.id}">
+        <div class="date-chip"><div class="d">${fmtDayNum(s.fecha).d}</div><div class="m">${fmtDayNum(s.fecha).m}</div></div>
+        <div class="info">
+          <div class="t">${escapeHtml(s.titulo || 'Entrenamiento sin título')}</div>
+          <div class="s">${totalMinutosSesion(s)} min planificados · ${s.secciones.reduce((a,x)=>a+x.bloques.length,0)} bloques</div>
+        </div>
+      </div>`).join('')}
+  ` : `<div class="empty">${ICONS.planificador}<h3>Sin borradores pendientes</h3><p>Cuando empieces una sesión y no la cierres, aparecerá aquí para que la retomes.</p></div>`}
+  `;
+}
+
+function renderSesionEditor(s){
+  const total = totalMinutosSesion(s);
+  const objetivo = s.duracionObjetivoMin || 0;
+  const over = objetivo>0 && total>objetivo;
+  return `
+  <button class="btn btn-sm btn-ghost" data-action="volver-planificador-landing" style="margin-bottom:10px;">← Todas las sesiones</button>
+  <div class="card session-meta-card">
+    <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap;">
+      <div style="flex:1;min-width:200px;">
+        <div class="mono" style="color:var(--text-3);font-size:12px;margin-bottom:4px;">${fmtDateLong(s.fecha)}</div>
+        <h2 style="font-size:20px;">${escapeHtml(s.titulo || 'Entrenamiento sin título')}</h2>
+        ${s.objetivo?`<p style="color:var(--text-2);font-size:13.5px;margin-top:6px;">${escapeHtml(s.objetivo)}</p>`:''}
+      </div>
+      <button class="btn btn-sm" data-action="editar-meta-sesion" data-id="${s.id}">Editar datos</button>
+    </div>
+  </div>
+
+  <div class="session-total">
+    <div>
+      <div style="font-size:11.5px;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;">Duración planificada</div>
+      <div class="num ${over?'over':''}">${fmtMin(total)} <span style="font-size:13px;color:var(--text-3);font-weight:500;">/ objetivo ${fmtMin(objetivo)}</span></div>
+    </div>
+    ${over?`<span class="badge" style="background:var(--orange-bg);color:var(--orange)">${ICONS.warn} Te pasas ${fmtMin(total-objetivo)}</span>`:''}
+  </div>
+
+  ${s.secciones.map((sec,i)=>renderSeccion(s, sec, i)).join('')}
+
+  <button class="btn btn-block" data-action="anadir-seccion" data-sid="${s.id}" style="margin:6px 0 24px;">${ICONS.plus} Añadir sección</button>
+
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <button class="btn btn-orange" data-action="exportar-pdf-sesion" data-id="${s.id}">${ICONS.printer} Exportar a PDF</button>
+    <button class="btn" data-action="duplicar-sesion" data-id="${s.id}">${ICONS.copy} Duplicar como plantilla</button>
+    ${s.estado==='borrador' ? `<button class="btn btn-court" data-action="cerrar-sesion" data-id="${s.id}">${ICONS.check} Cerrar sesión</button>` : `<span class="badge" style="background:var(--success-bg);color:var(--success);align-self:center;">${ICONS.check} Sesión cerrada</span>`}
+    <button class="btn btn-danger-outline" data-action="eliminar-sesion" data-id="${s.id}">${ICONS.trash}</button>
+  </div>
+  `;
+}
+
+function renderSeccion(sesion, sec, idx){
+  const total = sesion.secciones.length;
+  return `
+  <div class="plan-section" data-sec="${sec.id}">
+    <div class="plan-section-head">
+      <input type="text" value="${escapeHtml(sec.nombre)}" data-action="renombrar-seccion" data-sid="${sesion.id}" data-secid="${sec.id}">
+      <div style="display:flex;gap:2px;align-items:center;">
+        <div class="plan-block-order">
+          <button data-action="mover-seccion" data-dir="-1" data-sid="${sesion.id}" data-secid="${sec.id}" ${idx===0?'disabled':''}>${ICONS.chevronUp}</button>
+          <button data-action="mover-seccion" data-dir="1" data-sid="${sesion.id}" data-secid="${sec.id}" ${idx===total-1?'disabled':''}>${ICONS.chevronDown}</button>
+        </div>
+        <button class="icon-btn" style="width:30px;height:30px;" data-action="eliminar-seccion" data-sid="${sesion.id}" data-secid="${sec.id}">${ICONS.trash}</button>
+      </div>
+    </div>
+    <div class="plan-section-body">
+      ${sec.bloques.map((b,i)=>renderBloque(sesion, sec, b, i)).join('')}
+      ${!sec.bloques.length?`<div class="hint" style="padding:6px 6px 10px;">Sin ejercicios todavía en esta sección.</div>`:''}
+    </div>
+    <div class="section-add-btns">
+      <button class="btn btn-sm" data-action="abrir-elegir-ejercicio" data-sid="${sesion.id}" data-secid="${sec.id}">${ICONS.plus} Ejercicio de la biblioteca</button>
+      <button class="btn btn-sm btn-ghost" data-action="anadir-nota" data-sid="${sesion.id}" data-secid="${sec.id}">${ICONS.note} Nota libre</button>
+    </div>
+  </div>`;
+}
+
+function renderBloque(sesion, sec, b, idx){
+  const total = sec.bloques.length;
+  const orderBtns = `<div class="plan-block-order">
+      <button data-action="mover-bloque" data-dir="-1" data-sid="${sesion.id}" data-secid="${sec.id}" data-bid="${b.id}" ${idx===0?'disabled':''}>${ICONS.chevronUp}</button>
+      <button data-action="mover-bloque" data-dir="1" data-sid="${sesion.id}" data-secid="${sec.id}" data-bid="${b.id}" ${idx===total-1?'disabled':''}>${ICONS.chevronDown}</button>
+    </div>`;
+  if(b.tipo==='nota'){
+    return `<div class="plan-block note">
+      ${orderBtns}
+      <div class="info">
+        <textarea data-action="editar-nota" data-sid="${sesion.id}" data-secid="${sec.id}" data-bid="${b.id}" style="min-height:38px;padding:4px 0;background:transparent;border:none;font-size:13px;" placeholder="Escribe una nota o aviso…">${escapeHtml(b.texto||'')}</textarea>
+      </div>
+      <input type="number" class="dur mono" min="0" max="120" value="${b.duracionMin||0}" data-action="cambiar-duracion-bloque" data-sid="${sesion.id}" data-secid="${sec.id}" data-bid="${b.id}">
+      <button class="rm" data-action="eliminar-bloque" data-sid="${sesion.id}" data-secid="${sec.id}" data-bid="${b.id}">${ICONS.close}</button>
+    </div>`;
+  }
+  const c = catById(b.categoriaSnapshot);
+  return `<div class="plan-block">
+    ${orderBtns}
+    <div class="info">
+      <div class="name">${escapeHtml(b.nombreSnapshot)}</div>
+      <div class="sub"><span style="color:${c.color}">${c.label}</span></div>
+    </div>
+    <input type="number" class="dur mono" min="0" max="120" value="${b.duracionMin||0}" data-action="cambiar-duracion-bloque" data-sid="${sesion.id}" data-secid="${sec.id}" data-bid="${b.id}">
+    <button class="rm" data-action="eliminar-bloque" data-sid="${sesion.id}" data-secid="${sec.id}" data-bid="${b.id}">${ICONS.close}</button>
+  </div>`;
+}
+/* ---- Modal: crear / editar datos de sesión ---- */
+let sesionFormDraft = null;
+function abrirNuevaSesion(){
+  sesionFormDraft = { fecha: todayIso(), titulo: todayIso(), objetivo:'', duracionObjetivoMin:90 };
+  openModal('sesion-form', { id:null });
+}
+function abrirEditarMetaSesion(id){
+  const s = state.sesiones.find(x=>x.id===id);
+  sesionFormDraft = { fecha:s.fecha, titulo:s.titulo, objetivo:s.objetivo, duracionObjetivoMin:s.duracionObjetivoMin };
+  openModal('sesion-form', { id });
+}
+function renderModalSesionForm({ id }){
+  const d = sesionFormDraft;
+  return `<div class="sheet" data-stop>
+    <div class="sheet-head"><h2>${id?'Editar sesión':'Nueva sesión'}</h2><button class="sheet-close" data-action="cerrar-modal">${ICONS.close}</button></div>
+    <div class="field-row">
+      <div class="field"><label>Fecha</label><input type="date" value="${d.fecha}" data-sdraft="fecha"></div>
+      <div class="field"><label>Duración objetivo (min)</label><input type="number" min="10" max="240" value="${d.duracionObjetivoMin}" data-sdraft="duracionObjetivoMin"></div>
+    </div>
+    <div class="field"><label>Título</label><input type="text" value="${escapeHtml(d.titulo)}" placeholder="Ej. Sesión 12 · Defensa en ayudas" data-sdraft="titulo"></div>
+    <div class="field"><label>Objetivo del día</label><textarea placeholder="¿Qué quieres conseguir hoy?" data-sdraft="objetivo">${escapeHtml(d.objetivo)}</textarea></div>
+    <div class="sheet-footer">
+      <button class="btn btn-block" data-action="cerrar-modal">Cancelar</button>
+      <button class="btn btn-block btn-court" data-action="guardar-sesion-form" data-id="${id||''}">${ICONS.check} ${id?'Guardar':'Crear sesión'}</button>
+    </div>
+  </div>`;
+}
+function guardarSesionForm(id){
+  const d = sesionFormDraft;
+  if(id){
+    const s = state.sesiones.find(x=>x.id===id);
+    Object.assign(s, d); s.actualizadoEn = nowIso();
+  } else {
+    const s = nuevaSesionObjeto(d);
+    state.sesiones.push(s);
+    ui.planificador.sesionId = s.id;
+  }
+  saveState();
+  sesionFormDraft = null;
+  closeModal();
+}
+
+/* ---- Mutaciones de sección / bloque ---- */
+function tocarSesion(s){ s.actualizadoEn = nowIso(); saveState(); }
+
+function anadirSeccion(sid){
+  const s = state.sesiones.find(x=>x.id===sid);
+  s.secciones.push({ id: uid(), nombre:'Nueva sección', bloques:[] });
+  tocarSesion(s); render();
+}
+function eliminarSeccion(sid, secid){
+  const s = state.sesiones.find(x=>x.id===sid);
+  const sec = s.secciones.find(x=>x.id===secid);
+  const doIt = () => { s.secciones = s.secciones.filter(x=>x.id!==secid); tocarSesion(s); render(); };
+  if(sec.bloques.length){
+    confirmar({ title:'Eliminar sección', message:`Esta sección tiene ${sec.bloques.length} bloque(s). Se eliminarán también.`, confirmLabel:'Eliminar', onConfirm:()=>{ doIt(); closeModal(); } });
+  } else doIt();
+}
+function moverSeccion(sid, secid, dir){
+  const s = state.sesiones.find(x=>x.id===sid);
+  const i = s.secciones.findIndex(x=>x.id===secid);
+  const j = i+dir;
+  if(j<0 || j>=s.secciones.length) return;
+  [s.secciones[i], s.secciones[j]] = [s.secciones[j], s.secciones[i]];
+  tocarSesion(s); render();
+}
+function renombrarSeccion(sid, secid, val){
+  const s = state.sesiones.find(x=>x.id===sid);
+  s.secciones.find(x=>x.id===secid).nombre = val;
+  tocarSesion(s);
+}
+function anadirNota(sid, secid){
+  const s = state.sesiones.find(x=>x.id===sid);
+  s.secciones.find(x=>x.id===secid).bloques.push({ id: uid(), tipo:'nota', texto:'', duracionMin:0 });
+  tocarSesion(s); render();
+}
+function editarNota(sid, secid, bid, val){
+  const s = state.sesiones.find(x=>x.id===sid);
+  s.secciones.find(x=>x.id===secid).bloques.find(b=>b.id===bid).texto = val;
+  tocarSesion(s);
+}
+function cambiarDuracionBloque(sid, secid, bid, val){
+  const s = state.sesiones.find(x=>x.id===sid);
+  const b = s.secciones.find(x=>x.id===secid).bloques.find(b=>b.id===bid);
+  b.duracionMin = clamp(parseInt(val||'0',10)||0, 0, 240);
+  tocarSesion(s);
+  const totalEl = document.querySelector('.session-total .num');
+  if(totalEl){
+    const total = totalMinutosSesion(s);
+    const objetivo = s.duracionObjetivoMin||0;
+    const over = objetivo>0 && total>objetivo;
+    totalEl.className = 'num' + (over?' over':'');
+    totalEl.innerHTML = `${fmtMin(total)} <span style="font-size:13px;color:var(--text-3);font-weight:500;">/ objetivo ${fmtMin(objetivo)}</span>`;
+  }
+}
+function eliminarBloque(sid, secid, bid){
+  const s = state.sesiones.find(x=>x.id===sid);
+  const sec = s.secciones.find(x=>x.id===secid);
+  sec.bloques = sec.bloques.filter(b=>b.id!==bid);
+  tocarSesion(s); render();
+}
+function moverBloque(sid, secid, bid, dir){
+  const s = state.sesiones.find(x=>x.id===sid);
+  const sec = s.secciones.find(x=>x.id===secid);
+  const i = sec.bloques.findIndex(b=>b.id===bid);
+  const j = i+dir;
+  if(j<0 || j>=sec.bloques.length) return;
+  [sec.bloques[i], sec.bloques[j]] = [sec.bloques[j], sec.bloques[i]];
+  tocarSesion(s); render();
+}
+
+/* ---- Elegir ejercicio de la biblioteca para un bloque ---- */
+function abrirElegirEjercicio(sid, secid){
+  ui.planificador.pickerQuery = '';
+  openModal('elegir-ejercicio', { sid, secid });
+}
+function renderModalElegirEjercicio({ sid, secid }){
+  const q = ui.planificador.pickerQuery.trim().toLowerCase();
+  const list = state.ejercicios.filter(e => !q || (e.nombre+' '+e.etiquetas.join(' ')).toLowerCase().includes(q))
+    .sort((a,b)=>a.nombre.localeCompare(b.nombre,'es'));
+  return `<div class="sheet" data-stop>
+    <div class="sheet-head"><h2>Añadir ejercicio</h2><button class="sheet-close" data-action="cerrar-modal">${ICONS.close}</button></div>
+    <div class="search-box" style="margin-bottom:12px;">${ICONS.search}<input type="text" placeholder="Buscar en tu biblioteca…" value="${escapeHtml(ui.planificador.pickerQuery)}" data-action="buscar-picker" autofocus></div>
+    <div class="picker-list">
+      ${list.length ? list.map(e=>{
+        const c = catById(e.categoria);
+        return `<div class="picker-item" data-action="elegir-ejercicio-bloque" data-sid="${sid}" data-secid="${secid}" data-eid="${e.id}">
+          <div class="thumb" ${e.tieneImagen?`data-img-for="${e.id}"`:''}>${e.tieneImagen?'':ICONS.image}</div>
+          <div class="info"><div class="name">${escapeHtml(e.nombre)}</div><div class="sub" style="color:${c.color}">${c.label} · ${fmtMin(e.duracionMin)}</div></div>
+        </div>`;
+      }).join('') : `<div class="empty" style="padding:24px;">${ICONS.search}<p>Sin resultados.</p></div>`}
+    </div>
+  </div>`;
+}
+function elegirEjercicioParaBloque(sid, secid, eid){
+  const s = state.sesiones.find(x=>x.id===sid);
+  const e = state.ejercicios.find(x=>x.id===eid);
+  s.secciones.find(x=>x.id===secid).bloques.push({
+    id: uid(), tipo:'ejercicio', ejercicioId:e.id,
+    nombreSnapshot:e.nombre, categoriaSnapshot:e.categoria, duracionMin:e.duracionMin,
+  });
+  tocarSesion(s);
+  closeModal();
+}
+
+/* ---- Ciclo de vida de la sesión ---- */
+function cerrarSesion(id){
+  confirmar({ title:'Cerrar sesión', message:'La sesión pasará al historial como cerrada. Podrás seguir consultándola, pero no aparecerá como borrador.', confirmLabel:'Cerrar sesión', danger:false, onConfirm:()=>{
+    const s = state.sesiones.find(x=>x.id===id);
+    s.estado = 'cerrada'; tocarSesion(s);
+    closeModal(); toast('Sesión cerrada y guardada en el historial');
+  }});
+}
+function eliminarSesion(id){
+  confirmar({ title:'Eliminar sesión', message:'Esta acción no se puede deshacer.', confirmLabel:'Eliminar', onConfirm:()=>{
+    state.sesiones = state.sesiones.filter(x=>x.id!==id);
+    saveState();
+    ui.planificador.sesionId = null;
+    closeModal(); render();
+    toast('Sesión eliminada');
+  }});
+}
+function duplicarSesion(id){
+  const orig = state.sesiones.find(x=>x.id===id);
+  const copia = {
+    ...orig, id: uid(), fecha: todayIso(), estado:'borrador',
+    titulo: orig.titulo ? orig.titulo + ' (copia)' : todayIso(),
+    creadoEn: nowIso(), actualizadoEn: nowIso(),
+    secciones: orig.secciones.map(sec => ({ id: uid(), nombre: sec.nombre, bloques: sec.bloques.map(b=>({ ...b, id: uid() })) })),
+  };
+  state.sesiones.push(copia);
+  saveState();
+  ui.planificador.sesionId = copia.id;
+  ui.tab = 'planificador';
+  closeModal();
+  render();
+  toast('Sesión duplicada como nuevo borrador');
+}
+/* ================= TAB: HISTORIAL ================= */
+function inicioSemana(d){
+  const x = new Date(d); const day = (x.getDay()+6)%7; // lunes=0
+  x.setDate(x.getDate()-day); x.setHours(0,0,0,0); return x;
+}
+function rangoPeriodo(periodo){
+  const hoy = new Date();
+  if(periodo==='semana'){
+    const ini = inicioSemana(hoy);
+    const fin = new Date(ini); fin.setDate(fin.getDate()+6);
+    return { ini, fin };
+  }
+  if(periodo==='mes'){
+    const ini = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+    const fin = new Date(hoy.getFullYear(), hoy.getMonth()+1, 0);
+    return { ini, fin };
+  }
+  return null; // temporada = sin límite
+}
+function sesionEnRango(s, rango){
+  if(!rango) return true;
+  const f = new Date(s.fecha+'T00:00:00');
+  return f >= rango.ini && f <= new Date(rango.fin.getFullYear(),rango.fin.getMonth(),rango.fin.getDate(),23,59,59);
+}
+
+function renderHistorial(){
+  // El historial es lo que ya se ha entrenado de verdad: solo sesiones cerradas. Los
+  // borradores (todavía planificándose, con minutos que pueden cambiar) tienen su propio
+  // sitio en "Borradores sin cerrar" dentro del Planificador, no aquí.
+  const rango = rangoPeriodo(ui.historial.periodo);
+  const sesiones = state.sesiones.filter(s=>s.estado==='cerrada' && sesionEnRango(s, rango)).sort((a,b)=> b.fecha.localeCompare(a.fecha) || b.actualizadoEn.localeCompare(a.actualizadoEn));
+
+  const porCategoria = {};
+  CATEGORIAS.forEach(c=> porCategoria[c.id]=0);
+  sesiones.forEach(s=> s.secciones.forEach(sec=> sec.bloques.forEach(b=>{
+    if(b.tipo==='ejercicio') porCategoria[b.categoriaSnapshot] = (porCategoria[b.categoriaSnapshot]||0) + (b.duracionMin||0);
+  })));
+  const maxCat = Math.max(1, ...Object.values(porCategoria));
+  const totalMin = Object.values(porCategoria).reduce((a,b)=>a+b,0);
+
+  return `
+  <div class="period-switch">
+    ${[['semana','Esta semana'],['mes','Este mes'],['temporada','Toda la temporada']].map(([id,label])=>
+      `<button class="chip ${ui.historial.periodo===id?'active':''}" data-action="periodo-historial" data-periodo="${id}">${label}</button>`).join('')}
+  </div>
+
+  <div class="section-head"><h2>Minutos por tipo de contenido</h2></div>
+  ${totalMin ? `<div class="card" style="padding:18px 18px 10px;margin-bottom:22px;">
+    ${CATEGORIAS.filter(c=>porCategoria[c.id]>0).sort((a,b)=>porCategoria[b.id]-porCategoria[a.id]).map(c=>`
+      <div class="stat-bar-row">
+        <div class="label">${c.label}</div>
+        <div class="stat-bar-track"><div class="stat-bar-fill" style="width:${(porCategoria[c.id]/maxCat*100).toFixed(0)}%;background:${c.color}"></div></div>
+        <div class="val">${fmtMin(porCategoria[c.id])}</div>
+      </div>`).join('')}
+    <div class="hint" style="margin:8px 0 10px;">${fmtMin(totalMin)} entrenados en total en ${sesiones.length} sesión(es) de este periodo.</div>
+  </div>` : `<div class="empty" style="padding:28px 20px;">${ICONS.historial}<p>Sin datos en este periodo todavía.</p></div>`}
+
+  <div class="section-head"><h2>Sesiones cerradas</h2></div>
+  ${sesiones.length ? sesiones.map(s=>`
+    <div class="session-row" data-action="abrir-sesion-historial" data-id="${s.id}">
+      <div class="date-chip"><div class="d">${fmtDayNum(s.fecha).d}</div><div class="m">${fmtDayNum(s.fecha).m}</div></div>
+      <div class="info">
+        <div class="t">${escapeHtml(s.titulo || 'Entrenamiento sin título')}</div>
+        <div class="s">${totalMinutosSesion(s)} min</div>
+      </div>
+      <span class="badge" style="background:var(--success-bg);color:var(--success)">${ICONS.check}</span>
+    </div>`).join('') : `<div class="empty">${ICONS.historial}<h3>Nada por aquí todavía</h3><p>Cuando cierres una sesión de entrenamiento, aparecerá aquí. Los borradores sin cerrar los encuentras en el Planificador.</p></div>`}
+  `;
+}
+function abrirSesionHistorial(id){
+  ui.planificador.sesionId = id;
+  ui.tab = 'planificador';
+  render();
+  window.scrollTo(0,0);
+}
+/* ================= AJUSTES / COPIA DE SEGURIDAD ================= */
+function renderModalAjustes(){
+  const dias = state.ajustes.lastBackupAt ? Math.floor((Date.now()-new Date(state.ajustes.lastBackupAt).getTime())/86400000) : null;
+  const avisoBackup = dias===null || dias>14;
+  return `<div class="sheet" data-stop>
+    <div class="sheet-head"><h2>Ajustes</h2><button class="sheet-close" data-action="cerrar-modal">${ICONS.close}</button></div>
+
+    <div class="section-head" style="margin-top:0;"><h2>Copia de seguridad</h2></div>
+    <p class="hint" style="margin-bottom:10px;font-size:12.5px;">Genera un .zip con toda tu biblioteca, sesiones e imágenes. Guárdalo donde prefieras (Archivos, iCloud…) de vez en cuando: es tu única red de seguridad si el iPad borra los datos de la app.</p>
+    <div class="storage-strip ${avisoBackup?'warn':''}" style="margin-bottom:14px;">
+      ${avisoBackup?ICONS.warn.replace('width="24" height="24"','width="14" height="14"'):`<span class="dot"></span>`}
+      <span>${dias===null?'Todavía no has hecho ninguna copia de seguridad.':`Última copia: hace ${dias} día(s).`}</span>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
+      <button class="btn btn-court" data-action="exportar-todo">${ICONS.download} Exportar copia de seguridad</button>
+      <button class="btn" data-action="disparar-importar">${ICONS.upload} Importar copia de seguridad</button>
+    </div>
+
+    <div id="storage-info" class="hint" style="margin-bottom:22px;">Calculando espacio usado…</div>
+
+    <div class="section-head"><h2>Secciones por defecto de una sesión nueva</h2></div>
+    <p class="hint" style="margin-bottom:10px;">Cambiar esto no afecta a sesiones que ya hayas creado, solo a las nuevas.</p>
+    <div class="plan-section" style="margin-bottom:20px;">
+      <div class="plan-section-body" style="padding:10px;">
+        ${state.plantillaSecciones.map((sec,i)=>`
+          <div class="plan-block">
+            <div class="plan-block-order">
+              <button data-action="mover-seccion-plantilla" data-dir="-1" data-secid="${sec.id}" ${i===0?'disabled':''}>${ICONS.chevronUp}</button>
+              <button data-action="mover-seccion-plantilla" data-dir="1" data-secid="${sec.id}" ${i===state.plantillaSecciones.length-1?'disabled':''}>${ICONS.chevronDown}</button>
+            </div>
+            <div class="info" style="flex:1;">
+              <input type="text" value="${escapeHtml(sec.nombre)}" data-action="renombrar-seccion-plantilla" data-secid="${sec.id}" style="background:transparent;border:none;padding:4px 0;font-weight:700;">
+            </div>
+            <button class="rm" data-action="eliminar-seccion-plantilla" data-secid="${sec.id}">${ICONS.close}</button>
+          </div>`).join('')}
+      </div>
+      <div class="section-add-btns"><button class="btn btn-sm" data-action="anadir-seccion-plantilla">${ICONS.plus} Añadir sección</button></div>
+    </div>
+
+    <div class="hint" style="text-align:center;">Cuaderno de Entrenamientos · datos guardados solo en este iPad</div>
+  </div>`;
+}
+function abrirAjustes(){ openModal('ajustes', {}); actualizarInfoAlmacenamiento(); }
+async function actualizarInfoAlmacenamiento(){
+  const est = await estimarAlmacenamiento();
+  const el = document.getElementById('storage-info');
+  if(!el) return;
+  const nEj = state.ejercicios.length, nImg = state.ejercicios.filter(e=>e.tieneImagen).length, nSes = state.sesiones.length;
+  let txt = `${nEj} ejercicio(s) en la biblioteca (${nImg} con imagen) · ${nSes} sesión(es) en el historial.`;
+  if(est && est.quota){
+    const mb = (n)=> (n/1048576).toFixed(1);
+    txt += ` Usando ${mb(est.usage)} MB de un máximo aproximado de ${mb(est.quota)} MB en este dispositivo.`;
+  }
+  el.textContent = txt;
+}
+
+/* Plantilla de secciones por defecto */
+function anadirSeccionPlantilla(){ state.plantillaSecciones.push({id:uid(),nombre:'Nueva sección'}); saveState(); render(); actualizarInfoAlmacenamiento(); }
+function eliminarSeccionPlantilla(id){ state.plantillaSecciones = state.plantillaSecciones.filter(s=>s.id!==id); saveState(); render(); actualizarInfoAlmacenamiento(); }
+function moverSeccionPlantilla(id, dir){
+  const i = state.plantillaSecciones.findIndex(s=>s.id===id); const j=i+dir;
+  if(j<0||j>=state.plantillaSecciones.length) return;
+  [state.plantillaSecciones[i],state.plantillaSecciones[j]]=[state.plantillaSecciones[j],state.plantillaSecciones[i]];
+  saveState(); render(); actualizarInfoAlmacenamiento();
+}
+function renombrarSeccionPlantilla(id, val){
+  state.plantillaSecciones.find(s=>s.id===id).nombre = val; saveState();
+}
+/* ================= EXPORTAR A PDF =================
+   Genera un PDF de verdad (archivo descargable), en vez de usar window.print(). Ese era el
+   enfoque anterior y no es fiable en una app instalada en la pantalla de inicio de un iPad
+   (Safari en modo standalone): el diálogo de impresión de iOS no funciona bien ahí, con o sin
+   async de por medio — es una limitación de la propia plataforma, no del código. Al generar el
+   PDF nosotros mismos (html2canvas capa la ficha en #print-root, jsPDF la mete en páginas A4)
+   y descargarlo como archivo con un <a download>, usamos exactamente el mismo mecanismo de
+   descarga que ya funciona bien en "Exportar copia de seguridad" — nada que dependa del
+   soporte de impresión del navegador. */
+function construirHtmlSesion(s){
+  const total = totalMinutosSesion(s);
+  let seccionesHtml = '';
+  for(const sec of s.secciones){
+    if(!sec.bloques.length) continue;
+    let bloquesHtml = '';
+    for(const b of sec.bloques){
+      if(b.tipo==='nota'){
+        if(!b.texto && !b.duracionMin) continue;
+        bloquesHtml += `<div class="print-block pnote">
+          <div class="pmin">${b.duracionMin?fmtMin(b.duracionMin):''}</div>
+          <div class="pinfo"><div class="pdesc">${escapeHtml(b.texto)}</div></div>
+        </div>`;
+        continue;
+      }
+      const ejercicioVivo = state.ejercicios.find(e=>e.id===b.ejercicioId);
+      const c = catById(b.categoriaSnapshot);
+      let imgTag = '';
+      if(ejercicioVivo && ejercicioVivo.tieneImagen){
+        const url = getImagenUrlCached(ejercicioVivo.id);
+        if(url) imgTag = `<img class="pimg" src="${url}">`;
+      }
+      const descBits = [];
+      if(ejercicioVivo){
+        if(ejercicioVivo.objetivo) descBits.push(ejercicioVivo.objetivo);
+        if(ejercicioVivo.puntosCoaching) descBits.push('· '+ejercicioVivo.puntosCoaching);
+      } else {
+        descBits.push('(Ejercicio ya no está en la biblioteca)');
+      }
+      bloquesHtml += `<div class="print-block">
+        ${imgTag}
+        <div class="pmin">${fmtMin(b.duracionMin)}</div>
+        <div class="pinfo">
+          <div class="pcat" style="color:${c.color}">${c.label}</div>
+          <div class="pname">${escapeHtml(b.nombreSnapshot)}</div>
+          ${descBits.length?`<div class="pdesc">${escapeHtml(descBits.join(' '))}</div>`:''}
+        </div>
+      </div>`;
+    }
+    if(!bloquesHtml) continue;
+    seccionesHtml += `<div class="print-section"><h2>${escapeHtml(sec.nombre)}</h2>${bloquesHtml}</div>`;
+  }
+
+  return `<div class="print-page">
+    <div class="print-header">
+      <div>
+        <h1>${escapeHtml(s.titulo || 'Entrenamiento')}</h1>
+        <div class="sub">${fmtDateLong(s.fecha)}</div>
+      </div>
+      <div class="badge-min">${fmtMin(total)}<br><span style="font-weight:400;font-size:10px;">planificados</span></div>
+    </div>
+    ${s.objetivo?`<div class="print-objetivo"><strong>Objetivo del día:</strong> ${escapeHtml(s.objetivo)}</div>`:''}
+    ${seccionesHtml || '<p style="font-size:12.5px;color:#777;">Esta sesión todavía no tiene ejercicios añadidos.</p>'}
+    ${s.avisos?`<div class="print-objetivo" style="margin-top:6px;"><strong>Avisos:</strong> ${escapeHtml(s.avisos)}</div>`:''}
+    <div class="print-footer"><span>Cuaderno de Entrenamientos</span><span>Generado ${new Date().toLocaleString('es-ES')}</span></div>
+  </div>`;
+}
+function nombreArchivoSesion(s, ext){
+  const base = (s.titulo || 'entrenamiento').trim().toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g,'') // quita acentos
+    .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'') || 'entrenamiento';
+  return `${base}_${s.fecha}.${ext}`;
+}
+async function exportarPdfSesion(id){
+  const s = state.sesiones.find(x=>x.id===id);
+  if(!s) return;
+  toast('Generando PDF…');
+  const root = document.getElementById('print-root');
+  try{
+    await asegurarLibsPdf();
+    root.innerHTML = construirHtmlSesion(s);
+    // Deja que las imágenes (ya son data URL, no hay red de por medio) y el layout se asienten.
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+
+    const nodo = root.querySelector('.print-page');
+    const canvas = await html2canvas(nodo, { scale:2, backgroundColor:'#ffffff', useCORS:true });
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ unit:'pt', format:'a4' });
+    const pageW = pdf.internal.pageSize.getWidth();
+    const pageH = pdf.internal.pageSize.getHeight();
+    const imgW = pageW;
+    const imgH = canvas.height * (imgW / canvas.width);
+    const imgData = canvas.toDataURL('image/jpeg', 0.92);
+
+    let heightLeft = imgH;
+    let position = 0;
+    pdf.addImage(imgData, 'JPEG', 0, position, imgW, imgH);
+    heightLeft -= pageH;
+    while(heightLeft > 0){
+      position -= pageH;
+      pdf.addPage();
+      pdf.addImage(imgData, 'JPEG', 0, position, imgW, imgH);
+      heightLeft -= pageH;
+    }
+
+    pdf.save(nombreArchivoSesion(s, 'pdf'));
+    toast('PDF descargado');
+  }catch(err){
+    console.error(err);
+    toast('No se pudo generar el PDF: ' + (err.message || 'error desconocido'));
+  }finally{
+    root.innerHTML = ''; // libera memoria (imágenes en base64 pueden pesar bastante)
+  }
+}
+/* ================= EXPORTAR / IMPORTAR (.zip: datos.yaml + imágenes) ================= */
+async function exportarTodo(){
+  toast('Generando copia de seguridad…');
+  try{
+    await asegurarLibsBackup();
+    const datos = {
+      version: 1,
+      app: 'cuaderno-entrenamientos',
+      exportedAt: nowIso(),
+      plantillaSecciones: state.plantillaSecciones,
+      ejercicios: state.ejercicios,
+      sesiones: state.sesiones,
+    };
+    const yamlText = jsyaml.dump(datos, { lineWidth:100, noRefs:true });
+    const zip = new JSZip();
+    zip.file('datos.yaml', yamlText);
+    const carpeta = zip.folder('imagenes');
+    const conImagen = state.ejercicios.filter(e=>e.tieneImagen);
+    for(const e of conImagen){
+      const row = await idbGet(e.id);
+      if(row && row.dataUrl) carpeta.file(`${e.id}.jpg`, dataUrlToBlob(row.dataUrl));
+    }
+    const blob = await zip.generateAsync({ type:'blob', compression:'DEFLATE', compressionOptions:{ level:6 } });
+    const a = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    a.href = url;
+    a.download = `cuaderno-entrenamientos-${nowTimestampLocal()}.zip`;
+    document.body.appendChild(a); a.click();
+    setTimeout(()=>{ document.body.removeChild(a); URL.revokeObjectURL(url); }, 4000);
+
+    state.ajustes.lastBackupAt = nowIso();
+    saveState();
+    actualizarInfoAlmacenamiento();
+    toast('Copia de seguridad descargada');
+  }catch(e){
+    console.error(e);
+    toast('No se pudo generar la copia de seguridad');
+  }
+}
+
+function dispararImportar(){ document.getElementById('import-input').click(); }
+
+async function manejarArchivoImportado(file){
+  if(!file) return;
+  try{
+    await asegurarLibsBackup();
+    let datos, imagenes = []; // [{id, dataUrl}]
+    if(/\.zip$/i.test(file.name)){
+      const zip = await JSZip.loadAsync(file);
+      const datosFile = zip.file('datos.yaml');
+      if(!datosFile) throw new Error('El zip no contiene datos.yaml');
+      const yamlText = await datosFile.async('string');
+      datos = jsyaml.load(yamlText);
+      const carpeta = zip.folder('imagenes');
+      const entries = [];
+      carpeta.forEach((relPath, f) => { if(!f.dir) entries.push(f); });
+      for(const f of entries){
+        const id = f.name.split('/').pop().replace(/\.[^.]+$/,'');
+        const blob = await f.async('blob');
+        const dataUrl = await blobToDataUrl(blob);
+        imagenes.push({ id, dataUrl });
+      }
+    } else {
+      const text = await file.text();
+      datos = jsyaml.load(text);
+    }
+    if(!datos || !Array.isArray(datos.ejercicios)) throw new Error('Formato no reconocido');
+
+    const nEj = datos.ejercicios.length, nSes = (datos.sesiones||[]).length, nImg = imagenes.length;
+    const fechaExport = datos.exportedAt ? new Date(datos.exportedAt).toLocaleString('es-ES') : 'desconocida';
+    confirmar({
+      title:'Importar copia de seguridad',
+      message:`Vas a reemplazar TODOS tus datos actuales por esta copia (${nEj} ejercicios, ${nSes} sesiones, ${nImg} imágenes) exportada el ${fechaExport}. Esta acción no se puede deshacer.`,
+      confirmLabel:'Reemplazar datos',
+      onConfirm: async () => {
+        await idbClearAll();
+        imgUrlCache.clear();
+        for(const img of imagenes){
+          await idbPut(img.id, img.dataUrl, 'image/jpeg');
+          imgUrlCache.set(img.id, img.dataUrl); // ya las tenemos en memoria, no hace falta releer IndexedDB
+        }
+        state = {
+          version:1,
+          ejercicios: datos.ejercicios || [],
+          plantillaSecciones: (datos.plantillaSecciones && datos.plantillaSecciones.length) ? datos.plantillaSecciones : SECCIONES_POR_DEFECTO.map(s=>({...s})),
+          sesiones: datos.sesiones || [],
+          ajustes: { lastBackupAt: state.ajustes.lastBackupAt, seeded:true },
+        };
+        saveState();
+        ui.planificador.sesionId = null;
+        closeModal();
+        render();
+        toast('Datos importados correctamente');
+      }
+    });
+  }catch(e){
+    console.error(e);
+    toast('No se pudo leer ese archivo: ' + e.message);
+  }
+}
+/* ================= EVENTOS (delegación global) ================= */
+function limpiarFiltrosBiblioteca(){
+  ui.biblioteca = { query:'', categoria:'todas', soloFavoritos:false, verId:null };
+  render();
+}
+
+document.addEventListener('click', (e) => {
+  const el = e.target.closest('[data-action]');
+  if(!el) return;
+  const action = el.dataset.action;
+
+  if(action === 'cerrar-overlay' && e.target.closest('[data-stop]')) return;
+
+  const id = el.dataset.id, sid = el.dataset.sid, secid = el.dataset.secid, bid = el.dataset.bid, eid = el.dataset.eid;
+  const dir = el.dataset.dir ? parseInt(el.dataset.dir,10) : 0;
+
+  switch(action){
+    case 'tab': ui.tab = el.dataset.tab; render(); break;
+    case 'abrir-ajustes': abrirAjustes(); break;
+    case 'cerrar-modal': case 'cerrar-overlay': formDraft=null; formDraftImagenData=undefined; sesionFormDraft=null; closeModal(); break;
+    case 'confirmar-accion': { const cb = ui.modal && ui.modal.props && ui.modal.props.onConfirm; if(cb) cb(); break; }
+
+    // Biblioteca
+    case 'nuevo-ejercicio': abrirFormEjercicio(null); break;
+    case 'ver-ejercicio': openModal('ver-ejercicio', { id }); break;
+    case 'editar-ejercicio': abrirFormEjercicio(id); break;
+    case 'eliminar-ejercicio': eliminarEjercicio(id); break;
+    case 'toggle-favorito': { const ex = state.ejercicios.find(x=>x.id===id); ex.favorito = !ex.favorito; saveState(); render(); break; }
+    case 'guardar-ejercicio': guardarEjercicio(el.dataset.id || null); break;
+    case 'quitar-imagen-draft': formDraftImagenData = null; render(); break;
+    case 'draft-categoria': formDraft.categoria = el.dataset.cat; render(); break;
+    case 'filtro-categoria': ui.biblioteca.categoria = el.dataset.cat; render(); break;
+    case 'toggle-favoritos-filtro': ui.biblioteca.soloFavoritos = !ui.biblioteca.soloFavoritos; render(); break;
+    case 'limpiar-filtros-biblioteca': limpiarFiltrosBiblioteca(); break;
+
+    // Planificador — sesión
+    case 'abrir-nueva-sesion': abrirNuevaSesion(); break;
+    case 'continuar-sesion': ui.planificador.sesionId = id; render(); break;
+    case 'volver-planificador-landing': ui.planificador.sesionId = null; render(); break;
+    case 'editar-meta-sesion': abrirEditarMetaSesion(id); break;
+    case 'guardar-sesion-form': guardarSesionForm(el.dataset.id || null); break;
+    case 'cerrar-sesion': cerrarSesion(id); break;
+    case 'eliminar-sesion': eliminarSesion(id); break;
+    case 'duplicar-sesion': duplicarSesion(id); break;
+    case 'exportar-pdf-sesion': exportarPdfSesion(id); break;
+
+    // Planificador — secciones / bloques
+    case 'anadir-seccion': anadirSeccion(sid); break;
+    case 'eliminar-seccion': eliminarSeccion(sid, secid); break;
+    case 'mover-seccion': moverSeccion(sid, secid, dir); break;
+    case 'anadir-nota': anadirNota(sid, secid); break;
+    case 'eliminar-bloque': eliminarBloque(sid, secid, bid); break;
+    case 'mover-bloque': moverBloque(sid, secid, bid, dir); break;
+    case 'abrir-elegir-ejercicio': abrirElegirEjercicio(sid, secid); break;
+    case 'elegir-ejercicio-bloque': elegirEjercicioParaBloque(sid, secid, eid); break;
+
+    // Historial
+    case 'abrir-sesion-historial': abrirSesionHistorial(id); break;
+    case 'periodo-historial': ui.historial.periodo = el.dataset.periodo; render(); break;
+
+    // Ajustes / plantilla de secciones
+    case 'exportar-todo': exportarTodo(); break;
+    case 'disparar-importar': dispararImportar(); break;
+    case 'anadir-seccion-plantilla': anadirSeccionPlantilla(); break;
+    case 'eliminar-seccion-plantilla': eliminarSeccionPlantilla(el.dataset.secid); break;
+    case 'mover-seccion-plantilla': moverSeccionPlantilla(el.dataset.secid, dir); break;
+  }
+});
+
+document.addEventListener('input', (e) => {
+  const el = e.target.closest('[data-action],[data-draft],[data-sdraft]');
+  if(!el) return;
+
+  if(el.dataset.draft){
+    let v = el.value;
+    if(['duracionMin','jugadoresMin','jugadoresMax'].includes(el.dataset.draft)) v = parseInt(v||'0',10)||0;
+    if(el.dataset.draft==='material' || el.dataset.draft==='etiquetas') v = parseTags(v);
+    formDraft[el.dataset.draft] = v;
+    return;
+  }
+  if(el.dataset.sdraft){
+    let v = el.value;
+    if(el.dataset.sdraft==='duracionObjetivoMin') v = parseInt(v||'0',10)||0;
+    if(el.dataset.sdraft==='fecha' && sesionFormDraft.titulo === sesionFormDraft.fecha){
+      // El título todavía es el de la fecha por defecto (no lo han personalizado): que
+      // siga reflejando la fecha elegida, incluido el campo visible.
+      sesionFormDraft.titulo = v;
+      const tituloInput = document.querySelector('[data-sdraft="titulo"]');
+      if(tituloInput) tituloInput.value = v;
+    }
+    sesionFormDraft[el.dataset.sdraft] = v;
+    return;
+  }
+  const action = el.dataset.action;
+  if(action==='buscar-biblioteca'){
+    const pos = el.selectionStart;
+    ui.biblioteca.query = el.value;
+    render();
+    const el2 = document.querySelector('[data-action="buscar-biblioteca"]');
+    if(el2){ el2.focus(); try{ el2.setSelectionRange(pos,pos); }catch(err){} }
+  } else if(action==='buscar-picker'){
+    const pos = el.selectionStart;
+    ui.planificador.pickerQuery = el.value;
+    render();
+    const el2 = document.querySelector('[data-action="buscar-picker"]');
+    if(el2){ el2.focus(); try{ el2.setSelectionRange(pos,pos); }catch(err){} }
+  } else if(action==='renombrar-seccion'){
+    renombrarSeccion(el.dataset.sid, el.dataset.secid, el.value);
+  } else if(action==='renombrar-seccion-plantilla'){
+    renombrarSeccionPlantilla(el.dataset.secid, el.value);
+  } else if(action==='editar-nota'){
+    editarNota(el.dataset.sid, el.dataset.secid, el.dataset.bid, el.value);
+  } else if(action==='cambiar-duracion-bloque'){
+    cambiarDuracionBloque(el.dataset.sid, el.dataset.secid, el.dataset.bid, el.value);
+  }
+});
+
+document.addEventListener('change', async (e) => {
+  const el = e.target.closest('[data-action],[data-draft],[data-sdraft]');
+  if(!el) return;
+  if(el.dataset.sdraft==='fecha'){
+    // Si el título todavía es el de la fecha por defecto (no lo han personalizado), lo
+    // actualizamos para que siga reflejando la fecha elegida, incluido el campo visible.
+    if(sesionFormDraft.titulo === sesionFormDraft.fecha){
+      sesionFormDraft.titulo = el.value;
+      const tituloInput = document.querySelector('[data-sdraft="titulo"]');
+      if(tituloInput) tituloInput.value = el.value;
+    }
+    sesionFormDraft.fecha = el.value;
+    return;
+  }
+  const action = el.dataset.action;
+  if(action==='input-imagen'){
+    const file = e.target.files && e.target.files[0];
+    if(!file) return;
+    subiendoImagen = true;
+    render();
+    toast('Procesando imagen…');
+    try{
+      const dataUrl = await comprimirImagen(file);
+      formDraftImagenData = dataUrl;
+    }catch(err){ console.error(err); toast('No se pudo procesar la imagen'); }
+    finally{ subiendoImagen = false; render(); }
+  }
+});
+
+document.getElementById('import-input').addEventListener('change', (e) => {
+  const file = e.target.files && e.target.files[0];
+  e.target.value = '';
+  if(file) manejarArchivoImportado(file);
+});
+
+/* ================= INIT ================= */
+let _inited = false;
+function init(){
+  if(_inited) return;
+  _inited = true;
+  state = loadState();
+  asegurarSemilla();
+  if(!localStorageOk) toast('Este navegador no permite guardar datos aquí: nada se conservará al salir.');
+  render();
+  // Trabajo de fondo tras la primera pintura, sin bloquearla: imágenes en memoria (evita
+  // releer IndexedDB cada vez que se muestran) y precarga de las librerías de backup/PDF.
+  precalentarImagenes();
+  precargarLibsEnSegundoPlano();
+}
+document.addEventListener('DOMContentLoaded', init);
+if(document.readyState==='complete' || document.readyState==='interactive') init();
+</script>
+</body>
+</html>
