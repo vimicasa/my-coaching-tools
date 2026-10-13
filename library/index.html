@@ -153,6 +153,8 @@ nav.bottombar button svg{width:20px;height:20px;}
 .badge svg{width:11px;height:11px;}
 .btn-sm svg{width:14px;height:14px;}
 .tag{display:inline-flex;padding:3px 9px;border-radius:999px;font-size:11px;background:var(--surface-3);color:var(--text-2);border:1px solid var(--border-soft);}
+.tag-suggestions{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px;}
+.tag-suggestion:active{background:var(--court-bg);color:var(--court);border-color:var(--court);}
 
 .empty{padding:48px 20px;text-align:center;color:var(--text-2);}
 .empty svg{width:52px;height:52px;color:var(--text-3);margin-bottom:14px;}
@@ -181,6 +183,14 @@ nav.bottombar button svg{width:20px;height:20px;}
 .sheet-close svg{width:16px;height:16px;}
 .field{margin-bottom:14px;}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.stepper{display:flex;align-items:stretch;}
+.stepper-btn{flex:none;width:42px;display:flex;align-items:center;justify-content:center;background:var(--surface-2);border:1px solid var(--border);color:var(--text-1);touch-action:manipulation;}
+.stepper-btn svg{width:16px;height:16px;}
+.stepper-btn:first-child{border-radius:var(--radius-sm) 0 0 var(--radius-sm);border-right:none;}
+.stepper-btn:last-child{border-radius:0 var(--radius-sm) var(--radius-sm) 0;border-left:none;}
+.stepper-btn:active{background:var(--surface-3);}
+.stepper .stepper-input{border-radius:0;text-align:center;width:auto;flex:1;min-width:0;-moz-appearance:textfield;}
+.stepper .stepper-input::-webkit-outer-spin-button,.stepper .stepper-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
 .hint{font-size:11.5px;color:var(--text-3);margin-top:5px;}
 .pill-select{display:flex;flex-wrap:wrap;gap:6px;}
 .pill-select button{padding:8px 13px;border-radius:999px;background:var(--surface-2);border:1px solid var(--border);font-size:12.5px;font-weight:600;color:var(--text-2);}
@@ -229,6 +239,13 @@ nav.bottombar button svg{width:20px;height:20px;}
 .plan-block-order svg{width:12px;height:12px;}
 .add-block-row{display:flex;gap:6px;padding:8px;}
 .section-add-btns{display:flex;gap:6px;flex-wrap:wrap;padding:6px 8px 12px;}
+.cat-block{display:flex;flex-direction:column;gap:8px;background:var(--surface-2);border:1px solid var(--border-soft);border-radius:var(--radius-md);padding:9px 10px;margin-bottom:8px;}
+.cat-block-top{display:flex;align-items:center;gap:10px;}
+.cat-block-top .info{flex:1;min-width:0;}
+.cat-block-colors{display:flex;gap:6px;flex-wrap:wrap;padding-left:32px;}
+.color-dot{width:22px;height:22px;border-radius:50%;border:2px solid transparent;flex:none;}
+.color-dot.active{border-color:var(--text-1);}
+.cat-en-uso{font-size:11px;color:var(--text-3);white-space:nowrap;flex:none;}
 
 .picker-list{display:flex;flex-direction:column;gap:8px;max-height:52vh;overflow-y:auto;}
 .picker-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--radius-md);background:var(--surface-2);border:1px solid var(--border-soft);}
@@ -349,7 +366,10 @@ function precargarLibsEnSegundoPlano(){
   ir(() => { Object.values(LIBS).forEach(src => { cargarScript(src).catch(()=>{}); }); });
 }
 
-const CATEGORIAS = [
+// Categorías de ejercicio con las que arranca la app. A partir de aquí viven en state.categorias
+// (gestionables desde Ajustes); esta lista solo se usa para sembrar la primera vez o si faltan
+// en una copia de seguridad antigua. 'otro' es la categoría de respaldo y nunca se puede borrar.
+const CATEGORIAS_POR_DEFECTO = [
   { id:'calentamiento',           label:'Calentamiento',                  color:'#3fa9be', bg:'rgba(63,169,190,.14)'  },
   { id:'tecnica_individual',      label:'Técnica individual',             color:'#2f8f6f', bg:'var(--court-bg)'      },
   { id:'tactica_grupo',           label:'Táctica de grupo',               color:'#7fae3f', bg:'rgba(127,174,63,.14)' },
@@ -359,7 +379,32 @@ const CATEGORIAS = [
   { id:'fisico',                  label:'Físico / prevención',            color:'#4f7fd1', bg:'var(--blue-bg)'       },
   { id:'otro',                    label:'Otro',                           color:'#6c7a74', bg:'var(--surface-3)'     },
 ];
-const catById = id => CATEGORIAS.find(c=>c.id===id) || CATEGORIAS[CATEGORIAS.length-1];
+// Paleta reducida para elegir color al crear/editar una categoría (son los mismos colores de
+// las categorías de fábrica, así todo sigue viéndose coherente).
+const PALETA_COLORES_CATEGORIA = CATEGORIAS_POR_DEFECTO.map(c=>({ color:c.color, bg:c.bg }));
+function siguienteColorCategoria(){
+  const usados = new Set(state.categorias.map(c=>c.color));
+  const libre = PALETA_COLORES_CATEGORIA.find(p=>!usados.has(p.color));
+  return libre || PALETA_COLORES_CATEGORIA[state.categorias.length % PALETA_COLORES_CATEGORIA.length];
+}
+const catById = id => (state.categorias.find(c=>c.id===id)) || state.categorias.find(c=>c.id==='otro') || state.categorias[state.categorias.length-1];
+
+const AGRUPACIONES = [
+  { id:'individual',    label:'Individual' },
+  { id:'parejas',       label:'Parejas' },
+  { id:'trios',         label:'Tríos' },
+  { id:'cuartetos',     label:'Cuartetos' },
+  { id:'grupo_grande',  label:'Grupo grande' },
+];
+const agrupacionById = id => AGRUPACIONES.find(a=>a.id===id) || null;
+// Migración desde el antiguo rango jugadoresMin/jugadoresMax (eliminado) a una agrupación.
+function agrupacionDesdeJugadoresMin(min){
+  if(min<=1) return 'individual';
+  if(min===2) return 'parejas';
+  if(min===3) return 'trios';
+  if(min===4) return 'cuartetos';
+  return 'grupo_grande';
+}
 
 const SECCIONES_POR_DEFECTO = [
   { id:'activacion',   nombre:'Activación / Calentamiento' },
@@ -405,11 +450,43 @@ function nowTimestampLocal(){
 function parseTags(str){
   return String(str||'').split(',').map(s=>s.trim()).filter(Boolean).slice(0,12);
 }
+
+/* ---- Sugerencias de etiquetas ya usadas (para no acabar con "defensa" y "defensas" sueltas) ---- */
+// Todas las etiquetas que ya existen en la biblioteca, más usadas primero.
+function todasLasEtiquetas(){
+  const cuenta = new Map();
+  state.ejercicios.forEach(e => (e.etiquetas||[]).forEach(t => {
+    const limpio = String(t||'').trim();
+    if(!limpio) return;
+    cuenta.set(limpio, (cuenta.get(limpio)||0) + 1);
+  }));
+  return [...cuenta.entries()].sort((a,b)=> b[1]-a[1] || a[0].localeCompare(b[0],'es')).map(([t])=>t);
+}
+// A partir del texto tal cual está en el campo, separa los tags ya completos (antes de la última
+// coma, o todos si el texto termina en coma) del fragmento que se está escribiendo ahora mismo.
+function etiquetasYaEscritas(textoCrudo){
+  const texto = String(textoCrudo||'');
+  const terminaEnComa = /,\s*$/.test(texto) || texto.trim()==='';
+  const partes = texto.split(',').map(s=>s.trim()).filter(Boolean);
+  const completas = terminaEnComa ? partes : partes.slice(0,-1);
+  const fragmento = terminaEnComa ? '' : (partes[partes.length-1]||'');
+  return { completas, fragmento, completasLower: completas.map(t=>t.toLowerCase()), fragmentoLower: fragmento.toLowerCase() };
+}
+function sugerenciasEtiquetas(textoCrudo){
+  const { completasLower, fragmentoLower } = etiquetasYaEscritas(textoCrudo);
+  const completasSet = new Set(completasLower);
+  return todasLasEtiquetas().filter(t=>{
+    const tl = t.toLowerCase();
+    if(completasSet.has(tl) || tl===fragmentoLower) return false;
+    return !fragmentoLower || tl.includes(fragmentoLower);
+  }).slice(0, 8);
+}
 /* ---------------- Estado / almacenamiento ---------------- */
 function estadoVacio(){
   return {
     version: 1,
     ejercicios: [],
+    categorias: CATEGORIAS_POR_DEFECTO.map(c=>({...c})),
     plantillaSecciones: SECCIONES_POR_DEFECTO.map(s=>({...s})),
     sesiones: [],
     ajustes: { lastBackupAt: null, seeded:false },
@@ -432,7 +509,8 @@ function loadState(){
     const parsed = JSON.parse(raw);
     const base = estadoVacio();
     return Object.assign(base, parsed, {
-      ejercicios: parsed.ejercicios || [],
+      ejercicios: (parsed.ejercicios || []).map(e => e.agrupacion ? e : { ...e, agrupacion: agrupacionDesdeJugadoresMin(e.jugadoresMin ?? 2) }),
+      categorias: (parsed.categorias && parsed.categorias.length) ? parsed.categorias : base.categorias,
       plantillaSecciones: (parsed.plantillaSecciones && parsed.plantillaSecciones.length) ? parsed.plantillaSecciones : base.plantillaSecciones,
       sesiones: parsed.sesiones || [],
       ajustes: Object.assign(base.ajustes, parsed.ajustes||{}),
@@ -651,8 +729,7 @@ function ejercicioBase(o){
     variantes: '',
     puntosCoaching: '',
     duracionMin: 10,
-    jugadoresMin: 2,
-    jugadoresMax: 12,
+    agrupacion: 'parejas',
     material: [],
     favorito: false,
     tieneImagen: false,
@@ -664,7 +741,7 @@ function ejercicioBase(o){
 function ejerciciosSemilla(){
   return [
     ejercicioBase({ nombre:'Activación en parejas con balón', categoria:'calentamiento',
-      duracionMin:8, jugadoresMin:2, jugadoresMax:16, material:['1 balón por pareja'],
+      duracionMin:8, agrupacion:'parejas', material:['1 balón por pareja'],
       etiquetas:['activación','pase','contacto con balón'],
       objetivo:'Elevar pulsaciones y activar manos/hombros antes de la parte técnica, con balón desde el primer minuto.',
       desarrollo:'Por parejas, uno enfrente de otro a 3-4 metros: pase de pecho 10 reps, pase picado 10 reps, pase por encima de cabeza 10 reps. Cambiar de pareja cada minuto.',
@@ -672,7 +749,7 @@ function ejerciciosSemilla(){
       puntosCoaching:'Exigir que reciban con las manos preparadas (target) y que el pase salga con las dos manos, no un lanzamiento.' }),
 
     ejercicioBase({ nombre:'Movilidad dinámica + pase en círculo', categoria:'calentamiento',
-      duracionMin:7, jugadoresMin:6, jugadoresMax:18, material:['1-2 balones'],
+      duracionMin:7, agrupacion:'grupo_grande', material:['1-2 balones'],
       etiquetas:['activación','movilidad'],
       objetivo:'Movilidad articular general y activación de core antes de correr o saltar.',
       desarrollo:'Círculo grande: skipping, talón-glúteo, zancada con giro de tronco, apertura/cierre de cadera, 20m cada desplazamiento volviendo caminando. Terminar con el grupo sentado pasándose 1-2 balones en círculo sin que caigan al suelo.',
@@ -680,7 +757,7 @@ function ejerciciosSemilla(){
       puntosCoaching:'Ritmo suave, sin buscar velocidad; es activación, no condición física.' }),
 
     ejercicioBase({ nombre:'Progresiones de bote y cambios de mano', categoria:'tecnica_individual',
-      duracionMin:10, jugadoresMin:1, jugadoresMax:16, material:['1 balón por jugador','conos (opcional)'],
+      duracionMin:10, agrupacion:'individual', material:['1 balón por jugador','conos (opcional)'],
       etiquetas:['bote','manejo de balón','coordinación'],
       objetivo:'Mejorar el control de balón y la confianza con ambas manos en movimiento.',
       desarrollo:'Recorrido de campo completo: ida en bote de control, vuelta con cambios de mano por delante cada 4 botes; segunda serie con cruzados por detrás de la espalda; tercera serie con bote entre las piernas caminando.',
@@ -688,7 +765,7 @@ function ejerciciosSemilla(){
       puntosCoaching:'La cabeza arriba en todo momento; el balón por debajo de la cintura en los cambios; empujar, no golpear el balón.' }),
 
     ejercicioBase({ nombre:'Catch & shoot tras salida de bloqueo', categoria:'tecnica_individual',
-      duracionMin:12, jugadoresMin:4, jugadoresMax:10, material:['2-3 balones','conos para marcar el bloqueo'],
+      duracionMin:12, agrupacion:'grupo_grande', material:['2-3 balones','conos para marcar el bloqueo'],
       etiquetas:['tiro','bloqueo indirecto','sin balón'],
       objetivo:'Automatizar la recepción en equilibrio y el tiro rápido tras un bloqueo indirecto.',
       desarrollo:'El jugador sale de línea de fondo, usa un bloqueo indirecto marcado con conos en el lateral, recibe pase del entrenador en la línea de tres y tira. Rotar tirador tras cada acción, recoger su propio rebote y pasar al siguiente.',
@@ -696,7 +773,7 @@ function ejerciciosSemilla(){
       puntosCoaching:'Pies listos antes de recibir el balón, no después; catch-and-shoot en menos de un segundo de contacto con el suelo.' }),
 
     ejercicioBase({ nombre:'Trabajo de pies en defensa (slides + cierre)', categoria:'tecnica_individual',
-      duracionMin:9, jugadoresMin:2, jugadoresMax:16, material:['conos'],
+      duracionMin:9, agrupacion:'individual', material:['conos'],
       etiquetas:['defensa individual','pies','posición base'],
       objetivo:'Consolidar la posición base defensiva y el desplazamiento lateral sin cruzar pies.',
       desarrollo:'Escalera de conos en zigzag: desplazamiento lateral en posición baja de cono a cono, sin cruzar los pies y sin perder la posición de manos activas. Terminar cada serie con un cierre explosivo hacia un cono final simulando cerrar a un tirador.',
@@ -704,7 +781,7 @@ function ejerciciosSemilla(){
       puntosCoaching:'Rodillas flexionadas y espalda recta, no doblado por la cintura; el primer paso siempre es del pie más cercano a la dirección.' }),
 
     ejercicioBase({ nombre:'Bloqueo directo lateral: lectura del defensor', categoria:'tactica_grupo',
-      duracionMin:14, jugadoresMin:4, jugadoresMax:8, material:['2 balones'],
+      duracionMin:14, agrupacion:'cuartetos', material:['2 balones'],
       etiquetas:['pick and roll','2x2','lectura'],
       objetivo:'Que el jugador con balón lea cómo defiende el bloqueo directo (bajo, por arriba, cambio) y elija la opción correcta.',
       desarrollo:'2x2 en el lateral: base y bloqueador contra dos defensores que alternan el tipo de defensa al bloqueo cada 3 repeticiones (bajo / persiguiendo por arriba / cambio). El atacante debe leer y decidir: tirar, penetrar o dar continuación al bloqueador.',
@@ -712,7 +789,7 @@ function ejerciciosSemilla(){
       puntosCoaching:'El bloqueador debe llegar a fijar contacto legal antes de abrirse; el base decide después de leer, no antes.' }),
 
     ejercicioBase({ nombre:'Dar y seguir con corte a canasta', categoria:'tactica_grupo',
-      duracionMin:10, jugadoresMin:3, jugadoresMax:9, material:['1-2 balones'],
+      duracionMin:10, agrupacion:'trios', material:['1-2 balones'],
       etiquetas:['pase y corte','sin balón','3x0'],
       objetivo:'Automatismo básico de moverse tras pasar en vez de quedarse estático.',
       desarrollo:'3 jugadores sin defensa: pase al compañero y corte a canasta buscando devolución para tiro cercano; el que recibe se convierte en pasador de la siguiente acción. Rotación continua.',
@@ -720,7 +797,7 @@ function ejerciciosSemilla(){
       puntosCoaching:'Cortar hacia el aro, no en paralelo a la línea de fondo; pedir el balón con las manos.' }),
 
     ejercicioBase({ nombre:'Ataque contra zona 2-3: rotación de balón', categoria:'tactica_equipo',
-      duracionMin:15, jugadoresMin:8, jugadoresMax:14, material:['petos','2 balones'],
+      duracionMin:15, agrupacion:'grupo_grande', material:['petos','2 balones'],
       etiquetas:['ataque posicional','zona','5x5'],
       objetivo:'Practicar la circulación rápida de balón para mover la zona y encontrar huecos entre defensores.',
       desarrollo:'5x5 contra defensa en zona 2-3. Objetivo: 3 pases mínimo antes de cualquier tiro, buscando siempre el pase al hueco que deja la zona al desplazarse. Un jugador en el poste alto/bajo como referencia.',
@@ -728,7 +805,7 @@ function ejerciciosSemilla(){
       puntosCoaching:'El balón viaja más rápido que el defensor: exigir pase antes de bote siempre que haya opción.' }),
 
     ejercicioBase({ nombre:'Defensa en ayuda y recuperación (help & recover)', categoria:'tactica_equipo',
-      duracionMin:13, jugadoresMin:6, jugadoresMax:10, material:['petos'],
+      duracionMin:13, agrupacion:'grupo_grande', material:['petos'],
       etiquetas:['defensa de equipo','ayudas','rotaciones'],
       objetivo:'Que los defensores sin balón ayuden ante una penetración y recuperen a su hombre a tiempo.',
       desarrollo:'4x4 o 5x5 en medio campo: se permite una penetración libre al atacante con balón; el defensor más cercano ayuda, y el resto rota una posición. Parar la acción y corregir posiciones antes de continuar las primeras rondas.',
@@ -736,7 +813,7 @@ function ejerciciosSemilla(){
       puntosCoaching:'Ayudar "un paso y medio", no abandonar del todo al propio hombre; comunicación verbal obligatoria ("¡Ayuda!", "¡Recupero!").' }),
 
     ejercicioBase({ nombre:'Contraataque continuo 3x2', categoria:'transicion',
-      duracionMin:12, jugadoresMin:6, jugadoresMax:12, material:['petos','varios balones'],
+      duracionMin:12, agrupacion:'grupo_grande', material:['petos','varios balones'],
       etiquetas:['contraataque','superioridad','continuo'],
       objetivo:'Decisión rápida en superioridad numérica y finalización en carrera.',
       desarrollo:'3 atacantes contra 2 defensores a campo completo. Al acabar la acción (canasta o pérdida), los 2 defensores atacan a campo contrario contra 1 de los 3 que se queda a defender, y entran 2 nuevos. Continuo, sin parar.',
@@ -744,7 +821,7 @@ function ejerciciosSemilla(){
       puntosCoaching:'El balón siempre por delante en campo abierto; el último pase antes del aro debe ser fácil de anotar, no forzado.' }),
 
     ejercicioBase({ nombre:'Balance defensivo tras pérdida de balón', categoria:'transicion',
-      duracionMin:9, jugadoresMin:6, jugadoresMax:12, material:['petos'],
+      duracionMin:9, agrupacion:'grupo_grande', material:['petos'],
       etiquetas:['transición defensiva','balance','pérdida'],
       objetivo:'Reaccionar de inmediato tras perder el balón en ataque en vez de protestar o relajarse.',
       desarrollo:'5x5 en ataque posicional; a una señal del entrenador (silbato) se simula pérdida de balón y los 5 atacantes deben esprintar a defender mientras el equipo contrario ataca con un balón ya preparado en el poste contrario.',
@@ -752,7 +829,7 @@ function ejerciciosSemilla(){
       puntosCoaching:'El primer defensor debe frenar el balón, no correr detrás sin más; el resto sprinta a proteger el aro antes que a su par.' }),
 
     ejercicioBase({ nombre:'BLOB bajo canasta con bloqueo ciego', categoria:'situaciones_especiales',
-      duracionMin:10, jugadoresMin:5, jugadoresMax:10, material:['petos','pizarra'],
+      duracionMin:10, agrupacion:'grupo_grande', material:['petos','pizarra'],
       etiquetas:['saque de fondo','ATO/BLOB','jugada de pizarra'],
       objetivo:'Ejecutar con precisión una jugada preparada de saque de banda bajo el propio aro.',
       desarrollo:'Explicar la jugada en pizarra primero. Repetir sin defensa 3 veces para fijar los movimientos y los tiempos de bloqueo, después con defensa pasiva, y por último con defensa real al 100%.',
@@ -760,7 +837,7 @@ function ejerciciosSemilla(){
       puntosCoaching:'El bloqueo ciego tiene que salir de fuera del campo visual del defensor; el sacador cuenta en voz alta el tiempo de saque.' }),
 
     ejercicioBase({ nombre:'ATO: última posesión en 8 segundos', categoria:'situaciones_especiales',
-      duracionMin:10, jugadoresMin:5, jugadoresMax:10, material:['petos','cronómetro','pizarra'],
+      duracionMin:10, agrupacion:'grupo_grande', material:['petos','cronómetro','pizarra'],
       etiquetas:['última posesión','presión de tiempo','jugada de pizarra'],
       objetivo:'Tomar buenas decisiones bajo presión de marcador y tiempo en el último ataque del partido.',
       desarrollo:'Se simula partido perdido por 2 puntos con 8 segundos en el reloj y saque en medio campo. El equipo debe sacar, avanzar y generar un tiro con opciones de anotar (2 o 3 según se indique) antes de que suene la bocina.',
@@ -768,7 +845,7 @@ function ejerciciosSemilla(){
       puntosCoaching:'Decidir antes de recibir el balón quién tira; nunca perder tiempo en el saque, contar en voz alta.' }),
 
     ejercicioBase({ nombre:'Circuito de prevención tobillo/rodilla', categoria:'fisico',
-      duracionMin:10, jugadoresMin:1, jugadoresMax:18, material:['esterillas (opcional)','banda elástica (opcional)'],
+      duracionMin:10, agrupacion:'individual', material:['esterillas (opcional)','banda elástica (opcional)'],
       etiquetas:['prevención de lesiones','propiocepción','vuelta a la calma'],
       objetivo:'Reducir el riesgo de esguinces de tobillo y sobrecargas de rodilla, muy frecuentes en baloncesto.',
       desarrollo:'3 estaciones de 90 segundos rotando: 1) equilibrio a la pata coja sobre superficie inestable o pie descalzo, 2) sentadilla + salto vertical controlado con aterrizaje silencioso, 3) estiramiento activo de gemelo y cadera.',
@@ -792,6 +869,7 @@ const ICONS = {
   historial:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg>`,
   search:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>`,
   plus:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>`,
+  minus:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></svg>`,
   star:`<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2.5l2.9 6.3 6.9.7-5.2 4.7 1.5 6.8L12 17.8l-6.1 3.2 1.5-6.8-5.2-4.7 6.9-.7L12 2.5Z"/></svg>`,
   starOutline:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 2.5l2.9 6.3 6.9.7-5.2 4.7 1.5 6.8L12 17.8l-6.1 3.2 1.5-6.8-5.2-4.7 6.9-.7L12 2.5Z"/></svg>`,
   image:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m5 17 4.5-4.5a2 2 0 0 1 2.8 0L15 15.3M14 14l1.6-1.6a2 2 0 0 1 2.8 0L20.5 14"/></svg>`,
@@ -815,7 +893,7 @@ const ICONS = {
 const ui = {
   tab: 'biblioteca',
   biblioteca: { query:'', categoria:'todas', soloFavoritos:false, verId:null },
-  planificador: { sesionId:null, pickerSeccionId:null, pickerQuery:'' },
+  planificador: { sesionId:null, pickerSeccionId:null, pickerQuery:'', plantillaQuery:'' },
   historial: { periodo:'temporada', verId:null },
   modal: null,
   toast: null,
@@ -906,6 +984,40 @@ function renderModalRoot(){
   if(!ui.modal){ root.innerHTML=''; return; }
   root.innerHTML = renderModal(ui.modal);
   hidratarImagenesVisibles();
+  actualizarSugerenciasEtiquetasDom();
+}
+
+/* Tras cada render (y en cada tecla sobre el campo), repinta solo el bloque de sugerencias de
+   etiquetas sin tocar el <input>, para no perder el cursor mientras se escribe. */
+function renderSugerenciasEtiquetasHtml(textoCrudo){
+  const lista = sugerenciasEtiquetas(textoCrudo);
+  if(!lista.length) return '';
+  const { fragmento } = etiquetasYaEscritas(textoCrudo);
+  return `<div class="hint" style="margin:6px 0 4px;">${fragmento?'Etiquetas parecidas que ya usas:':'Etiquetas que ya usas:'}</div>
+    <div class="tag-suggestions">${lista.map(t=>`<button type="button" class="tag tag-suggestion" data-action="anadir-etiqueta-sugerida" data-tag="${escapeHtml(t)}">+ ${escapeHtml(t)}</button>`).join('')}</div>`;
+}
+function actualizarSugerenciasEtiquetasDom(){
+  const cont = document.getElementById('etiquetas-sugerencias');
+  const input = document.querySelector('[data-draft="etiquetas"]');
+  if(!cont || !input) return;
+  cont.innerHTML = renderSugerenciasEtiquetasHtml(input.value);
+}
+function anadirEtiquetaSugerida(tag){
+  const input = document.querySelector('[data-draft="etiquetas"]');
+  if(!input || !formDraft) return;
+  const { completas } = etiquetasYaEscritas(input.value);
+  const vistas = new Set();
+  const final = [...completas, tag].filter(t=>{
+    const k = t.toLowerCase();
+    if(vistas.has(k)) return false;
+    vistas.add(k); return true;
+  });
+  input.value = final.join(', ') + ', ';
+  formDraft.etiquetas = parseTags(input.value);
+  input.focus();
+  const fin = input.value.length;
+  try{ input.setSelectionRange(fin, fin); }catch(err){}
+  actualizarSugerenciasEtiquetasDom();
 }
 
 /* Tras cada render, busca elementos [data-img-for] y les carga la imagen desde IndexedDB */
@@ -926,7 +1038,7 @@ function filteredEjercicios(){
     if(categoria!=='todas' && e.categoria!==categoria) return false;
     if(soloFavoritos && !e.favorito) return false;
     if(q){
-      const hay = [e.nombre, (e.etiquetas||[]).join(' '), e.objetivo, e.material.join(' ')].join(' ').toLowerCase();
+      const hay = [e.nombre, (e.etiquetas||[]).join(' '), e.objetivo].join(' ').toLowerCase();
       if(!hay.includes(q)) return false;
     }
     return true;
@@ -945,7 +1057,7 @@ function renderBiblioteca(){
   </div>
   <div class="chip-row" style="margin-bottom:10px;">
     <button class="chip ${ui.biblioteca.categoria==='todas'?'active':''}" data-action="filtro-categoria" data-cat="todas">Todas</button>
-    ${CATEGORIAS.map(c=>`<button class="chip ${ui.biblioteca.categoria===c.id?'active':''}" data-action="filtro-categoria" data-cat="${c.id}" style="${ui.biblioteca.categoria===c.id?`background:${c.bg};border-color:${c.color};color:${c.color}`:''}">${c.label}</button>`).join('')}
+    ${state.categorias.map(c=>`<button class="chip ${ui.biblioteca.categoria===c.id?'active':''}" data-action="filtro-categoria" data-cat="${c.id}" style="${ui.biblioteca.categoria===c.id?`background:${c.bg};border-color:${c.color};color:${c.color}`:''}">${c.label}</button>`).join('')}
   </div>
   ${list.length ? `<div class="grid">${list.map(renderDrillCard).join('')}</div>` : renderBibliotecaVacia()}
 
@@ -977,7 +1089,7 @@ function renderDrillCard(e){
       <div class="drill-meta">
         <span class="mono">${fmtMin(e.duracionMin)}</span>
         <span>·</span>
-        <span>${e.jugadoresMin===e.jugadoresMax? e.jugadoresMin : e.jugadoresMin+'–'+e.jugadoresMax} jug.</span>
+        <span>${agrupacionById(e.agrupacion)?.label || '—'}</span>
       </div>
     </div>
   </div>`;
@@ -991,6 +1103,7 @@ function renderModal(modal){
   else if(type==='form-ejercicio') inner = renderModalFormEjercicio(props);
   else if(type==='ajustes') inner = renderModalAjustes(props);
   else if(type==='elegir-ejercicio') inner = renderModalElegirEjercicio(props);
+  else if(type==='elegir-plantilla') inner = renderModalElegirPlantilla(props);
   else if(type==='sesion-form') inner = renderModalSesionForm(props);
   return `<div class="overlay" data-action="cerrar-overlay">${inner}</div>`;
 }
@@ -1019,13 +1132,11 @@ function renderModalVerEjercicio({ id }){
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
       <span class="badge" style="background:${c.bg};color:${c.color}">${c.label}</span>
       <span class="tag mono">${fmtMin(e.duracionMin)}</span>
-      <span class="tag">${e.jugadoresMin===e.jugadoresMax? e.jugadoresMin : e.jugadoresMin+'–'+e.jugadoresMax} jugadores</span>
+      ${agrupacionById(e.agrupacion)?`<span class="tag">${agrupacionById(e.agrupacion).label}</span>`:''}
     </div>
     ${e.objetivo?`<div class="field"><label>Objetivo</label><div>${escapeHtml(e.objetivo)}</div></div>`:''}
     ${e.desarrollo?`<div class="field"><label>Desarrollo</label><div style="white-space:pre-wrap;">${escapeHtml(e.desarrollo)}</div></div>`:''}
     ${e.variantes?`<div class="field"><label>Variantes</label><div style="white-space:pre-wrap;">${escapeHtml(e.variantes)}</div></div>`:''}
-    ${e.puntosCoaching?`<div class="field"><label>Puntos de coaching</label><div style="white-space:pre-wrap;">${escapeHtml(e.puntosCoaching)}</div></div>`:''}
-    ${e.material.length?`<div class="field"><label>Material</label><div>${e.material.map(m=>`<span class="tag" style="margin:0 6px 6px 0;">${escapeHtml(m)}</span>`).join('')}</div></div>`:''}
     ${e.etiquetas.length?`<div class="field"><label>Etiquetas</label><div>${e.etiquetas.map(t=>`<span class="tag" style="margin:0 6px 6px 0;">${escapeHtml(t)}</span>`).join('')}</div></div>`:''}
     <div class="sheet-footer" style="flex-wrap:wrap;">
       <button class="btn ${e.favorito?'btn-court':''}" data-action="toggle-favorito" data-id="${e.id}">${e.favorito?ICONS.star:ICONS.starOutline} ${e.favorito?'Favorito':'Marcar favorito'}</button>
@@ -1046,6 +1157,14 @@ function abrirFormEjercicio(id){
   openModal('form-ejercicio', { id });
 }
 
+/* ---- Control numérico con flechas +/- (sustituye el teclado numérico de iOS, poco práctico) ---- */
+function renderStepperNumero(campo, valor, min, max){
+  return `<div class="stepper">
+    <button type="button" class="stepper-btn" data-action="draft-stepper" data-draft="${campo}" data-dir="-1" data-min="${min}" data-max="${max}" aria-label="Restar">${ICONS.minus}</button>
+    <input type="number" inputmode="numeric" min="${min}" max="${max}" value="${valor}" data-draft="${campo}" class="stepper-input">
+    <button type="button" class="stepper-btn" data-action="draft-stepper" data-draft="${campo}" data-dir="1" data-min="${min}" data-max="${max}" aria-label="Sumar">${ICONS.plus}</button>
+  </div>`;
+}
 function renderModalFormEjercicio({ id }){
   const e = formDraft;
   const esNuevo = !id;
@@ -1067,38 +1186,30 @@ function renderModalFormEjercicio({ id }){
     <div class="field">
       <label>Categoría</label>
       <div class="pill-select">
-        ${CATEGORIAS.map(c=>`<button data-action="draft-categoria" data-cat="${c.id}" class="${e.categoria===c.id?'active':''}" style="${e.categoria===c.id?`background:${c.color};border-color:${c.color}`:''}">${c.label}</button>`).join('')}
-      </div>
-    </div>
-    <div class="field-row">
-      <div class="field">
-        <label>Duración estimada (min)</label>
-        <input type="number" min="1" max="120" value="${e.duracionMin}" data-draft="duracionMin">
-      </div>
-      <div class="field">
-        <label>Jugadores mínimo</label>
-        <input type="number" min="1" max="30" value="${e.jugadoresMin}" data-draft="jugadoresMin">
-      </div>
-    </div>
-    <div class="field-row">
-      <div class="field">
-        <label>Jugadores máximo</label>
-        <input type="number" min="1" max="30" value="${e.jugadoresMax}" data-draft="jugadoresMax">
-      </div>
-      <div class="field">
-        <label>Material necesario</label>
-        <input type="text" value="${escapeHtml(e.material.join(', '))}" data-draft="material" placeholder="Balones, conos, petos…">
+        ${state.categorias.map(c=>`<button data-action="draft-categoria" data-cat="${c.id}" class="${e.categoria===c.id?'active':''}" style="${e.categoria===c.id?`background:${c.color};border-color:${c.color}`:''}">${c.label}</button>`).join('')}
       </div>
     </div>
     <div class="field">
       <label>Etiquetas</label>
       <input type="text" value="${escapeHtml(e.etiquetas.join(', '))}" data-draft="etiquetas" placeholder="pase, bloqueo, transición…">
+      <div id="etiquetas-sugerencias"></div>
       <div class="hint">Sepáralas por comas. Te ayudarán a buscar y filtrar.</div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Duración estimada (min)</label>
+        ${renderStepperNumero('duracionMin', e.duracionMin, 1, 120)}
+      </div>
+      <div class="field">
+        <label>Agrupación</label>
+        <div class="pill-select">
+          ${AGRUPACIONES.map(a=>`<button data-action="draft-agrupacion" data-agr="${a.id}" class="${e.agrupacion===a.id?'active':''}" style="${e.agrupacion===a.id?`background:var(--court-bg);border-color:var(--court);color:var(--court)`:''}">${a.label}</button>`).join('')}
+        </div>
+      </div>
     </div>
     <div class="field"><label>Objetivo</label><textarea data-draft="objetivo" placeholder="¿Qué se entrena con este ejercicio?">${escapeHtml(e.objetivo)}</textarea></div>
     <div class="field"><label>Desarrollo</label><textarea data-draft="desarrollo" placeholder="Cómo se organiza y ejecuta">${escapeHtml(e.desarrollo)}</textarea></div>
     <div class="field"><label>Variantes</label><textarea data-draft="variantes" placeholder="Formas de complicar o simplificar el ejercicio">${escapeHtml(e.variantes)}</textarea></div>
-    <div class="field"><label>Puntos de coaching</label><textarea data-draft="puntosCoaching" placeholder="Qué corregir mientras se ejecuta">${escapeHtml(e.puntosCoaching)}</textarea></div>
 
     <div class="sheet-footer">
       <button class="btn btn-block" data-action="cerrar-modal">Cancelar</button>
@@ -1201,9 +1312,11 @@ function renderPlanificador(){
 
 function renderPlanificadorLanding(){
   const borradores = state.sesiones.filter(s=>s.estado==='borrador').sort((a,b)=> b.actualizadoEn.localeCompare(a.actualizadoEn));
+  const hayCerradas = state.sesiones.some(s=>s.estado==='cerrada');
   return `
   <div class="section-head"><h2>Sesión de hoy</h2></div>
-  <button class="btn btn-court btn-block" data-action="abrir-nueva-sesion" style="margin-bottom:22px;">${ICONS.plus} Nueva sesión de entrenamiento</button>
+  <button class="btn btn-court btn-block" data-action="abrir-nueva-sesion" style="margin-bottom:${hayCerradas?'10px':'22px'};">${ICONS.plus} Nueva sesión de entrenamiento</button>
+  ${hayCerradas ? `<button class="btn btn-block" data-action="abrir-elegir-plantilla" style="margin-bottom:22px;">${ICONS.copy} Empezar desde una sesión anterior</button>` : ''}
   ${borradores.length ? `
     <div class="section-head"><h2>Borradores sin cerrar</h2></div>
     ${borradores.map(s=>`
@@ -1453,11 +1566,37 @@ function elegirEjercicioParaBloque(sid, secid, eid){
   closeModal();
 }
 
+/* ---- Elegir una sesión cerrada como plantilla desde la pantalla inicial ---- */
+function abrirElegirPlantilla(){
+  ui.planificador.plantillaQuery = '';
+  openModal('elegir-plantilla', {});
+}
+function renderModalElegirPlantilla(){
+  const q = ui.planificador.plantillaQuery.trim().toLowerCase();
+  const cerradas = state.sesiones.filter(s=>s.estado==='cerrada' && (!q || (s.titulo+' '+(s.objetivo||'')).toLowerCase().includes(q)))
+    .sort((a,b)=> b.fecha.localeCompare(a.fecha) || b.actualizadoEn.localeCompare(a.actualizadoEn));
+  return `<div class="sheet" data-stop>
+    <div class="sheet-head"><h2>Empezar desde una sesión anterior</h2><button class="sheet-close" data-action="cerrar-modal">${ICONS.close}</button></div>
+    <div class="search-box" style="margin-bottom:12px;">${ICONS.search}<input type="text" placeholder="Buscar en sesiones cerradas…" value="${escapeHtml(ui.planificador.plantillaQuery)}" data-action="buscar-plantilla" autofocus></div>
+    <div class="picker-list">
+      ${cerradas.length ? cerradas.map(s=>`
+        <div class="session-row" data-action="usar-sesion-plantilla" data-id="${s.id}">
+          <div class="date-chip"><div class="d">${fmtDayNum(s.fecha).d}</div><div class="m">${fmtDayNum(s.fecha).m}</div></div>
+          <div class="info">
+            <div class="t">${escapeHtml(s.titulo || 'Entrenamiento sin título')}</div>
+            <div class="s">${totalMinutosSesion(s)} min · ${s.secciones.reduce((a,x)=>a+x.bloques.length,0)} bloques</div>
+          </div>
+        </div>`).join('') : `<div class="empty" style="padding:24px;">${ICONS.search}<p>${q?'Sin resultados.':'Todavía no tienes sesiones cerradas para usar como plantilla.'}</p></div>`}
+    </div>
+  </div>`;
+}
+
 /* ---- Ciclo de vida de la sesión ---- */
 function cerrarSesion(id){
   confirmar({ title:'Cerrar sesión', message:'La sesión pasará al historial como cerrada. Podrás seguir consultándola, pero no aparecerá como borrador.', confirmLabel:'Cerrar sesión', danger:false, onConfirm:()=>{
     const s = state.sesiones.find(x=>x.id===id);
     s.estado = 'cerrada'; tocarSesion(s);
+    ui.planificador.sesionId = null;
     closeModal(); toast('Sesión cerrada y guardada en el historial');
   }});
 }
@@ -1519,7 +1658,7 @@ function renderHistorial(){
   const sesiones = state.sesiones.filter(s=>s.estado==='cerrada' && sesionEnRango(s, rango)).sort((a,b)=> b.fecha.localeCompare(a.fecha) || b.actualizadoEn.localeCompare(a.actualizadoEn));
 
   const porCategoria = {};
-  CATEGORIAS.forEach(c=> porCategoria[c.id]=0);
+  state.categorias.forEach(c=> porCategoria[c.id]=0);
   sesiones.forEach(s=> s.secciones.forEach(sec=> sec.bloques.forEach(b=>{
     if(b.tipo==='ejercicio') porCategoria[b.categoriaSnapshot] = (porCategoria[b.categoriaSnapshot]||0) + (b.duracionMin||0);
   })));
@@ -1534,7 +1673,7 @@ function renderHistorial(){
 
   <div class="section-head"><h2>Minutos por tipo de contenido</h2></div>
   ${totalMin ? `<div class="card" style="padding:18px 18px 10px;margin-bottom:22px;">
-    ${CATEGORIAS.filter(c=>porCategoria[c.id]>0).sort((a,b)=>porCategoria[b.id]-porCategoria[a.id]).map(c=>`
+    ${state.categorias.filter(c=>porCategoria[c.id]>0).sort((a,b)=>porCategoria[b.id]-porCategoria[a.id]).map(c=>`
       <div class="stat-bar-row">
         <div class="label">${c.label}</div>
         <div class="stat-bar-track"><div class="stat-bar-fill" style="width:${(porCategoria[c.id]/maxCat*100).toFixed(0)}%;background:${c.color}"></div></div>
@@ -1580,6 +1719,34 @@ function renderModalAjustes(){
     </div>
 
     <div id="storage-info" class="hint" style="margin-bottom:22px;">Calculando espacio usado…</div>
+
+    <div class="section-head"><h2>Categorías de ejercicio</h2></div>
+    <p class="hint" style="margin-bottom:10px;">Renombra, recolorea o reordena las categorías. Solo se puede borrar una categoría si ningún ejercicio la usa; "Otro" es la categoría de respaldo y no se puede borrar.</p>
+    <div style="margin-bottom:20px;">
+      ${state.categorias.map((c,i)=>{
+        const enUso = state.ejercicios.filter(ej=>ej.categoria===c.id).length;
+        const esFija = c.id==='otro';
+        const sinBorrar = esFija || enUso>0;
+        return `
+        <div class="cat-block">
+          <div class="cat-block-top">
+            <div class="plan-block-order">
+              <button data-action="mover-categoria" data-dir="-1" data-catid="${c.id}" ${i===0?'disabled':''}>${ICONS.chevronUp}</button>
+              <button data-action="mover-categoria" data-dir="1" data-catid="${c.id}" ${i===state.categorias.length-1?'disabled':''}>${ICONS.chevronDown}</button>
+            </div>
+            <div class="info">
+              <input type="text" value="${escapeHtml(c.label)}" data-action="renombrar-categoria" data-catid="${c.id}" style="background:transparent;border:none;padding:4px 0;font-weight:700;">
+            </div>
+            ${sinBorrar?`<span class="cat-en-uso">${esFija?'Fija':`${enUso} ejercicio(s)`}</span>`:''}
+            <button class="rm" data-action="eliminar-categoria" data-catid="${c.id}" ${sinBorrar?'disabled style="opacity:.35;"':''}>${ICONS.close}</button>
+          </div>
+          <div class="cat-block-colors">
+            ${PALETA_COLORES_CATEGORIA.map(p=>`<button class="color-dot ${c.color===p.color?'active':''}" style="background:${p.color}" data-action="recolorear-categoria" data-catid="${c.id}" data-color="${p.color}" data-bg="${p.bg}" aria-label="Elegir color"></button>`).join('')}
+          </div>
+        </div>`;
+      }).join('')}
+      <button class="btn btn-sm" data-action="anadir-categoria">${ICONS.plus} Añadir categoría</button>
+    </div>
 
     <div class="section-head"><h2>Secciones por defecto de una sesión nueva</h2></div>
     <p class="hint" style="margin-bottom:10px;">Cambiar esto no afecta a sesiones que ya hayas creado, solo a las nuevas.</p>
@@ -1629,6 +1796,33 @@ function moverSeccionPlantilla(id, dir){
 function renombrarSeccionPlantilla(id, val){
   state.plantillaSecciones.find(s=>s.id===id).nombre = val; saveState();
 }
+
+/* Categorías de ejercicio (gestionables desde Ajustes) */
+function anadirCategoria(){
+  const col = siguienteColorCategoria();
+  state.categorias.push({ id:uid(), label:'Nueva categoría', color:col.color, bg:col.bg });
+  saveState(); render(); actualizarInfoAlmacenamiento();
+}
+function eliminarCategoria(id){
+  if(id==='otro') return; // categoría de respaldo: nunca se puede borrar
+  if(state.ejercicios.some(e=>e.categoria===id)) return; // defensa extra; el botón ya está desactivado
+  state.categorias = state.categorias.filter(c=>c.id!==id);
+  saveState(); render(); actualizarInfoAlmacenamiento();
+}
+function moverCategoria(id, dir){
+  const i = state.categorias.findIndex(c=>c.id===id); const j=i+dir;
+  if(j<0||j>=state.categorias.length) return;
+  [state.categorias[i],state.categorias[j]]=[state.categorias[j],state.categorias[i]];
+  saveState(); render(); actualizarInfoAlmacenamiento();
+}
+function renombrarCategoria(id, val){
+  state.categorias.find(c=>c.id===id).label = val; saveState();
+}
+function recolorearCategoria(id, color, bg){
+  const c = state.categorias.find(x=>x.id===id);
+  c.color = color; c.bg = bg;
+  saveState(); render();
+}
 /* ================= EXPORTAR A PDF =================
    Genera un PDF de verdad (archivo descargable), en vez de usar window.print(). Ese era el
    enfoque anterior y no es fiable en una app instalada en la pantalla de inicio de un iPad
@@ -1663,7 +1857,6 @@ function construirHtmlSesion(s){
       const descBits = [];
       if(ejercicioVivo){
         if(ejercicioVivo.objetivo) descBits.push(ejercicioVivo.objetivo);
-        if(ejercicioVivo.puntosCoaching) descBits.push('· '+ejercicioVivo.puntosCoaching);
       } else {
         descBits.push('(Ejercicio ya no está en la biblioteca)');
       }
@@ -1752,6 +1945,7 @@ async function exportarTodo(){
       version: 1,
       app: 'cuaderno-entrenamientos',
       exportedAt: nowIso(),
+      categorias: state.categorias,
       plantillaSecciones: state.plantillaSecciones,
       ejercicios: state.ejercicios,
       sesiones: state.sesiones,
@@ -1827,6 +2021,7 @@ async function manejarArchivoImportado(file){
         state = {
           version:1,
           ejercicios: datos.ejercicios || [],
+          categorias: (datos.categorias && datos.categorias.length) ? datos.categorias : CATEGORIAS_POR_DEFECTO.map(c=>({...c})),
           plantillaSecciones: (datos.plantillaSecciones && datos.plantillaSecciones.length) ? datos.plantillaSecciones : SECCIONES_POR_DEFECTO.map(s=>({...s})),
           sesiones: datos.sesiones || [],
           ajustes: { lastBackupAt: state.ajustes.lastBackupAt, seeded:true },
@@ -1855,6 +2050,10 @@ document.addEventListener('click', (e) => {
   const action = el.dataset.action;
 
   if(action === 'cerrar-overlay' && e.target.closest('[data-stop]')) return;
+  // Los modales con un formulario a medio rellenar (nuevo/editar ejercicio, nueva/editar sesión) no
+  // se cierran al tocar fuera: sería muy fácil perder todo lo escrito con un toque accidental. Para
+  // esos hace falta "Cancelar" o la X, que sí usan 'cerrar-modal' explícitamente.
+  if(action === 'cerrar-overlay' && ui.modal && (ui.modal.type==='form-ejercicio' || ui.modal.type==='sesion-form')) return;
 
   const id = el.dataset.id, sid = el.dataset.sid, secid = el.dataset.secid, bid = el.dataset.bid, eid = el.dataset.eid;
   const dir = el.dataset.dir ? parseInt(el.dataset.dir,10) : 0;
@@ -1864,6 +2063,16 @@ document.addEventListener('click', (e) => {
     case 'abrir-ajustes': abrirAjustes(); break;
     case 'cerrar-modal': case 'cerrar-overlay': formDraft=null; formDraftImagenData=undefined; sesionFormDraft=null; closeModal(); break;
     case 'confirmar-accion': { const cb = ui.modal && ui.modal.props && ui.modal.props.onConfirm; if(cb) cb(); break; }
+    case 'draft-stepper': {
+      const campo = el.dataset.draft;
+      const minv = parseInt(el.dataset.min,10), maxv = parseInt(el.dataset.max,10);
+      let v = (parseInt(formDraft[campo],10)||0) + dir;
+      if(v < minv) v = minv;
+      if(v > maxv) v = maxv;
+      formDraft[campo] = v;
+      render();
+      break;
+    }
 
     // Biblioteca
     case 'nuevo-ejercicio': abrirFormEjercicio(null); break;
@@ -1873,7 +2082,9 @@ document.addEventListener('click', (e) => {
     case 'toggle-favorito': { const ex = state.ejercicios.find(x=>x.id===id); ex.favorito = !ex.favorito; saveState(); render(); break; }
     case 'guardar-ejercicio': guardarEjercicio(el.dataset.id || null); break;
     case 'quitar-imagen-draft': formDraftImagenData = null; render(); break;
+    case 'anadir-etiqueta-sugerida': anadirEtiquetaSugerida(el.dataset.tag); break;
     case 'draft-categoria': formDraft.categoria = el.dataset.cat; render(); break;
+    case 'draft-agrupacion': formDraft.agrupacion = el.dataset.agr; render(); break;
     case 'filtro-categoria': ui.biblioteca.categoria = el.dataset.cat; render(); break;
     case 'toggle-favoritos-filtro': ui.biblioteca.soloFavoritos = !ui.biblioteca.soloFavoritos; render(); break;
     case 'limpiar-filtros-biblioteca': limpiarFiltrosBiblioteca(); break;
@@ -1881,6 +2092,8 @@ document.addEventListener('click', (e) => {
     // Planificador — sesión
     case 'abrir-nueva-sesion': abrirNuevaSesion(); break;
     case 'continuar-sesion': ui.planificador.sesionId = id; render(); break;
+    case 'abrir-elegir-plantilla': abrirElegirPlantilla(); break;
+    case 'usar-sesion-plantilla': duplicarSesion(id); break;
     case 'volver-planificador-landing': ui.planificador.sesionId = null; render(); break;
     case 'editar-meta-sesion': abrirEditarMetaSesion(id); break;
     case 'guardar-sesion-form': guardarSesionForm(el.dataset.id || null); break;
@@ -1909,6 +2122,10 @@ document.addEventListener('click', (e) => {
     case 'anadir-seccion-plantilla': anadirSeccionPlantilla(); break;
     case 'eliminar-seccion-plantilla': eliminarSeccionPlantilla(el.dataset.secid); break;
     case 'mover-seccion-plantilla': moverSeccionPlantilla(el.dataset.secid, dir); break;
+    case 'anadir-categoria': anadirCategoria(); break;
+    case 'eliminar-categoria': eliminarCategoria(el.dataset.catid); break;
+    case 'mover-categoria': moverCategoria(el.dataset.catid, dir); break;
+    case 'recolorear-categoria': recolorearCategoria(el.dataset.catid, el.dataset.color, el.dataset.bg); break;
   }
 });
 
@@ -1918,9 +2135,10 @@ document.addEventListener('input', (e) => {
 
   if(el.dataset.draft){
     let v = el.value;
-    if(['duracionMin','jugadoresMin','jugadoresMax'].includes(el.dataset.draft)) v = parseInt(v||'0',10)||0;
+    if(el.dataset.draft==='duracionMin') v = parseInt(v||'0',10)||0;
     if(el.dataset.draft==='material' || el.dataset.draft==='etiquetas') v = parseTags(v);
     formDraft[el.dataset.draft] = v;
+    if(el.dataset.draft==='etiquetas') actualizarSugerenciasEtiquetasDom();
     return;
   }
   if(el.dataset.sdraft){
@@ -1949,10 +2167,18 @@ document.addEventListener('input', (e) => {
     render();
     const el2 = document.querySelector('[data-action="buscar-picker"]');
     if(el2){ el2.focus(); try{ el2.setSelectionRange(pos,pos); }catch(err){} }
+  } else if(action==='buscar-plantilla'){
+    const pos = el.selectionStart;
+    ui.planificador.plantillaQuery = el.value;
+    render();
+    const el2 = document.querySelector('[data-action="buscar-plantilla"]');
+    if(el2){ el2.focus(); try{ el2.setSelectionRange(pos,pos); }catch(err){} }
   } else if(action==='renombrar-seccion'){
     renombrarSeccion(el.dataset.sid, el.dataset.secid, el.value);
   } else if(action==='renombrar-seccion-plantilla'){
     renombrarSeccionPlantilla(el.dataset.secid, el.value);
+  } else if(action==='renombrar-categoria'){
+    renombrarCategoria(el.dataset.catid, el.value);
   } else if(action==='editar-nota'){
     editarNota(el.dataset.sid, el.dataset.secid, el.dataset.bid, el.value);
   } else if(action==='cambiar-duracion-bloque'){
